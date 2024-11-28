@@ -5,7 +5,7 @@ path = pathlib.Path("images_repository")
 
 for dir in path.iterdir():
     print(f"Comparando imagem teste com imagem {dir.name}")
-    
+
     known_image = face_recognition.load_image_file(f"{path.name}/{dir.name}")
     unknown_image = face_recognition.load_image_file("teste2.jpg")
 
@@ -15,14 +15,6 @@ for dir in path.iterdir():
     results = face_recognition.compare_faces([known_encoding], unknown_encoding)
     if results[0]:
         print("Corresponde\n")
-        break
+        # break
     else:
         print("Não corresponde\n")
-    
-    
-    
-    
-    
-    
-    
-    
