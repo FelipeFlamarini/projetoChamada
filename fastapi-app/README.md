@@ -24,19 +24,19 @@ class UsersRepository:
 Os repositories serão exportados e utilizados principalmente pelos [routers](#subpacote-routers).
 
 ## Subpacote [routers](api/routers)
-Cada router será responsável por gerenciar as rotas referentes à um documento no banco de dados. Por exemplo, o router "Users" seria:
+Cada router será responsável por gerenciar as rotas referentes à um documen to no banco de dados. Por exemplo, o router "Users" seria:
 ```python
 from fastapi import APIRouter, 
 from api.repositories.Users import UsersRepository
 
 users_router = APIRouter()
 
-@app.post("/", status_code=201)
+@users_router.post("/", status_code=201)
 def create_user(user):
     UsersRepository.create_user(user)
     return {"message": "User created"}
 
-@app.delete("/", status_code=200)
+@users_router.delete("/", status_code=200)
 def delete_user(user):
     UsersRepository.delete_user(user)
     return {"message": "User deleted"}
