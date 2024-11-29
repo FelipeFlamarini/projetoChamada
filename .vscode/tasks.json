@@ -45,6 +45,12 @@
       "type": "shell",
       "command": "read \"answer?Are you sure you want to remove the volume 'projetochamada_mongo_data'? (y/n): \" && if [[ $answer == [Yy] ]]; then docker volume remove projetochamada_mongo_data && echo \"Volume 'projetochamada_mongo_data' has been removed.\"; else echo \"Operation cancelled.\"; fi",
       "problemMatcher": []
+    },
+    {
+      "label": "(dev) fastapi-app - install dependencies locally",
+      "type": "shell",
+      "command": "cd fastapi-app ; python -m venv .venv ; source .venv/bin/activate ; pip install -r requirements.txt",
+      "problemMatcher": []
     }
   ]
 }
