@@ -4,7 +4,7 @@ import { LogoCI } from "./components/logo";
 
 function Login() {
   return (
-  <div className="flex flex-col justify-center items-center gap-2 h-dvh p-2 sm:p-0">
+  <div className="flex flex-col  items-center gap-2 h-dvh p-2 sm:py-8">
       <LogoCI />
       <LoginForm  />
     </div>

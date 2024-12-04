@@ -9,10 +9,40 @@ import {
 import { InputLogin } from "@/components/ui/input";
 // import { Label } from "@/components/ui/label";
 import undrawLogin from "/undrawLogin.svg";
+import z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router";
-import { NavLink } from "react-router";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+
+const formSchema = z.object({
+  username: z.string().min(1),
+  password: z.string().min(1),
+});
 
 export function LoginForm() {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      username: "",
+      password: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    // Do something with the form values.
+    // ✅ This will be type-safe and validated.
+    console.log(values);
+  }
+
   return (
     <Card className="mx-auto max-w-sm">
       <CardHeader className="flex flex-col items-center">
@@ -23,39 +53,53 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="grid gap-4">
-          <div className="grid gap-2 text-start">
-            {/* <Label htmlFor="email" className="text-text">
-              Usuário
-            </Label> */}
-            <InputLogin
-              id="email"
-              type="email"
-              placeholder="Usuário"
-              required
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem className="grid gap-2 text-start">
+                  <FormControl>
+                    <InputLogin
+                      id="email"
+                      type="email"
+                      placeholder="Usuário"
+                      required
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <div className="grid gap-2">
-            <div className="flex items-center">
-              {/* <Label htmlFor="password" className="text-text">
-                Senha
-              </Label> */}
-            </div>
-            <InputLogin
-              id="password"
-              type="password"
-              placeholder="Senha"
-              required
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem className="grid gap-2 text-start">
+                  <FormControl>
+                    <InputLogin
+                      id="password"
+                      type="password"
+                      placeholder="Senha"
+                      required
+                      {...field}	
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
-          </div>
-          <Button className="rounded-full" variant={"go"} asChild>
-            <Link to="/" >Entrar</Link>
-          </Button>
+            <Button className="rounded-full" variant={"go"} asChild>
+              <Link to="/">Entrar</Link>
+            </Button>
 
-          <div className="flex justify-center">
-            <img src={undrawLogin} alt="" className="w-40 h-w-40" />
-          </div>
-        </div>
+            <div className="flex justify-center">
+              <img src={undrawLogin} alt="" className="w-40 h-w-40" />
+            </div>
+          </form>
+        </Form>
       </CardContent>
     </Card>
   );
