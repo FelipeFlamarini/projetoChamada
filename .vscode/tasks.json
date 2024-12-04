@@ -38,7 +38,8 @@
       "label": "(dev) Stop and remove containers",
       "type": "shell",
       "dependsOn": ["(dev) Stop containers", "(dev) Remove containers"],
-      "dependsOrder": "sequence"
+      "dependsOrder": "sequence",
+      "problemMatcher": []
     },
     {
       "label": "(dev) remove mongo_data",
