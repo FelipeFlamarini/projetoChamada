@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from api.models.User import User
 from api.models.AccessToken import AccessToken
 from api.models.Student import Student
+from api.models.Attendance import Attendance
 
 from api.routers.user_manager import (
     fastapi_users,
@@ -21,7 +22,7 @@ from api.schemas.user import UserRead, UserCreate, UserUpdate
 async def lifespan(app: FastAPI):
     await init_beanie(
         database=db,
-        document_models=[User, AccessToken, Student],
+        document_models=[User, AccessToken, Student, Attendance],
     )
     yield
 
