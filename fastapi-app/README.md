@@ -5,41 +5,24 @@ Possui os pacotes que serão utilizados externamente pela API.
 O script principal é onde os routers serão incorporados à API, possuindo também a inicialização do beanie e, consequentemente, os models que estarão no banco de dados. Para isso, é necessário importar os routers e os models para este script.
 
 ## Subpacote [models](api/models)
-Cada model será um documento no banco de dados. Para um model ser inicializado no banco de dados, ele deve ser exportado para o app.py e passado para o init_beanie. Os models serão exportados e utilizados principalmente pelos [repositories](#subpacote-repositories).
+Cada model será um documento no banco de dados. Para um model ser inicializado no banco de dados, ele deve ser exportado para o app.py e passado para o init_beanie. Os models serão exportados e utilizados principalmente pelos [routers](#subpacote-routers).
 
-## Subpacote [repositories](api/repositories)
-Cada repository possuirá uma classe com funções estáticas com integração ao banco de dados referente à um documento. Por exemplo, o repositório "Users" seria:
-```python
-class UsersRepository:
-    @staticmethod
-    def create_user(user):
-        session.add(user)
-        session.commit()
-
-    @staticmethod
-    def delete_user(user):
-        session.delete(user)
-        session.commit()
-```
-Os repositories serão exportados e utilizados principalmente pelos [routers](#subpacote-routers).
 
 ## Subpacote [routers](api/routers)
-Cada router será responsável por gerenciar as rotas referentes à um documen to no banco de dados. Por exemplo, o router "Users" seria:
+Cada router será responsável por gerenciar as rotas referentes à um documento no banco de dados. Por exemplo, o router "students" seria:
 ```python
 from fastapi import APIRouter, 
-from api.repositories.Users import UsersRepository
+from api.models.Student import Student
 
-users_router = APIRouter()
+students_router = APIRouter()
 
-@users_router.post("/", status_code=201)
-def create_user(user):
-    UsersRepository.create_user(user)
-    return {"message": "User created"}
+@students_router.post("/", status_code=201)
+async def create_student(student):
+    return await Student(student).create()
 
-@users_router.delete("/", status_code=200)
-def delete_user(user):
-    UsersRepository.delete_user(user)
-    return {"message": "User deleted"}
+@students_router.delete("/", status_code=200)
+def delete_student(student):
+    return await Student.get(student).delete()
 ```
 Os routers serão exportados e incorporados na API pelo [app.py](#apppy).
 
