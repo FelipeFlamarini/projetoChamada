@@ -2,7 +2,7 @@ from typing import Optional
 
 from beanie import PydanticObjectId
 from fastapi import Depends, Request
-from fastapi_users import BaseUserManager, FastAPIUsers
+from fastapi_users import BaseUserManager, FastAPIUsers, schemas
 from fastapi_users.authentication import (
     AuthenticationBackend,
     CookieTransport,
@@ -42,7 +42,7 @@ async def get_user_manager(user_db: BeanieUserDatabase = Depends(get_user_db)):
     yield UserManager(user_db)
 
 
-bearer_transport = CookieTransport(cookie_max_age=60 * 60 * 24)
+cookie_transport = CookieTransport(cookie_max_age=60 * 60 * 24)
 
 
 def get_database_strategy(
@@ -53,10 +53,11 @@ def get_database_strategy(
 
 auth_backend = AuthenticationBackend(
     name="jwt",
-    transport=bearer_transport,
+    transport=cookie_transport,
     get_strategy=get_database_strategy,
 )
 
 fastapi_users = FastAPIUsers[User, PydanticObjectId](get_user_manager, [auth_backend])
 
 current_active_user = fastapi_users.current_user(active=True)
+current_admin_user = fastapi_users.current_user(superuser=True)
