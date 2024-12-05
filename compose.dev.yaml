@@ -10,7 +10,7 @@ services:
       - ./fastapi-app/api:/app/api
       - ./fastapi-app/public:/app/public
       - ./fastapi-app/utils:/app/utils
-
+      - students_images:/app/students_images
     environment:
       - MONGO_URI=mongodb://root:example@mongo:27017/
       - MONGO_DB=fastapi_db
@@ -39,3 +39,5 @@ services:
 
 volumes:
   mongo_data:
+
+  students_images:
