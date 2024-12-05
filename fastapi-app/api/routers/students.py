@@ -14,9 +14,9 @@ async def get_all_students():
     return await StudentsRepository.get_all_students()
 
 
-@students_router.get("/{student_id}")
-async def get_student_by_id(student_id: PydanticObjectId):
-    return await StudentsRepository.get_student_by_id(student_id)
+@students_router.get("/{student_ra}")
+async def get_student_by_ra(student_ra: int):
+    return await StudentsRepository.get_student_by_ra(student_ra)
 
 
 @students_router.post("", status_code=HTTPStatus.CREATED)
@@ -28,8 +28,8 @@ async def create_student(
     return await StudentsRepository.create_student(name, ra, image_base64)
 
 
-@students_router.post("/bulk", status_code=HTTPStatus.CREATED)
-async def create_students_bulk(
+@students_router.post("/csv", status_code=HTTPStatus.CREATED)
+async def create_students_by_csv(
     background_tasks: BackgroundTasks, csv_file: UploadFile = File(...)
 ):
     background_tasks.add_task(csv_file.file.close)
@@ -43,9 +43,10 @@ async def create_students_bulk(
                     student["name"], student["ra"], student["image_base64"]
                 )
             )
-        except Exception as e:
+        # TODO: check exceptions
+        except Exception:
             del student["image_base64"]
-            student["reason"] = str(e)
+            student["reason"] = {}
             students_not_created.append(student)
 
     return {

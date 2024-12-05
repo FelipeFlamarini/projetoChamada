@@ -1,6 +1,6 @@
-import beanie.exceptions
 import pymongo
 import beanie
+import beanie.exceptions
 from typing import Optional
 from fastapi import HTTPException
 from http import HTTPStatus
@@ -16,6 +16,15 @@ class StudentsRepository:
     @staticmethod
     async def get_all_students():
         return await Student.find_all().to_list()
+
+    @staticmethod
+    async def get_student_by_ra(student_ra: int):
+        student = await Student.find_one(Student.ra == student_ra)
+        if not student:
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
+            )
+        return student
 
     @staticmethod
     async def get_student_by_id(student_id: beanie.PydanticObjectId):
@@ -48,6 +57,7 @@ class StudentsRepository:
         student = await StudentsRepository.get_student_by_id(student_id)
         updated_student = StudentUpdate(name=name, ra=ra, active=active)
         try:
+            await ImagesRepository.create_or_update_image(student.ra, image_base64)
             return await student.set(updated_student.model_dump(exclude_none=True))
         except (
             beanie.exceptions.RevisionIdWasChanged  # beanie forces this exception when DuplicateKeyError occurs
