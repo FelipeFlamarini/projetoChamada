@@ -1,5 +1,6 @@
 # Chamada Inteligente
 Nosso objetivo é criar um sistema de chamada utilizando reconhecimento facial.
+Desenvolvido por @FelipeFlamarini, @kauan345developer, @LetEscobar, @nicholasss0, @patrick510 e @PsSave 
 ## Stack
 - Docker Compose
 - Python
@@ -22,7 +23,7 @@ Selecione "(dev) Build and start containers" e aguarde a construção e execuç�
 
 #### Parando os containers
 Dentro do Visual Studio Code, pressione F1 e digite o comando "Tasks: Run Task". 
-Selecione "(dev) Build and start containers" e aguarde finalização dos containers.
+Selecione "(dev) Stop and remove containers" e aguarde finalização dos containers.
 
 
 ### Utilizando comandos
