@@ -8,6 +8,7 @@ from http import HTTPStatus
 import pymongo.errors
 
 from api.models.Student import Student
+from api.repositories.Images import ImagesRepository
 from api.schemas.student import StudentUpdate
 
 
@@ -26,9 +27,13 @@ class StudentsRepository:
         return student
 
     @staticmethod
-    async def create_student(name: str, ra: int):
+    async def create_student(name: str, ra: int, image_base64: str):
         try:
-            return await Student(name=name, ra=ra).insert()
+            student = await Student(name=name, ra=ra).insert()
+            await ImagesRepository.create_or_update_image(
+                student_ra=ra, image_base64=image_base64
+            )
+            return student
         except pymongo.errors.DuplicateKeyError as e:
             raise HTTPException(status_code=HTTPStatus.CONFLICT, detail=f"{e.details}")
 
@@ -37,6 +42,7 @@ class StudentsRepository:
         student_id: beanie.PydanticObjectId,
         name: Optional[str | None] = None,
         ra: Optional[int | None] = None,
+        image_base64: Optional[str | None] = None,
         active: Optional[bool | None] = None,
     ):
         student = await StudentsRepository.get_student_by_id(student_id)
