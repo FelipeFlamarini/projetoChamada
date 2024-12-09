@@ -28,6 +28,7 @@ const FaceDetection = () => {
       height: video.videoHeight,
     };
     faceapi.matchDimensions(canvas, displaySize);
+    console.log("AAAAAAA")
 
     setInterval(async () => {
       const detections = await faceapi
@@ -63,23 +64,6 @@ const FaceDetection = () => {
         video.addEventListener("play", handleVideoPlay);
       }
     });
-
-    const handleResize = () => {
-      const canvas = canvasRef.current;
-      const video = videoRef.current?.video;
-
-      if (canvas && video) {
-        canvas.width = video.clientWidth;
-        canvas.height = video.clientHeight;
-      }
-    };
-
-    window.addEventListener("resize", handleResize);
-    handleResize(); // Ajustar o tamanho do canvas na montagem
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
   }, []);
 
   return (
@@ -92,11 +76,11 @@ const FaceDetection = () => {
         style={{ transform: "scaleX(-1)" }} // Espelhar o vídeo
         screenshotFormat="image/jpeg"
       />
-      {/* <canvas
+       <canvas
         ref={canvasRef}
         className="absolute"
         style={{ transform: "scaleX(-1)" }} // Espelhar o canvas para corresponder ao vídeo
-      /> */}
+      /> 
     </div>
   );
 };
