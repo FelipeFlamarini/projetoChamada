@@ -6,13 +6,13 @@ import "./index.css";
 import { Login } from "./Login";
 import { Home } from "./app/pages/home";
 import { Camera } from "./app/pages/camera";
-import { Toaster } from 'sonner'
+import { Toaster } from "sonner";
 // import { Teste } from "./app/pages/teste";
 
-
 createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <Toaster richColors position="top-center"  expand={true}/> 
+  // <StrictMode>
+  <>
+    <Toaster richColors position="top-center" expand={true} />
     <BrowserRouter>
       <Routes>
         <Route index element={<Home />} />
@@ -21,5 +21,6 @@ createRoot(document.getElementById("root")!).render(
         {/* <Route path="teste" element={<Teste />} /> */}
       </Routes>
     </BrowserRouter>
-  </StrictMode>
+  </>
+  // </StrictMode>
 );

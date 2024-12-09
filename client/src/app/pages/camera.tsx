@@ -1,11 +1,12 @@
-import { toast } from "sonner";
-import { Button } from "@/components/ui/button";
-import { X, XCircle, CircleCheck, TriangleAlert } from "lucide-react";
+// import { toast } from "sonner";
+// import { Button } from "@/components/ui/button";
+// import { X, XCircle, CircleCheck, TriangleAlert } from "lucide-react";
+// import WebcamCapture from "@/components/camera";
+// import Camera2 from "@/components/camera3";
+import FaceDetection from "@/components/camera3";
 
-import WebcamCapture from "@/components/camera";
 
 // para Testar o toast descomente o codigo abaixo 
-
 export function Camera() {
   return (
     <div className="w-full h-dvh flex flex-col gap-12 px-2 pt-8 pb-2 sm:py-2 sm:gap-2">
@@ -17,8 +18,13 @@ export function Camera() {
           O registro da presença será automático.
         </p>
       </div>
-      <WebcamCapture />
-
+      {/* <Webcam/> */}
+      {/* <WebcamCapture4/> */}
+      {/* <WebcamCapture /> */}
+      {/* <WebcamCapture2 /> */}
+      {/* <WebcamCapture3 /> */}
+      {/* <Camera2 /> */}
+      <FaceDetection />
       {/* <div className="flex justify-center gap-2">
         <Button
           className="bg-tst-success-foreground hover:bg-tst-success-foreground/85"
