@@ -17,6 +17,11 @@ services:
     depends_on:
       - mongo
 
+  deepface:
+    image: serengil/deepface
+    ports:
+      - 5005:5005
+
   mongo:
     image: mongo
     restart: always

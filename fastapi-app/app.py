@@ -1,18 +1,12 @@
 from contextlib import asynccontextmanager
 from beanie import init_beanie
 from utils.db import db
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 
 from api.models.User import User
 from api.models.AccessToken import AccessToken
-from api.models.Student import Student
-from api.models.Attendance import Attendance
 
-from api.routers.user_manager import (
-    fastapi_users,
-    auth_backend,
-)
-from api.routers.students import students_router
+from api.routers.user_manager import fastapi_users, auth_backend, current_active_user
 from api.routers.facial_recognition import facial_recognition_router
 
 from api.schemas.user import UserRead, UserCreate, UserUpdate
@@ -22,7 +16,7 @@ from api.schemas.user import UserRead, UserCreate, UserUpdate
 async def lifespan(app: FastAPI):
     await init_beanie(
         database=db,
-        document_models=[User, AccessToken, Student, Attendance],
+        document_models=[User, AccessToken],
     )
     yield
 
@@ -52,9 +46,25 @@ app.include_router(
     prefix="/users",
     tags=["users"],
 )
-app.include_router(students_router, prefix="/students", tags=["students"])
 app.include_router(
     facial_recognition_router,
     prefix="/api/facial_recognition",
     tags=["facial recognition"],
 )
+
+@app.get("/")
+def teste():
+ 
+    res = DeepFace.verify(
+        img1_path = "./public/teste.jpeg",
+        img2_path = "./public/images/Felipe Flamarini.jpg",
+        enforce_detection=False,
+        model_name = "ArcFace"
+            )
+
+    return res
+
+@app.get("/authenticated-route")
+async def authenticated_route(user: User = Depends(current_active_user)):
+    return {"message": f"Hello {user.email}!"}
+
