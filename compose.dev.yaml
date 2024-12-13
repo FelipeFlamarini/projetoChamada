@@ -20,7 +20,7 @@ services:
   deepface:
     image: serengil/deepface
     ports:
-      - 5005:5005
+      - 5000:5000
 
   mongo:
     image: mongo
