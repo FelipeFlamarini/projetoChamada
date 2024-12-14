@@ -21,8 +21,8 @@ export function CardHome() {
       <CardContent>
         <div className="grid gap-4">
           <div className="grid gap-3.5">
-            <Button variant={"go"} className="rounded-full">
-              Iniciar Chamada Inteligente
+            <Button variant={"go"} className="rounded-full" asChild>
+              <Link to="/camera">Iniciar Chamada Inteligente</Link>
             </Button>
             <Button variant={"goSecondary"} className="rounded-full">
               Exportar Lista de Chamafa

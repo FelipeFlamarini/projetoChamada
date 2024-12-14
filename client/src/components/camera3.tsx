@@ -1,13 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import * as faceapi from "face-api.js";
 import Webcam from "react-webcam";
 
 const FaceDetection = () => {
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [imageBase64, setImageBase64] = useState<string | null>(null);
-  const [faceDetected, setFaceDetected] = useState<boolean>(false);
-
+  // const [width, setWidth] = useState<number>(100);
 
   // Carregar os modelos necessários
   const loadModels = async () => {
@@ -17,70 +15,82 @@ const FaceDetection = () => {
 
   // Iniciar a detecção facial
   const handleVideoPlay = async () => {
-    const canvas = canvasRef.current;
+
+    await loadModels()
+
     const video = videoRef.current?.video;
+    const canvas = canvasRef.current;
+
+    // console.log(video.videoWidth,video.videoHeight)
+    
 
     if (!canvas || !video) return;
 
     // Configurar o canvas para sobrepor o vídeo
+
     const displaySize = {
       width: video.videoWidth,
       height: video.videoHeight,
     };
+
+    if (displaySize.width === 0 || displaySize.height === 0) {
+      console.error("Invalid video dimensions:", displaySize);
+      return;
+    }
+
     faceapi.matchDimensions(canvas, displaySize);
-    console.log("AAAAAAA")
 
     setInterval(async () => {
-      const detections = await faceapi
-        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions());
-      console.log("Detected face:", detections);
+      // console.log("AAAAAA")
+      const detections = await faceapi.detectSingleFace(
+        video,
+        new faceapi.TinyFaceDetectorOptions()
+      );
+      // if (detections) {
+      //   console.log("Detected face:", detections);
+      // }
       if (detections) {
-        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        // console.log("AAAA:", detections);
+        const resizedDetections = faceapi.resizeResults(
+          detections,
+          displaySize
+        );
         console.log("Detected face:", resizedDetections);
         if (videoRef.current) {
           const imageSrc = videoRef.current.getScreenshot();
           if (imageSrc) {
-            setImageBase64(imageSrc);
+            // console.log(imageSrc, new Date().getTime());
+            // console.log("Base64 image:", imageSrc);
           }
-        }
-        if (imageBase64 && !faceDetected) {
-          // para ser a API
-          console.log("Base64 image:", imageBase64);
         }
 
         const context = canvas.getContext("2d");
-        if (context) {
+        if (context && canvas.width != 0 && canvas.height != 0 ) {
           context.clearRect(0, 0, canvas.width, canvas.height);
           faceapi.draw.drawDetections(canvas, resizedDetections);
         }
       }
-    }, 100);
+    }, 650);
   };
 
-  useEffect(() => {
-    loadModels().then(() => {
-      const video = videoRef.current?.video;
-      if (video) {
-        video.addEventListener("play", handleVideoPlay);
-      }
-    });
-  }, []);
+
 
   return (
     <div className="flex justify-center relative">
       <Webcam
         ref={videoRef}
-        autoPlay
+        // autoPlay
         muted
         className="border border-btnGo rounded-3xl"
-        style={{ transform: "scaleX(-1)" }} // Espelhar o vídeo
+        // style={{ transform: "scaleX(-1)" }} // Espelhar o vídeo
         screenshotFormat="image/jpeg"
+        onUserMedia={handleVideoPlay}
       />
-       <canvas
+      <canvas
         ref={canvasRef}
-        className="absolute"
-        style={{ transform: "scaleX(-1)" }} // Espelhar o canvas para corresponder ao vídeo
-      /> 
+        className="absolute w-96 h-96 sm:h-auto sm:w-auto"
+        // style={{ transform: "scaleX(-1)" }} // Espelhar o canvas para corresponder ao vídeo
+      />
     </div>
   );
 };
