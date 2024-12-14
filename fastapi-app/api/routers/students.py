@@ -55,14 +55,14 @@ async def create_students_by_csv(
     }
 
 
-@students_router.patch("/{student_id}")
-async def update_student(
-    student_id: PydanticObjectId,
+@students_router.patch("/{student_ra}")
+async def update_student_by_ra(
+    student_ra: int,
     name: Annotated[str | None, Form()] = None,
     ra: Annotated[int | None, Form()] = None,
     image_base64: Annotated[str | None, Form()] = None,
     active: Annotated[bool | None, Form()] = None,
 ):
-    return await StudentsRepository.update_student(
-        student_id, name, ra, image_base64, active
+    return await StudentsRepository.update_student_by_ra(
+        student_ra, name, ra, image_base64, active
     )

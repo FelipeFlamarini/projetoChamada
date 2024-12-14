@@ -10,7 +10,7 @@ DATABASE_URL = "mongodb://root:example@mongo:27017"
 client = motor.motor_asyncio.AsyncIOMotorClient(
     DATABASE_URL, uuidRepresentation="standard"
 )
-db = client["local"]
+db = client["projetoChamada"]
 
 
 async def get_user_db():

@@ -38,16 +38,16 @@ class StudentsRepository:
     @staticmethod
     async def create_student(name: str, ra: int, image_base64: str):
         try:
-            student = await Student(name=name, ra=ra).insert()
-            await ImagesRepository.create_or_update_image(
-                student_ra=ra, image_base64=image_base64
+            image_path = ImagesRepository.save_base64_image_for_student(
+                ra, image_base64
             )
+            student = await Student(name=name, ra=ra, image_path=image_path).insert()
             return student
         except pymongo.errors.DuplicateKeyError as e:
             raise HTTPException(status_code=HTTPStatus.CONFLICT, detail=f"{e.details}")
 
     @staticmethod
-    async def update_student(
+    async def update_student_by_id(
         student_id: beanie.PydanticObjectId,
         name: Optional[str | None] = None,
         ra: Optional[int | None] = None,
@@ -55,9 +55,47 @@ class StudentsRepository:
         active: Optional[bool | None] = None,
     ):
         student = await StudentsRepository.get_student_by_id(student_id)
-        updated_student = StudentUpdate(name=name, ra=ra, active=active)
+        if not student:
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
+            )
         try:
-            await ImagesRepository.create_or_update_image(student.ra, image_base64)
+            image_path = ImagesRepository.save_base64_image_for_student(
+                student.ra, image_base64
+            )
+            updated_student = StudentUpdate(
+                name=name, ra=ra, active=active, image_path=image_path
+            )
+            return await student.set(updated_student.model_dump(exclude_none=True))
+        except (
+            beanie.exceptions.RevisionIdWasChanged  # beanie forces this exception when DuplicateKeyError occurs
+        ):
+            raise HTTPException(
+                status_code=HTTPStatus.CONFLICT, detail=f"RA {ra} already exists"
+            )
+
+    @staticmethod
+    async def update_student_by_ra(
+        student_ra: int,
+        name: Optional[str | None] = None,
+        ra: Optional[int | None] = None,
+        image_base64: Optional[str | None] = None,
+        active: Optional[bool | None] = None,
+    ):
+        student = await StudentsRepository.get_student_by_ra(student_ra)
+        if not student:
+            raise HTTPException(
+                status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
+            )
+        try:
+            image_path = None
+            if image_base64:
+                image_path = ImagesRepository.save_base64_image_for_student(
+                    student_ra, image_base64
+                )
+            updated_student = StudentUpdate(
+                name=name, ra=ra, active=active, image_path=image_path
+            )
             return await student.set(updated_student.model_dump(exclude_none=True))
         except (
             beanie.exceptions.RevisionIdWasChanged  # beanie forces this exception when DuplicateKeyError occurs
