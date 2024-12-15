@@ -9,13 +9,17 @@ import { Button } from "./ui/button";
 import { useElementSize } from "../hooks/useElementSize";
 import { verifyToast } from "./toasts/verifiesToast";
 import { notVerifyToast } from "./toasts/notVerifiedToast";
+import { detectingToast } from "./toasts/loadingToast";
+import { SendingToast } from "./toasts/sendigToast";
 
 const FaceDetection = () => {
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [render, setRender] = useState(false);
+  const [detecting,setDetecting] = useState(false)
   // const [boxRef, { width, height }] = useElementSize();
   const URL_BASE = "http://localhost:8000";
+  const URL_CEll = "http://192.168.1.3:8000"
   const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
   // const videoWidth = videoRef.current?.video.videoWidth;
@@ -27,13 +31,21 @@ const FaceDetection = () => {
   //   // console.log(videoWidth,videoHeight)
   // }
 
-  console.log(render);
+  // console.log(render);
   // Carregar os modelos necessários
   const loadModels = async () => {
-    const MODEL_URL = "/models"; // Certifique-se de que os modelos estão nesta pasta pública
-    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+    // const MODEL_URL = "/models"; // Certifique-se de que os modelos estão nesta pasta pública
+    // await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+    try {
+      const MODEL_URL = "/models"; // Verifique o caminho correto
+      await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+      console.log("Modelos carregados com sucesso.");
+    } catch (error) {
+      console.error("Erro ao carregar os modelos:", error);
+    }
   };
 
+  
   // useEffect(()=>{
   //   console.log(width)
   // },[width])
@@ -58,23 +70,28 @@ const FaceDetection = () => {
     };
     if (displaySize.width === 0 || displaySize.height === 0) {
       console.error("Invalid video dimensions:", displaySize);
+      handleVideoPlay()
       return;
     }
 
     faceapi.matchDimensions(canvas, displaySize, true);
 
+    detectingToast({isDetecting:false})
     while(true)  {
       console.log("Detecting face...");
+      setDetecting(true)
       // setSize({ width: video.videoWidth, height: video.videoHeight });
       const detections = await faceapi.detectSingleFace(
         video,
         new faceapi.TinyFaceDetectorOptions({
           inputSize: 224,
-          scoreThreshold: 0.6,
+          scoreThreshold: 0.5,
         })
       );
       console.log(detections);
+      setDetecting(true)
       if (detections) {
+        setDetecting(false)
         // console.log(detections);
         const resizedDetections = faceapi.resizeResults(
           detections,
@@ -86,8 +103,9 @@ const FaceDetection = () => {
           if (imageSrc) {
             // console.log(imageSrc);
             try {
+              SendingToast();
               const response = await fetch(
-                `${URL_BASE}/api/facial_recognition/verify`,
+                `${URL_CEll}/api/facial_recognition/verify`,
                 {
                   method: "POST",
                   headers: {
@@ -146,12 +164,11 @@ const FaceDetection = () => {
             // style={{ transform: "scaleX(-1)" }} // Espelhar o vídeo
             screenshotFormat="image/jpeg"
             onUserMedia={handleVideoPlay}
-
           />
         {/* </div> */}
         <canvas
           ref={canvasRef}
-          className={`absolute w-80 h-80 sm:w-auto sm:h-auto`}
+          className={`absolute w-80 h-[28rem] sm:w-auto sm:h-auto`}
           // style={{ transform: "scaleX(-1)" }} // Espelhar o canvas para corresponder ao vídeo
         />
       </div>

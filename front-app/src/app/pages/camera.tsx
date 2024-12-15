@@ -1,6 +1,6 @@
-// import { toast } from "sonner";
-// import { Button } from "@/components/ui/button";
-// import { X, XCircle, CircleCheck, TriangleAlert } from "lucide-react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
+import { X, XCircle, CircleCheck, TriangleAlert } from "lucide-react";
 // import WebcamCapture from "@/components/camera";
 // import Camera2 from "@/components/camera3";
 import FaceDetection from "@/components/camera3";
