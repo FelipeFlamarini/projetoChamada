@@ -15,5 +15,5 @@ def represent_face(request: DeepFaceRepresentRequest):
     return DeepFaceRepresentReturn(**FacialRecognitionRepository.represent(request)).model_dump()
 
 @facial_recognition_router.post("/verify")
-def verify_face(request: DeepFaceVerifyRequest):
-    return DeepFaceVerifyReturn(**FacialRecognitionRepository.verify(request)).model_dump()
+async  def verify_face(request: DeepFaceVerifyRequest):
+    return DeepFaceVerifyReturn(**await FacialRecognitionRepository.verify(request)).model_dump()

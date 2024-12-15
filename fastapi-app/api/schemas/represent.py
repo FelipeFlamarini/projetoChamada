@@ -3,7 +3,7 @@ from typing import List
 
 class DeepFaceRepresentRequest(BaseModel):
     img_path: str
-    model_name: str = "VGG-Face"
+    model_name: str = "SFace"
 
 class ResultItem(BaseModel):
     embedding: List[float]
