@@ -5,17 +5,21 @@ from fastapi import FastAPI, Depends
 
 from api.models.User import User
 from api.models.AccessToken import AccessToken
+from api.models.Student import Student
+from api.models.Attendance import Attendance
 
 from api.routers.user_manager import fastapi_users, auth_backend, current_active_user
 from api.routers.facial_recognition import facial_recognition_router
+from api.routers.students import students_router
 
 from api.schemas.user import UserRead, UserCreate, UserUpdate
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await init_beanie(
         database=db,
-        document_models=[User, AccessToken],
+        document_models=[User, AccessToken, Student, Attendance],
     )
     yield
 
@@ -45,13 +49,9 @@ app.include_router(
     prefix="/users",
     tags=["users"],
 )
+app.include_router(students_router, prefix="/api/students", tags=["students"])
 app.include_router(
     facial_recognition_router,
     prefix="/api/facial_recognition",
     tags=["facial recognition"],
 )
-
-@app.get("/authenticated-route")
-async def authenticated_route(user: User = Depends(current_active_user)):
-    return {"message": f"Hello {user.email}!"}
-
