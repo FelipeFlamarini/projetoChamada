@@ -58,3 +58,10 @@ app.include_router(
     prefix="/api/facial_recognition",
     tags=["facial recognition"],
 )
+
+
+@app.get("/{student_ra}")
+async def teste(student_ra: int):
+    from api.repositories.Attendances import AttendancesRepository
+
+    return await AttendancesRepository.create_attendance(student_ra)
