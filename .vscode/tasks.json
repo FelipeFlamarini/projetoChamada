@@ -52,6 +52,12 @@
       "type": "shell",
       "command": "cd fastapi-app ; (command -v python3 && python3 -m venv .venv || python -m venv .venv) ; source .venv/bin/activate ; pip install -r requirements.txt",
       "problemMatcher": []
+    },
+    {
+      "label": "(dev) generate dataset for students collection - based on folder fastapi-app/tests/generate_dataset",
+      "type": "shell",
+      "command": "cd fastapi-app/tests/generate_dataset ; (command -v python3 && python3 generate_students_dataset.py) || python generate_students_dataset.py",
+      "problemMatcher": []
     }
   ]
 }
