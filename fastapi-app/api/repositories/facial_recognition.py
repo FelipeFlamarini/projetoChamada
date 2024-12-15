@@ -12,7 +12,6 @@ class FacialRecognitionRepository:
             payload = request.model_dump()
             students = await StudentsRepository.get_all_students()
             for student in students:
-                print(student.name)
                 payload["img2_path"] = "/public/" + str(student.image_path)
                 response = requests.post(
                     "http://deepface:5000/verify",
