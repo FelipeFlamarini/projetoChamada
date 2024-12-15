@@ -17,6 +17,9 @@ services:
     depends_on:
       - mongo
 
+  deepface:
+    image: serengil/deepface
+
   mongo:
     image: mongo
     restart: always
