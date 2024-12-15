@@ -1,11 +1,13 @@
 import { useRef, useState } from "react";
 import * as faceapi from "face-api.js";
 import Webcam from "react-webcam";
+import { Button } from "./ui/button";
 
 const FaceDetection = () => {
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [size, setSize] = useState({ width: 0, height: 0 });
+  const URL_BASE = "http://localhost:8000";
 
   // Carregar os modelos necessários
   const loadModels = async () => {
@@ -30,11 +32,6 @@ const FaceDetection = () => {
       width: video.videoWidth,
       height: video.videoHeight,
     };
-
-    // const displaySize = {
-    //   width: 400,
-    //   height: 400,
-    // };
 
     if (displaySize.width === 0 || displaySize.height === 0) {
       console.error("Invalid video dimensions:", displaySize);
@@ -63,15 +60,32 @@ const FaceDetection = () => {
         if (videoRef.current) {
           const imageSrc = videoRef.current.getScreenshot();
           if (imageSrc) {
-            // fetch("http://localhost:5000/api/face", {
-            //   method: "POST",
-            //   headers: {
-            //     "Content-Type": "application/json",
-            //   },
-            //   body: JSON.stringify({
-            //     image: imageSrc,
-            //   }),
-            // })
+            // console.log(imageSrc);
+            try {
+              const response = await fetch(
+                `${URL_BASE}/api/facial_recognition/verify`,
+                {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ img1_path: imageSrc }),
+                }
+              );
+
+              if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+              }
+
+              // if (response.ok) {
+              //   await new Promise((resolve) => setTimeout(resolve, 1400));
+              // }
+              const data = await response.json();
+              console.log(data);
+            } catch (e) {
+              console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAa");
+              console.log(e);
+            }
           }
         }
 
@@ -100,16 +114,15 @@ const FaceDetection = () => {
         />
         <canvas
           ref={canvasRef}
-          className="absolute"
+          className="absolute w-96 h-96 sm:w-auto sm:h-auto"
           // style={{ transform: "scaleX(-1)" }} // Espelhar o canvas para corresponder ao vídeo
           // width={size.width}
           // height={size.height}
         />
-        {/* <Button
+        <Button
       onClick={handleVideoPlay}
       >
-        clic
-      </Button> */}
+      </Button>
       </div>
     </div>
   );

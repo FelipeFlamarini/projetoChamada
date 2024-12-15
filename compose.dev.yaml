@@ -17,6 +17,28 @@ services:
     depends_on:
       - mongo
 
+  front-app:
+    build:
+      context: front-app
+      dockerfile: dev.Dockerfile
+    ports:
+      - 5173:5173
+    volumes:
+      - ./front-app/imgs:/app/imgs
+      - ./front-app/public:/app/public
+      - ./front-app/src:/app/src
+      - ./front-app/components.json:/app/components.json
+      - ./front-app/eslint.config.js:/app/eslint.config.js
+      - ./front-app/index.html:/app/index.html
+      - ./front-app/postcss.config.js/:/app/postcss.config.js
+      - ./front-app/tailwind.config.js:/app/tailwind.config.js
+      - ./front-app/tsconfig.app.json:/app/tsconfig.app.json
+      - ./front-app/tsconfig.json:/app/tsconfig.json
+      - ./front-app/tsconfig.node.json:/app/tsconfig.node.json
+      - ./front-app/vite.config.ts:/app/vite.config.ts
+    depends_on:
+      - fastapi-app
+
   deepface:
     image: serengil/deepface
     volumes:
@@ -41,6 +63,8 @@ services:
       ME_CONFIG_MONGODB_ADMINPASSWORD: example
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
       ME_CONFIG_BASICAUTH: false
+
+
 
 volumes:
   mongo_data:
