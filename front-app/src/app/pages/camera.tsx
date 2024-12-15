@@ -6,6 +6,7 @@
 import FaceDetection from "@/components/camera3";
 
 
+
 // para Testar o toast descomente o codigo abaixo 
 export function Camera() {
   return (
@@ -18,12 +19,7 @@ export function Camera() {
           O registro da presença será automático.
         </p>
       </div>
-      {/* <Webcam/> */}
-      {/* <WebcamCapture4/> */}
-      {/* <WebcamCapture /> */}
-      {/* <WebcamCapture2 /> */}
-      {/* <WebcamCapture3 /> */}
-      {/* <Camera2 /> */}
+
       <FaceDetection />
       {/* <div className="flex justify-center gap-2">
         <Button

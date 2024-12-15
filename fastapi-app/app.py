@@ -1,6 +1,7 @@
 from contextlib import asynccontextmanager
 from beanie import init_beanie
 from utils.db import db
+from starlette.middleware.cors import CORSMiddleware
 from fastapi import FastAPI, Depends
 
 from api.models.User import User
@@ -25,6 +26,15 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
+origins = ["http://localhost:5173/"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.include_router(
     fastapi_users.get_auth_router(auth_backend), prefix="/auth", tags=["auth"]

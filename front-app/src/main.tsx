@@ -12,7 +12,7 @@ import { Toaster } from "sonner";
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
   <>
-    <Toaster richColors position="top-center" expand={true} />
+    <Toaster richColors position="top-center" expand={true} visibleToasts={2} />
     <BrowserRouter>
       <Routes>
         <Route index element={<Home />} />
