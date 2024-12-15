@@ -19,6 +19,8 @@ services:
 
   deepface:
     image: serengil/deepface
+    volumes:
+      - students_images:/public/students_images
 
   mongo:
     image: mongo
