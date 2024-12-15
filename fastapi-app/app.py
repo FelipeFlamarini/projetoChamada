@@ -30,7 +30,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(lifespan=lifespan)
 
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend), prefix="/auth/jwt", tags=["auth"]
+    fastapi_users.get_auth_router(auth_backend), prefix="/auth", tags=["auth"]
 )
 app.include_router(
     fastapi_users.get_register_router(UserRead, UserCreate),
@@ -58,10 +58,3 @@ app.include_router(
     prefix="/api/facial_recognition",
     tags=["facial recognition"],
 )
-
-
-@app.get("/{student_ra}")
-async def teste(student_ra: int):
-    from api.repositories.Attendances import AttendancesRepository
-
-    return await AttendancesRepository.create_attendance(student_ra)

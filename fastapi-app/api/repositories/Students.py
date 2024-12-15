@@ -36,6 +36,12 @@ class StudentsRepository:
         return student
 
     @staticmethod
+    async def _get_if_student_exists_by_ra(student_ra: int):
+        if not await Student.find_one(Student.ra == student_ra):
+            return False
+        return True
+
+    @staticmethod
     async def create_student(name: str, ra: int, image_base64: str):
         try:
             image_path = ImagesRepository.save_base64_image_for_student(
