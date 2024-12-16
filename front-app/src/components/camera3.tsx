@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState,useCallback } from "react";
 import * as faceapi from "face-api.js";
 import Webcam from "react-webcam";
 // import { Button } from "./ui/button";
@@ -11,28 +11,21 @@ import { verifyToast } from "./toasts/verifiesToast";
 import { notVerifyToast } from "./toasts/notVerifiedToast";
 import { detectingToast } from "./toasts/loadingToast";
 import { SendingToast } from "./toasts/sendigToast";
+import { Link } from "react-router";
 
 const FaceDetection = () => {
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [render, setRender] = useState(false);
-  const [detecting,setDetecting] = useState(false)
+  const [detecting, setDetecting] = useState(false);
   // const [boxRef, { width, height }] = useElementSize();
   const URL_BASE = "http://localhost:8000";
-  const URL_CEll = "http://192.168.1.3:8000"
-  const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  const URL_CEll = "http://192.168.1.3:8000";
+  const sleep = (ms: number) =>
+    new Promise((resolve) => setTimeout(resolve, ms));
 
-  // const videoWidth = videoRef.current?.video.videoWidth;
-  // const videoHeight = videoRef.current?.video.videoHeight;
 
-  // const videoDimensions = () =>{
-  //   console.log("aaaaaaaaaaaa")
-  //   console.log(videoRef.current?.video.videoWidth,videoRef.current?.video.videoHeight)
-  //   // console.log(videoWidth,videoHeight)
-  // }
 
-  // console.log(render);
-  // Carregar os modelos necessários
   const loadModels = async () => {
     // const MODEL_URL = "/models"; // Certifique-se de que os modelos estão nesta pasta pública
     // await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
@@ -45,24 +38,30 @@ const FaceDetection = () => {
     }
   };
 
-  
   // useEffect(()=>{
   //   console.log(width)
   // },[width])
 
   // Iniciar a detecção facial
-  const handleVideoPlay = async () => {
+  const handleVideoPlay = useCallback(async () => {
     await loadModels();
+    // setTimeout(() => handleVideoPlay())
 
+    const video = videoRef.current?.video;
+    if (!video) {
+      console.error("Vídeo não está disponível.");
+      return;
+    }
+  
     setRender(true);
     console.log("Video playing...");
-    const video = videoRef.current?.video;
+  
     const canvas = canvasRef.current;
-
-    // console.log(video.videoWidth,video.videoHeight)
-
-    if (!canvas || !video) return;
-
+    if (!canvas) {
+      console.error("Canvas não está disponível.");
+      return;
+    }
+  
     // Configurar o canvas para sobrepor o vídeo
     const displaySize = {
       width: video.videoWidth,
@@ -70,16 +69,17 @@ const FaceDetection = () => {
     };
     if (displaySize.width === 0 || displaySize.height === 0) {
       console.error("Invalid video dimensions:", displaySize);
-      handleVideoPlay()
+      handleVideoPlay();
       return;
     }
 
     faceapi.matchDimensions(canvas, displaySize, true);
 
-    detectingToast({isDetecting:false})
-    while(true)  {
+    // detectingToast({ isDetecting: false });
+    while (true) {
       console.log("Detecting face...");
-      setDetecting(true)
+      setDetecting(true);
+      console.log(video);
       // setSize({ width: video.videoWidth, height: video.videoHeight });
       const detections = await faceapi.detectSingleFace(
         video,
@@ -89,9 +89,9 @@ const FaceDetection = () => {
         })
       );
       console.log(detections);
-      setDetecting(true)
+      setDetecting(true);
       if (detections) {
-        setDetecting(false)
+        setDetecting(false);
         // console.log(detections);
         const resizedDetections = faceapi.resizeResults(
           detections,
@@ -125,14 +125,15 @@ const FaceDetection = () => {
               const data = await response.json();
               console.log(data);
               if (data.verified) {
+                await sleep(550);
                 verifyToast({ nome: data.student.name });
                 await sleep(2200);
               }
-              console.log("esperei 3 segundos");
+              // console.log("esperei 3 segundos");
               if (!data.verified) {
-                console.log(data.error);
+                await sleep(1000);
                 notVerifyToast();
-                await sleep(500);
+                await sleep(1200);
               }
               // console.log(data);
             } catch (e) {
@@ -149,22 +150,40 @@ const FaceDetection = () => {
       }
 
       await sleep(650);
-    } ;
-  };
+    }
+  },[]);
+
+  
+  useEffect(() => {
+    const video = videoRef.current?.video;
+  
+    if (video) {
+      video.addEventListener("loadeddata", () => {
+        console.log("Vídeo carregado com sucesso.");
+        handleVideoPlay();
+      });
+    }
+  
+    return () => {
+      if (video) {
+        video.removeEventListener("loadeddata", handleVideoPlay);
+      }
+    };
+  }, [handleVideoPlay]);
 
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex flex-col justify-center items-center h-screen">
       <div className={`flex items-start ${render ? "" : "hidden"}`}>
         {/* <div className="border-2 border-red-500" ref={boxRef}> */}
-          <Webcam
-            ref={videoRef}
-            // autoPlay
-            muted
-            className={`rounded-3xl h-full w-full`}
-            // style={{ transform: "scaleX(-1)" }} // Espelhar o vídeo
-            screenshotFormat="image/jpeg"
-            onUserMedia={handleVideoPlay}
-          />
+        <Webcam
+          ref={videoRef}
+          // autoPlay
+          muted
+          className={`rounded-3xl h-full w-full`}
+          // style={{ transform: "scaleX(-1)" }} // Espelhar o vídeo
+          screenshotFormat="image/jpeg"
+          // onUserMedia={handleVideoPlay}
+        />
         {/* </div> */}
         <canvas
           ref={canvasRef}
@@ -173,6 +192,9 @@ const FaceDetection = () => {
         />
       </div>
       <ClipLoader color="#ff5833" loading={!render} size={50} />
+      <Button variant={"go"} className="rounded-full mt-4 w-52 sm:w-64" asChild>
+        <Link to="/">Sair</Link>
+      </Button>
     </div>
   );
 };

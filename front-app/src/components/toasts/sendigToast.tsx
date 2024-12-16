@@ -1,5 +1,6 @@
 import { toast } from "sonner";
-import { XCircle, X } from "lucide-react";
+import { Loader, X } from "lucide-react";
+
 
 const SendingToast = () => {
   console.log("notVerifyToast")
@@ -8,7 +9,7 @@ const SendingToast = () => {
       <div className="flex border border-blue-500 bg-blue-100 w-full rounded-lg p-4 gap-2 justify-between sm:w-[354px]">
         <div className="flex gap-4">
           <div>
-            <XCircle className="text-blue-500" />
+            <Loader className="text-blue-500"/>
           </div>
           <div>
             <p className="text-blue-800 font-semibold text-sm">
@@ -28,7 +29,7 @@ const SendingToast = () => {
         </div>
       </div>
     ),
-    { duration: 600 }
+    { duration: 900 }
   )
 }
 
