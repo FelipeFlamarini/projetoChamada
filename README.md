@@ -55,7 +55,7 @@ Selecione "(dev) Stop and remove containers" e aguarde finalização dos contain
 
 ## Rotas (ambiente de desenvolvimento)
 
-Com os containers já executando, é possível acessar as seguintes rotas:
-<http://localhost:8000/docs>: Documentação e execução do back-end FastAPI;
-<http://localhost:8081>: Visualização do banco de dados com mongo-express;
-<http://localhost:5173>: Front-end em React.
+Com os containers já executando, é possível acessar as seguintes rotas:  
+<http://localhost:8000/docs>: Documentação e execução do back-end FastAPI;  
+<http://localhost:8081>: Visualização do banco de dados com mongo-express;  
+<http://localhost:5173>: Front-end em React.  
