@@ -2,14 +2,13 @@ import pymongo
 import beanie
 import beanie.exceptions
 from typing import Optional
-from fastapi import HTTPException
-from http import HTTPStatus
 
 import pymongo.errors
 
 from api.models.Student import Student
 from api.repositories.Images import ImagesRepository
 from api.schemas.student import StudentUpdate
+from utils.exceptions import *
 
 
 class StudentsRepository:
@@ -21,18 +20,14 @@ class StudentsRepository:
     async def get_student_by_ra(student_ra: int):
         student = await Student.find_one(Student.ra == student_ra)
         if not student:
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
-            )
+            raise DocumentNotFound("Student not found")
         return student
 
     @staticmethod
     async def get_student_by_id(student_id: beanie.PydanticObjectId):
         student = await Student.get(student_id)
         if not student:
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
-            )
+            raise DocumentNotFound("Student not found")
         return student
 
     @staticmethod
@@ -49,8 +44,11 @@ class StudentsRepository:
             )
             student = await Student(name=name, ra=ra, image_path=image_path).insert()
             return student
-        except pymongo.errors.DuplicateKeyError as e:
-            raise HTTPException(status_code=HTTPStatus.CONFLICT, detail=f"{e.details}")
+
+        except pymongo.errors.DuplicateKeyError:
+            raise DuplicateDocument(
+                f"RA {ra} already exists"
+            )  # for now, only "ra" field is unique
 
     @staticmethod
     async def update_student_by_id(
@@ -62,9 +60,7 @@ class StudentsRepository:
     ):
         student = await StudentsRepository.get_student_by_id(student_id)
         if not student:
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
-            )
+            raise DocumentNotFound("Student not found")
         try:
             image_path = ImagesRepository.save_base64_image_for_student(
                 student.ra, image_base64
@@ -76,9 +72,9 @@ class StudentsRepository:
         except (
             beanie.exceptions.RevisionIdWasChanged  # beanie forces this exception when DuplicateKeyError occurs
         ):
-            raise HTTPException(
-                status_code=HTTPStatus.CONFLICT, detail=f"RA {ra} already exists"
-            )
+            raise DuplicateDocument(
+                f"RA {ra} already exists"
+            )  # for now, only "ra" field is unique
 
     @staticmethod
     async def update_student_by_ra(
@@ -90,9 +86,7 @@ class StudentsRepository:
     ):
         student = await StudentsRepository.get_student_by_ra(student_ra)
         if not student:
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
-            )
+            raise DocumentNotFound("Student not found")
         try:
             image_path = None
             if image_base64:
@@ -106,9 +100,9 @@ class StudentsRepository:
         except (
             beanie.exceptions.RevisionIdWasChanged  # beanie forces this exception when DuplicateKeyError occurs
         ):
-            raise HTTPException(
-                status_code=HTTPStatus.CONFLICT, detail=f"RA {ra} already exists"
-            )
+            raise DuplicateDocument(
+                f"RA {ra} already exists"
+            )  # for now, only "ra" field is unique
 
     @staticmethod
     async def deactivate_student_by_id(student_id: beanie.PydanticObjectId):

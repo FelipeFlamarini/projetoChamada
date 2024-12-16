@@ -1,6 +1,5 @@
 from typing import Annotated
 from fastapi import APIRouter, Form, UploadFile, File, BackgroundTasks
-from beanie import PydanticObjectId
 from http import HTTPStatus
 
 from api.repositories.Students import StudentsRepository
@@ -44,9 +43,9 @@ async def create_students_by_csv(
                 )
             )
         # TODO: check exceptions
-        except Exception:
+        except Exception as e:
             del student["image_base64"]
-            student["reason"] = {}
+            student["reason"] = e.detail
             students_not_created.append(student)
 
     return {
