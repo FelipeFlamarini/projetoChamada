@@ -126,7 +126,7 @@ const FaceDetection = () => {
               const data = await response.json();
               console.log(data);
               if (data.verified) {
-                await sleep(550);
+                await sleep(1000);
                 verifyToast({ nome: data.student.name });
                 await sleep(2200);
               }
@@ -134,7 +134,7 @@ const FaceDetection = () => {
               if (!data.verified) {
                 await sleep(1000);
                 notVerifyToast();
-                await sleep(1200);
+                await sleep(2200);
               }
               // console.log(data);
             } catch (e) {

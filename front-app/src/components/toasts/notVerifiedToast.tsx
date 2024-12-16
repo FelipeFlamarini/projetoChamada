@@ -29,7 +29,7 @@ const notVerifyToast = () => {
         </div>
       </div>
     ),
-    { duration: 1000 }
+    { duration: 1300 }
   )
 }
 
