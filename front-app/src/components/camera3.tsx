@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState,useCallback } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import * as faceapi from "face-api.js";
 import Webcam from "react-webcam";
 // import { Button } from "./ui/button";
@@ -23,8 +23,6 @@ const FaceDetection = () => {
   const URL_CEll = "http://192.168.1.3:8000";
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
-
-
 
   const loadModels = async () => {
     // const MODEL_URL = "/models"; // Certifique-se de que os modelos estão nesta pasta pública
@@ -52,16 +50,16 @@ const FaceDetection = () => {
       console.error("Vídeo não está disponível.");
       return;
     }
-  
+
     setRender(true);
     console.log("Video playing...");
-  
+
     const canvas = canvasRef.current;
     if (!canvas) {
       console.error("Canvas não está disponível.");
       return;
     }
-  
+
     // Configurar o canvas para sobrepor o vídeo
     const displaySize = {
       width: video.videoWidth,
@@ -77,6 +75,9 @@ const FaceDetection = () => {
 
     // detectingToast({ isDetecting: false });
     while (true) {
+      const context = canvas.getContext("2d");
+      context?.clearRect(0, 0, canvas.width, canvas.height);
+      
       console.log("Detecting face...");
       setDetecting(true);
       console.log(video);
@@ -141,29 +142,38 @@ const FaceDetection = () => {
             }
           }
         }
-
-        const context = canvas.getContext("2d");
-        if (context && canvas.width != 0 && canvas.height != 0) {
-          context.clearRect(0, 0, canvas.width, canvas.height);
-          faceapi.draw.drawDetections(canvas, resizedDetections);
+        if (canvas) {
+          // const context = canvas.getContext("2d");
+          if (context && canvas.width != 0 && canvas.height != 0) {
+            context.clearRect(0, 0, canvas.width, canvas.height);
+            faceapi.draw.drawDetections(canvas, resizedDetections);
+          }
         }
       }
 
       await sleep(650);
     }
-  },[]);
+  }, []);
 
-  
+  const stopWebcam = () => {
+    const stream = videoRef.current?.video?.srcObject as MediaStream;
+    if (stream) {
+      // Para todas as tracks do MediaStream
+      stream.getTracks().forEach((track) => track.stop());
+    }
+    setRender(false);
+  };
+
   useEffect(() => {
     const video = videoRef.current?.video;
-  
+
     if (video) {
       video.addEventListener("loadeddata", () => {
         console.log("Vídeo carregado com sucesso.");
         handleVideoPlay();
       });
     }
-  
+
     return () => {
       if (video) {
         video.removeEventListener("loadeddata", handleVideoPlay);
@@ -172,7 +182,11 @@ const FaceDetection = () => {
   }, [handleVideoPlay]);
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
+    <div
+      className={`flex flex-col  items-center h-screen ${
+        render ? "justify-center" : "justify-between"
+      }`}
+    >
       <div className={`flex items-start ${render ? "" : "hidden"}`}>
         {/* <div className="border-2 border-red-500" ref={boxRef}> */}
         <Webcam
@@ -193,7 +207,9 @@ const FaceDetection = () => {
       </div>
       <ClipLoader color="#ff5833" loading={!render} size={50} />
       <Button variant={"go"} className="rounded-full mt-4 w-52 sm:w-64" asChild>
-        <Link to="/">Sair</Link>
+        <Link to="/" onClick={stopWebcam}>
+          Sair
+        </Link>
       </Button>
     </div>
   );

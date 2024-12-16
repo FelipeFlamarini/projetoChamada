@@ -44,7 +44,7 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="mx-auto max-w-sm">
+    <Card className="mx-auto max-w-sm border-none shadow-none	 sm:border">
       <CardHeader className="flex flex-col items-center">
         <CardTitle className="text-2xl">Login</CardTitle>
         <CardDescription className="text-subText text-center">
@@ -95,7 +95,7 @@ export function LoginForm() {
               <Link to="/">Entrar</Link>
             </Button>
 
-            <div className="flex justify-center">
+            <div className="flex justify-center mt-8">
               <img src={undrawLogin} alt="" className="w-40 h-w-40" />
             </div>
           </form>
