@@ -33,7 +33,7 @@ const verifyToast = ({ nome , ra }: VerifyToastProps):void => {
         </div>
       </div>
     ),
-    { duration: 1300, }
+    { duration: 10000 }
 
   );
 };
