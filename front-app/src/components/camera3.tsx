@@ -20,7 +20,7 @@ const FaceDetection = () => {
   const [detecting, setDetecting] = useState(false);
   // const [boxRef, { width, height }] = useElementSize();
   const URL_BASE = "http://localhost:8000";
-  const URL_CEll = "http://10.8.36.83:8000";
+  const URL_CEll = import.meta.env.VITE_FASTAPI_APP_URL || "http://localhost:2010";
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
