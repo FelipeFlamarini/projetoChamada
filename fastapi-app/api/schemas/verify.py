@@ -3,7 +3,8 @@ from pydantic import BaseModel
 class DeepFaceVerifyRequest(BaseModel):
     img1_path: str
     enforce_detection: bool = True
-    model_name: str = "SFace"
+    model_name: str = "ArcFace"
+    align: bool = False
 
 class DeepFaceStudentReturn(BaseModel):
     _id: int

@@ -4,7 +4,7 @@ services:
       context: fastapi-app
       dockerfile: dev.Dockerfile
     ports:
-      - 8000:8000
+      - ${FASTAPI_APP_PORT}:8000
     volumes:
       - ./fastapi-app/app.py:/app/app.py
       - ./fastapi-app/api:/app/api
@@ -22,7 +22,9 @@ services:
       context: front-app
       dockerfile: dev.Dockerfile
     ports:
-      - 5173:5173
+      - ${FRONT_APP_PORT}:5173
+    environment:
+      - VITE_FASTAPI_APP_URL=${FASTAPI_APP_URL}
     volumes:
       - ./front-app/imgs:/app/imgs
       - ./front-app/public:/app/public
@@ -57,7 +59,7 @@ services:
     image: mongo-express
     restart: always
     ports:
-      - 8081:8081
+      - ${MONGO_EXPRESS_PORT}:8081
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: root
       ME_CONFIG_MONGODB_ADMINPASSWORD: example

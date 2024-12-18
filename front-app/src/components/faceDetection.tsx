@@ -12,7 +12,10 @@ const FaceDetection = () => {
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [render, setRender] = useState(false);
-  const URL_CEll = "http://192.168.1.3:8000";
+  const [detecting, setDetecting] = useState(false);
+  // const [boxRef, { width, height }] = useElementSize();
+  const URL_BASE = "http://localhost:8000";
+  const URL_CEll = import.meta.env.VITE_FASTAPI_APP_URL || "http://localhost:2010";
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -99,12 +102,12 @@ const FaceDetection = () => {
               const data = await response.json();
               console.log(data);
               if (data.verified) {
-                await sleep(1000);
+                // await sleep(1000);
                 verifyToast({ nome: data.student.name });
                 await sleep(2200);
               }
               if (!data.verified) {
-                await sleep(1000);
+                // await sleep(1000);
                 notVerifyToast();
                 await sleep(2200);
               }
