@@ -28,6 +28,8 @@ Desenvolvido por [@FelipeFlamarini](https://github.com/FelipeFlamarini), [@kauan
 
 ## Instalando e executando (ambiente de desenvolvimento)
 
+Inicialmente, crie uma cópia do arquivo [.env.example](.env.example) e renomeie-o para ".env". A documentação a seguir considera que as variáveis utilizadas são as padrões fornecidas pelo repositório.
+
 ### Utilizando comandos
 
 Iniciando os containers
