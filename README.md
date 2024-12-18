@@ -19,6 +19,7 @@ Desenvolvido por [@FelipeFlamarini](https://github.com/FelipeFlamarini), [@kauan
 - TensorFlow
 - MongoDB
 - TypeScript
+- Vite
 - React
 
 ## Dependências para instalação
@@ -55,7 +56,7 @@ Selecione "(dev) Stop and remove containers" e aguarde finalização dos contain
 
 ## Rotas (ambiente de desenvolvimento)
 
-Com os containers já executando, é possível acessar as seguintes rotas:  
-<http://localhost:8000/docs>: Documentação e execução do back-end FastAPI;  
-<http://localhost:8081>: Visualização do banco de dados com mongo-express;  
-<http://localhost:5173>: Front-end em React.  
+Com os containers já executando e usando as variáveis padrão do [.env.example](.env.example) é possível acessar as seguintes rotas:  
+<http://localhost:2009>: Front-end em Vite e React.
+<http://localhost:2010/docs>: Documentação e execução do back-end FastAPI;  
+<http://localhost:2011>: Visualização do banco de dados com mongo-express;  
