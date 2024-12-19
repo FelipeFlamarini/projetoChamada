@@ -7,20 +7,27 @@ import { verifyToast } from "./toasts/verifiesToast";
 import { notVerifyToast } from "./toasts/notVerifiedToast";
 import { SendingToast } from "./toasts/sendigToast";
 import { Link } from "react-router";
+import { useVerifyFaceApiFacialRecognitionVerifyPost } from "@/chamada";
 
 const FaceDetection = () => {
+  const verifyMutation = useVerifyFaceApiFacialRecognitionVerifyPost();
+
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [render, setRender] = useState(false);
-  const [detecting, setDetecting] = useState(false);
-  // const [boxRef, { width, height }] = useElementSize();
-  const URL_BASE = "http://localhost:8000";
-  const URL_CEll = import.meta.env.VITE_FASTAPI_APP_URL || "http://localhost:2010";
+
+  type Student = {
+    verified: boolean;
+    student: {
+      name: string;
+      ra: string;
+    }
+  }
+
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
   const loadModels = async () => {
-
     try {
       const MODEL_URL = "/models"; // Verifique o caminho correto
       await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
@@ -62,7 +69,7 @@ const FaceDetection = () => {
     while (true) {
       const context = canvas.getContext("2d");
       context?.clearRect(0, 0, canvas.width, canvas.height);
-      
+
       console.log("Detecting face...");
       console.log(video);
       const detections = await faceapi.detectSingleFace(
@@ -85,29 +92,19 @@ const FaceDetection = () => {
           if (imageSrc) {
             try {
               SendingToast();
-              const response = await fetch(
-                `${URL_CEll}/api/facial_recognition/verify`,
-                {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({ img1_path: imageSrc }),
-                }
-              );
+              const data = await verifyMutation.mutateAsync({
+                data: {
+                  img1_path: imageSrc,
+                },
+              });
+            
 
-              if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-              }
-              const data = await response.json();
               console.log(data);
               if (data.verified) {
-                // await sleep(1000);
                 verifyToast({ nome: data.student.name });
                 await sleep(2200);
               }
               if (!data.verified) {
-                // await sleep(1000);
                 notVerifyToast();
                 await sleep(2200);
               }
@@ -126,7 +123,7 @@ const FaceDetection = () => {
 
       await sleep(650);
     }
-  }, []);
+  }, [verifyMutation]);
 
   const stopWebcam = () => {
     const stream = videoRef.current?.video?.srcObject as MediaStream;
