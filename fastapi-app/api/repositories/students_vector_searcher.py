@@ -4,12 +4,15 @@ from utils.libs.voyager_vector_searcher import VoyagerVectorSearcher
 
 class StudentsVectorSearcherRepository:
     VECTOR_PATH: str = "vectors/students_vector.voy"
+    NUM_DIMENSIONS: int = 512
     _index: Optional[VoyagerVectorSearcher] = None
 
     @classmethod
     def _get_index(cls) -> VoyagerVectorSearcher:
         if cls._index is None:
-            cls._index = VoyagerVectorSearcher(path=cls.VECTOR_PATH)
+            cls._index = VoyagerVectorSearcher(
+                path=cls.VECTOR_PATH, num_dimensions=cls.NUM_DIMENSIONS
+            )
         return cls._index
 
     @classmethod

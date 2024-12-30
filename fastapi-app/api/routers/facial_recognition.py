@@ -16,7 +16,7 @@ async def recognize(image_base64: Annotated[str, Form(...)]):
     print(ras, distances)
     ras_to_return = []
     for index, distance in enumerate(distances):
-        if distance < 15: # depends on DeepFace model
+        if distance < 10: # depends on DeepFace model
             ras_to_return.append(ras[index])
     if ras_to_return == []:
         return DeepFaceRecognizeReturn(verified=False)

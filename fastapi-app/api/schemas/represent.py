@@ -4,9 +4,9 @@ from typing import List
 
 class DeepFaceRepresentRequest(BaseModel):
     img_path: str
-    model_name: str = "ArcFace"
-    detector_backend: str = "opencv"
-    alignment: bool = True
+    model_name: str = "Facenet512"
+    detector_backend: str = "yunet"
+    alignment: bool = False
 
 
 class DeepFaceRepresentReturn(BaseModel):
