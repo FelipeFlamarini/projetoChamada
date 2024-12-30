@@ -45,7 +45,10 @@ async def create_students_by_csv(
         # TODO: check exceptions
         except Exception as e:
             del student["image_base64"]
-            student["reason"] = e.detail
+            try:
+                student["reason"] = e.detail
+            except:
+                student["reason"] = str(e.__class__)
             students_not_created.append(student)
 
     return {

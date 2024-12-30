@@ -55,3 +55,21 @@ class InvalidCSV(HTTPException):
 
     def __init__(self, detail: str = "Invalid CSV file"):
         super().__init__(status_code=HTTPStatus.BAD_REQUEST, detail=detail)
+
+
+class VectorNotFound(HTTPException):
+    """
+    Raised when a vector is not found in the index.
+    """
+
+    def __init__(self, detail: str = "Vector not found"):
+        super().__init__(status_code=HTTPStatus.NOT_FOUND, detail=detail)
+
+
+class FaceNotFound(HTTPException):
+    """
+    Raised when a face is not found in the image.
+    """
+
+    def __init__(self, detail: str = "Face not found"):
+        super().__init__(status_code=HTTPStatus.BAD_REQUEST, detail=detail)

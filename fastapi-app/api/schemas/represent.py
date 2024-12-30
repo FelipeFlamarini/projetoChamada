@@ -1,14 +1,14 @@
 from pydantic import BaseModel
 from typing import List
 
+
 class DeepFaceRepresentRequest(BaseModel):
     img_path: str
-    model_name: str = "SFace"
+    model_name: str = "ArcFace"
+    detector_backend: str = "opencv"
+    alignment: bool = True
 
-class ResultItem(BaseModel):
+
+class DeepFaceRepresentReturn(BaseModel):
     embedding: List[float]
     face_confidence: float
-
-# Modelo principal
-class DeepFaceRepresentReturn(BaseModel):
-    results: List[ResultItem]

@@ -5,17 +5,21 @@ services:
       dockerfile: dev.Dockerfile
     ports:
       - ${FASTAPI_APP_PORT}:8000
+    init: true
+    stop_grace_period: 60s
     volumes:
       - ./fastapi-app/app.py:/app/app.py
       - ./fastapi-app/api:/app/api
       - ./fastapi-app/public:/app/public
       - ./fastapi-app/utils:/app/utils
       - students_images:/app/students_images
+      - vectors:/app/vectors
     environment:
       - MONGO_URI=mongodb://root:example@mongo:27017/
       - MONGO_DB=fastapi_db
     depends_on:
       - mongo
+      - deepface
 
   front-app:
     build:
@@ -66,9 +70,9 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
       ME_CONFIG_BASICAUTH: false
 
-
-
 volumes:
   mongo_data:
 
   students_images:
+
+  vectors:
