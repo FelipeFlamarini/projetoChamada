@@ -63,7 +63,7 @@ class StudentsRepository:
             StudentsVectorSearcherRepository.add_item(
                 FacialRecognitionRepository.represent(image_base64).embedding, int(ra)
             )
-            return await Student(name=name, ra=ra, image_path=image_path).insert()
+            return await Student(name=name, ra=ra, image_path=str(image_path)).insert()
         except pymongo.errors.DuplicateKeyError:
             raise DuplicateDocument(
                 f"RA {ra} already exists"
@@ -96,7 +96,8 @@ class StudentsRepository:
             updated_student = StudentUpdate(
                 name=name, ra=ra, active=active, image_path=image_path
             )
-            return await student.set(updated_student.model_dump(exclude_unset=True))
+            print(updated_student)
+            return await student.set(updated_student.model_dump(exclude_none=True))
         except (
             beanie.exceptions.RevisionIdWasChanged  # beanie forces this exception when DuplicateKeyError occurs
         ):

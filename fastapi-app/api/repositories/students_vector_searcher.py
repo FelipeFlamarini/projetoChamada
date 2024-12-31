@@ -20,7 +20,7 @@ class StudentsVectorSearcherRepository:
         return cls._get_index().get_ids()
 
     @classmethod
-    def query(cls, vectors: List[float], k: int = 1) -> List:
+    def query(cls, vectors: List[float], k: int = 1) -> List[tuple]:
         return cls._get_index().query(vectors, k)
 
     @classmethod

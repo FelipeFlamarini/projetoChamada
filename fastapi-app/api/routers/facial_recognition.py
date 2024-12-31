@@ -11,7 +11,7 @@ facial_recognition_router = APIRouter()
 
 
 @facial_recognition_router.post("/recognize")
-async def recognize(image_base64: Annotated[str, Form(...)]):
+async def recognize(image_base64: Annotated[str, Form(...)]) -> DeepFaceRecognizeReturn:
     ras, distances = FacialRecognitionRepository.recognize(image_base64)
     print(ras, distances)
     ras_to_return = []
