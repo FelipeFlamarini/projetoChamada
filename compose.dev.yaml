@@ -17,6 +17,8 @@ services:
     environment:
       - MONGO_URI=mongodb://root:example@mongo:27017/
       - MONGO_DB=fastapi_db
+      - JWT_SECRET_KEY=${FASTAPI_JWT_SECRET_KEY}
+      - JWT_ALGORITHM=${FASTAPI_JWT_ALGORITHM}
     depends_on:
       - mongo
       - deepface

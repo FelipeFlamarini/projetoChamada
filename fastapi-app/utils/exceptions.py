@@ -73,3 +73,21 @@ class FaceNotFound(HTTPException):
 
     def __init__(self, detail: str = "Face not found"):
         super().__init__(status_code=HTTPStatus.BAD_REQUEST, detail=detail)
+
+
+class JWTExpired(HTTPException):
+    """
+    Raised when a JWT is expired.
+    """
+
+    def __init__(self, detail: str = "JWT expired"):
+        super().__init__(status_code=HTTPStatus.UNAUTHORIZED, detail=detail)
+
+
+class JWTInvalidSignature(HTTPException):
+    """
+    Raised when a JWT has an invalid signature.
+    """
+
+    def __init__(self, detail: str = "JWT invalid signature"):
+        super().__init__(status_code=HTTPStatus.UNAUTHORIZED, detail=detail)

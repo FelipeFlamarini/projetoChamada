@@ -12,7 +12,9 @@ from api.models.Attendance import Attendance
 from api.routers.user_manager import fastapi_users, auth_backend
 from api.routers.facial_recognition import facial_recognition_router
 from api.routers.students import students_router
+from api.routers.attendances import attendances_router
 
+from api.repositories.Students import StudentsRepository
 from api.repositories.students_vector_searcher import StudentsVectorSearcherRepository
 from api.repositories.facial_recognition import FacialRecognitionRepository
 
@@ -81,4 +83,9 @@ app.include_router(
     facial_recognition_router,
     prefix="/api/facial_recognition",
     tags=["facial recognition"],
+)
+app.include_router(
+    attendances_router,
+    prefix="/api/attendances",
+    tags=["attendances"],
 )

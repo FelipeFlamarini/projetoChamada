@@ -9,11 +9,11 @@ from api.repositories.Students import StudentsRepository
 TIMEZONE_GMT_MINUS_3 = datetime.timezone(datetime.timedelta(hours=-3))
 
 
-def get_current_date():
+def _get_current_date():
     return datetime.datetime.now(TIMEZONE_GMT_MINUS_3).date()
 
 
-def get_current_time():
+def _get_current_time():
     return datetime.datetime.now(TIMEZONE_GMT_MINUS_3).time()
 
 
@@ -39,8 +39,8 @@ class AttendancesRepository:
                 status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
             )
 
-        current_date = get_current_date()
-        current_time = get_current_time().isoformat()
+        current_date = _get_current_date()
+        current_time = _get_current_time().isoformat()
 
         attendance = await Attendance.find_one(Attendance.date == current_date)
         # TODO: optimize

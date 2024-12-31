@@ -16,13 +16,17 @@ async def recognize(image_base64: Annotated[str, Form(...)]):
     print(ras, distances)
     ras_to_return = []
     for index, distance in enumerate(distances):
-        if distance < 10: # depends on DeepFace model
+        if distance <= 0.3:  # depends on DeepFace model
             ras_to_return.append(ras[index])
     if ras_to_return == []:
         return DeepFaceRecognizeReturn(verified=False)
 
-    students = []
+    students_to_return = []
     for ra in ras_to_return:
         student = await StudentsRepository.get_student_by_ra(int(ra))
-        students.append(DeepFaceStudentReturn(**student.model_dump()))
-    return DeepFaceRecognizeReturn(verified=True, students=students)
+        students_to_return.append(
+            DeepFaceStudentReturn(
+                **student.model_dump(), token=StudentsRepository.encode_jwt(student)
+            )
+        )
+    return DeepFaceRecognizeReturn(verified=True, students=students_to_return)

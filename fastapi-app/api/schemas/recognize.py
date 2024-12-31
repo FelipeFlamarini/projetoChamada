@@ -5,6 +5,7 @@ from pydantic import BaseModel
 class DeepFaceStudentReturn(BaseModel):
     name: str
     ra: int
+    token: str
 
 
 class DeepFaceRecognizeReturn(BaseModel):

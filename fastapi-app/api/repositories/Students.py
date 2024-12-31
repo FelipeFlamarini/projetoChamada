@@ -1,9 +1,12 @@
+from typing import Optional, List
+import os
+from datetime import datetime, timezone, timedelta
+
 import pymongo
+import pymongo.errors
 import beanie
 import beanie.exceptions
-from typing import Optional
-
-import pymongo.errors
+import jwt
 
 from api.models.Student import Student
 
@@ -15,34 +18,39 @@ from api.schemas.student import StudentUpdate
 
 from utils.exceptions import *
 
+TIMEZONE_GMT_MINUS_3 = timezone(timedelta(hours=-3))
+__jwt_secret_key__: str = os.getenv("JWT_SECRET_KEY")
+__jwt_algorithm__: str = os.getenv("JWT_ALGORITHM")
+
 
 class StudentsRepository:
+
     @staticmethod
-    async def get_all_students():
+    async def get_all_students() -> List[Student]:
         return await Student.find_all().to_list()
 
     @staticmethod
-    async def get_student_by_ra(student_ra: int):
+    async def get_student_by_ra(student_ra: int) -> Student:
         student = await Student.find_one(Student.ra == student_ra)
         if not student:
             raise DocumentNotFound("Student not found")
         return student
 
     @staticmethod
-    async def get_student_by_id(student_id: beanie.PydanticObjectId):
+    async def get_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
         student = await Student.get(student_id)
         if not student:
             raise DocumentNotFound("Student not found")
         return student
 
     @staticmethod
-    async def _get_if_student_exists_by_ra(student_ra: int):
+    async def _get_if_student_exists_by_ra(student_ra: int) -> bool:
         if not await Student.find_one(Student.ra == student_ra):
             return False
         return True
 
     @staticmethod
-    async def create_student(name: str, ra: int, image_base64: str):
+    async def create_student(name: str, ra: int, image_base64: str) -> Student:
         if await StudentsRepository._get_if_student_exists_by_ra(ra):
             raise DuplicateDocument(
                 f"RA {ra} already exists"
@@ -72,7 +80,7 @@ class StudentsRepository:
         ra: Optional[int | None] = None,
         image_base64: Optional[str | None] = None,
         active: Optional[bool | None] = None,
-    ):
+    ) -> Student:
         if ra and ra != student.ra:
             if await StudentsRepository._get_if_student_exists_by_ra(ra):
                 raise DuplicateDocument(f"RA {ra} already exists")
@@ -103,7 +111,7 @@ class StudentsRepository:
         ra: Optional[int | None] = None,
         image_base64: Optional[str | None] = None,
         active: Optional[bool | None] = None,
-    ):
+    ) -> Student:
         return await StudentsRepository.__update_student__(
             await StudentsRepository.get_student_by_id(student_id),
             name,
@@ -119,7 +127,7 @@ class StudentsRepository:
         ra: Optional[int | None] = None,
         image_base64: Optional[str | None] = None,
         active: Optional[bool | None] = None,
-    ):
+    ) -> Student:
         return await StudentsRepository.__update_student__(
             await StudentsRepository.get_student_by_ra(student_ra),
             name,
@@ -129,13 +137,42 @@ class StudentsRepository:
         )
 
     @staticmethod
-    async def deactivate_student_by_id(student_id: beanie.PydanticObjectId):
+    async def deactivate_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
         student = await StudentsRepository.get_student_by_id(student_id)
         updated_student = StudentUpdate(active=False)
         return await student.set(updated_student.model_dump(exclude_unset=True))
 
     @staticmethod
-    async def activate_student_by_id(student_id: beanie.PydanticObjectId):
+    async def activate_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
         student = await StudentsRepository.get_student_by_id(student_id)
         updated_student = StudentUpdate(active=True)
         return await student.set(updated_student.model_dump(exclude_unset=True))
+
+    ################################################################################################################
+    # JWT
+
+    @staticmethod
+    def encode_jwt(student: Student) -> str:
+        print(__jwt_algorithm__)
+        return jwt.encode(
+            {
+                "ra": student.ra,
+                "name": student.name,
+                "exp": datetime.now(TIMEZONE_GMT_MINUS_3) + timedelta(seconds=20),
+            },
+            __jwt_secret_key__,
+            algorithm=__jwt_algorithm__,
+        )
+
+    @staticmethod
+    def decode_jwt(token: str) -> dict:
+        try:
+            return jwt.decode(
+                token,
+                __jwt_secret_key__,
+                algorithms=[__jwt_algorithm__],
+            )
+        except jwt.ExpiredSignatureError:
+            raise JWTExpired
+        except jwt.InvalidSignatureError:
+            raise JWTInvalidSignature

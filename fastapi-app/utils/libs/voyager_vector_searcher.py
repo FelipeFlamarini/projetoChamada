@@ -11,7 +11,7 @@ class VoyagerVectorSearcher(VectorSeacher):
     def __init__(
         self,
         path: str,
-        space: Space = Space.Euclidean,  # depends on DeepFace model
+        space: Space = Space.Cosine,  # depends on DeepFace model
         num_dimensions: int = 512,  # depends on DeepFace model
     ):
         super().__init__(path)
