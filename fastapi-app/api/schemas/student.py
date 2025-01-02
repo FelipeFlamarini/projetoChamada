@@ -1,16 +1,14 @@
 from typing import Optional
 from pydantic import BaseModel, FilePath
 
+from api.models.Student import Student
+
 
 class _StudentBase(BaseModel):
     name: str
     ra: int
     active: bool
     image_path: str
-
-
-class StudentCreate(_StudentBase):
-    pass
 
 
 class StudentRead(_StudentBase):
@@ -24,10 +22,6 @@ class StudentUpdate(_StudentBase):
     image_path: Optional[FilePath | None] = None
 
 
-class StudentCreated(_StudentBase):
-    pass
-
-
 class StudentNotCreated(BaseModel):
     name: str
     ra: int
@@ -35,5 +29,5 @@ class StudentNotCreated(BaseModel):
 
 
 class StudentsCreatedByCSV(BaseModel):
-    students_created: list[StudentCreated]
+    students_created: list[Student]
     students_not_created: list[StudentNotCreated]

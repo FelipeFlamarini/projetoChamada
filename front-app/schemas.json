@@ -1350,34 +1350,6 @@
         ],
         "title": "Student"
       },
-      "StudentCreated": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "ra": {
-            "type": "integer",
-            "title": "Ra"
-          },
-          "active": {
-            "type": "boolean",
-            "title": "Active"
-          },
-          "image_path": {
-            "type": "string",
-            "title": "Image Path"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "ra",
-          "active",
-          "image_path"
-        ],
-        "title": "StudentCreated"
-      },
       "StudentNotCreated": {
         "properties": {
           "name": {
@@ -1405,7 +1377,7 @@
         "properties": {
           "students_created": {
             "items": {
-              "$ref": "#/components/schemas/StudentCreated"
+              "$ref": "#/components/schemas/Student"
             },
             "type": "array",
             "title": "Students Created"
