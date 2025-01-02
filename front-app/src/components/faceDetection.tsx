@@ -3,26 +3,23 @@ import * as faceapi from "face-api.js";
 import Webcam from "react-webcam";
 import { ClipLoader } from "react-spinners";
 import { Button } from "./ui/button";
-import { verifyToast } from "./toasts/verifiesToast";
-import { notVerifyToast } from "./toasts/notVerifiedToast";
-import { SendingToast } from "./toasts/sendigToast";
+import { verifiedToast } from "./toasts/verifiedToast";
+import { notVerifiedToast } from "./toasts/notVerifiedToast";
+import { sendingToast } from "./toasts/sendingToast";
+import { confirmationToast } from "./toasts/confirmationToast";
 import { Link } from "react-router";
-import { useVerifyFaceApiFacialRecognitionVerifyPost } from "@/chamada";
+import {
+  useRecognizeApiFacialRecognitionRecognizePost,
+  useCreateAttendanceApiAttendancesPost,
+} from "@/chamada";
 
 const FaceDetection = () => {
-  const verifyMutation = useVerifyFaceApiFacialRecognitionVerifyPost();
+  const recognizeMutation = useRecognizeApiFacialRecognitionRecognizePost();
+  const confirmationMutation = useCreateAttendanceApiAttendancesPost();
 
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [render, setRender] = useState(false);
-
-  type Student = {
-    verified: boolean;
-    student: {
-      name: string;
-      ra: string;
-    }
-  }
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -91,21 +88,33 @@ const FaceDetection = () => {
           const imageSrc = videoRef.current.getScreenshot();
           if (imageSrc) {
             try {
-              SendingToast();
-              const data = await verifyMutation.mutateAsync({
+              sendingToast();
+              const data = await recognizeMutation.mutateAsync({
                 data: {
-                  img1_path: imageSrc,
+                  image_base64: imageSrc,
                 },
               });
-            
 
-              console.log(data);
               if (data.verified) {
-                verifyToast({ nome: data.student.name });
-                await sleep(2200);
+                confirmationToast({
+                  students: data.students,
+                  confirmationMutation: (token) => {
+                    confirmationMutation.mutate(
+                      {
+                        data: { jwt: token },
+                      },
+                      {
+                        onSuccess: async (data) => {
+                          verifiedToast(data.times.pop().split(".")[0]);
+                        },
+                      }
+                    );
+                  },
+                });
+                await sleep(5000);
               }
               if (!data.verified) {
-                notVerifyToast();
+                notVerifiedToast();
                 await sleep(2200);
               }
             } catch (e) {
@@ -123,7 +132,7 @@ const FaceDetection = () => {
 
       await sleep(650);
     }
-  }, [verifyMutation]);
+  }, [recognizeMutation, confirmationMutation]);
 
   const stopWebcam = () => {
     const stream = videoRef.current?.video?.srcObject as MediaStream;

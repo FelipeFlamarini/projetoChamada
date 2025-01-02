@@ -2,7 +2,6 @@ import { toast } from "sonner";
 import { TriangleAlert, X } from "lucide-react";
 import { Button } from "../ui/button";
 
-
 const WarningToast = () => {
   toast.custom(
     (t) => (
@@ -17,15 +16,12 @@ const WarningToast = () => {
                 Sua aula ainda não Terminou
               </p>
               <p className="text-tst-text text-sm">
-                Se sair agora voce ficara com falta
+                Se sair agora, você ficará com falta
               </p>
             </div>
           </div>
           <div>
-            <X
-              className="text-tst-text"
-              onClick={() => toast.dismiss(t)}
-            />
+            <X className="text-tst-text" onClick={() => toast.dismiss(t)} />
           </div>
         </div>
         <div className="flex gap-2 justify-center mt-2">
@@ -46,7 +42,7 @@ const WarningToast = () => {
       </div>
     ),
     { duration: 4000 }
-  )
-}
+  );
+};
 
 export { WarningToast };

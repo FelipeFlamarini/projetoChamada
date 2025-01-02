@@ -5,6 +5,9 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface BodyRecognizeApiFacialRecognitionRecognizePost {
-  image_base64: string;
+export interface StudentCreated {
+  active: boolean;
+  image_path: string;
+  name: string;
+  ra: number;
 }

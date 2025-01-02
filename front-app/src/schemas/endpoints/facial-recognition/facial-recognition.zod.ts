@@ -11,27 +11,12 @@ import {
 /**
  * @summary Recognize
  */
-export const recognizeApiFacialRecognitionRecognizePostResponse = zod.any()
-
-/**
- * @summary Represent Face
- */
-export const representFaceApiFacialRecognitionRepresentPostBody = zod.object({
-  "img_path": zod.string(),
-  "model_name": zod.string().optional()
+export const recognizeApiFacialRecognitionRecognizePostResponse = zod.object({
+  "verified": zod.boolean(),
+  "students": zod.array(zod.object({
+  "name": zod.string(),
+  "ra": zod.number(),
+  "token": zod.string()
+})).optional()
 })
-
-export const representFaceApiFacialRecognitionRepresentPostResponse = zod.any()
-
-/**
- * @summary Verify Face
- */
-export const verifyFaceApiFacialRecognitionVerifyPostBody = zod.object({
-  "img1_path": zod.string(),
-  "enforce_detection": zod.boolean().optional(),
-  "model_name": zod.string().optional(),
-  "align": zod.boolean().optional()
-})
-
-export const verifyFaceApiFacialRecognitionVerifyPostResponse = zod.any()
 

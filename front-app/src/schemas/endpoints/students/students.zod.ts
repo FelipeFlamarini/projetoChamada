@@ -11,7 +11,14 @@ import {
 /**
  * @summary Get All Students
  */
-export const getAllStudentsApiStudentsGetResponse = zod.any()
+export const getAllStudentsApiStudentsGetResponseItem = zod.object({
+  "_id": zod.string().or(zod.null()).optional(),
+  "name": zod.string(),
+  "ra": zod.number(),
+  "active": zod.boolean().optional(),
+  "image_path": zod.string().or(zod.null())
+})
+export const getAllStudentsApiStudentsGetResponse = zod.array(getAllStudentsApiStudentsGetResponseItem)
 
 /**
  * @summary Get Student By Ra
@@ -20,7 +27,13 @@ export const getStudentByRaApiStudentsStudentRaGetParams = zod.object({
   "student_ra": zod.number()
 })
 
-export const getStudentByRaApiStudentsStudentRaGetResponse = zod.any()
+export const getStudentByRaApiStudentsStudentRaGetResponse = zod.object({
+  "_id": zod.string().or(zod.null()).optional(),
+  "name": zod.string(),
+  "ra": zod.number(),
+  "active": zod.boolean().optional(),
+  "image_path": zod.string().or(zod.null())
+})
 
 /**
  * @summary Update Student By Ra
@@ -29,5 +42,11 @@ export const updateStudentByRaApiStudentsStudentRaPatchParams = zod.object({
   "student_ra": zod.number()
 })
 
-export const updateStudentByRaApiStudentsStudentRaPatchResponse = zod.any()
+export const updateStudentByRaApiStudentsStudentRaPatchResponse = zod.object({
+  "_id": zod.string().or(zod.null()).optional(),
+  "name": zod.string(),
+  "ra": zod.number(),
+  "active": zod.boolean().optional(),
+  "image_path": zod.string().or(zod.null())
+})
 

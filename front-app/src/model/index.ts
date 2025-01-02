@@ -5,10 +5,13 @@
  * OpenAPI spec version: 0.1.0
  */
 
+export * from './_studentId';
+export * from './attendanceStudentReturn';
 export * from './bodyAuthJwtLoginAuthLoginPost';
 export * from './bodyAuthJwtLoginAuthLoginPostClientId';
 export * from './bodyAuthJwtLoginAuthLoginPostClientSecret';
 export * from './bodyAuthJwtLoginAuthLoginPostGrantType';
+export * from './bodyCreateAttendanceApiAttendancesPost';
 export * from './bodyCreateStudentApiStudentsPost';
 export * from './bodyCreateStudentsByCsvApiStudentsCsvPost';
 export * from './bodyRecognizeApiFacialRecognitionRecognizePost';
@@ -21,12 +24,19 @@ export * from './bodyUpdateStudentByRaApiStudentsStudentRaPatchName';
 export * from './bodyUpdateStudentByRaApiStudentsStudentRaPatchRa';
 export * from './bodyVerifyRequestTokenAuthRequestVerifyTokenPost';
 export * from './bodyVerifyVerifyAuthVerifyPost';
+export * from './deepFaceRecognizeReturn';
 export * from './deepFaceRepresentRequest';
+export * from './deepFaceStudentReturn';
 export * from './deepFaceVerifyRequest';
 export * from './errorModel';
 export * from './errorModelDetail';
 export * from './errorModelDetailAnyOf';
 export * from './hTTPValidationError';
+export * from './student';
+export * from './studentCreated';
+export * from './studentImagePath';
+export * from './studentNotCreated';
+export * from './studentsCreatedByCSV';
 export * from './userCreate';
 export * from './userCreateIsActive';
 export * from './userCreateIsSuperuser';

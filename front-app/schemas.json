@@ -698,7 +698,11 @@
             "content": {
               "application/json": {
                 "schema": {
-
+                  "items": {
+                    "$ref": "#/components/schemas/Student"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Students Api Students Get"
                 }
               }
             }
@@ -727,7 +731,7 @@
             "content": {
               "application/json": {
                 "schema": {
-
+                  "$ref": "#/components/schemas/Student"
                 }
               }
             }
@@ -769,7 +773,7 @@
             "content": {
               "application/json": {
                 "schema": {
-
+                  "$ref": "#/components/schemas/Student"
                 }
               }
             }
@@ -818,7 +822,7 @@
             "content": {
               "application/json": {
                 "schema": {
-
+                  "$ref": "#/components/schemas/Student"
                 }
               }
             }
@@ -859,7 +863,7 @@
             "content": {
               "application/json": {
                 "schema": {
-
+                  "$ref": "#/components/schemas/StudentsCreatedByCSV"
                 }
               }
             }
@@ -886,7 +890,7 @@
         "operationId": "recognize_api_facial_recognition_recognize_post",
         "requestBody": {
           "content": {
-            "multipart/form-data": {
+            "application/x-www-form-urlencoded": {
               "schema": {
                 "$ref": "#/components/schemas/Body_recognize_api_facial_recognition_recognize_post"
               }
@@ -900,7 +904,7 @@
             "content": {
               "application/json": {
                 "schema": {
-
+                  "$ref": "#/components/schemas/DeepFaceRecognizeReturn"
                 }
               }
             }
@@ -918,18 +922,18 @@
         }
       }
     },
-    "/api/facial_recognition/represent": {
+    "/api/attendances/": {
       "post": {
         "tags": [
-          "facial recognition"
+          "attendances"
         ],
-        "summary": "Represent Face",
-        "operationId": "represent_face_api_facial_recognition_represent_post",
+        "summary": "Create Attendance",
+        "operationId": "create_attendance_api_attendances__post",
         "requestBody": {
           "content": {
-            "application/json": {
+            "application/x-www-form-urlencoded": {
               "schema": {
-                "$ref": "#/components/schemas/DeepFaceRepresentRequest"
+                "$ref": "#/components/schemas/Body_create_attendance_api_attendances__post"
               }
             }
           },
@@ -941,48 +945,7 @@
             "content": {
               "application/json": {
                 "schema": {
-
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/facial_recognition/verify": {
-      "post": {
-        "tags": [
-          "facial recognition"
-        ],
-        "summary": "Verify Face",
-        "operationId": "verify_face_api_facial_recognition_verify_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeepFaceVerifyRequest"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-
+                  "$ref": "#/components/schemas/AttendanceStudentReturn"
                 }
               }
             }
@@ -1003,6 +966,33 @@
   },
   "components": {
     "schemas": {
+      "AttendanceStudentReturn": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "title": "Date"
+          },
+          "times": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Times"
+          },
+          "ra": {
+            "type": "integer",
+            "title": "Ra"
+          }
+        },
+        "type": "object",
+        "required": [
+          "date",
+          "times",
+          "ra"
+        ],
+        "title": "AttendanceStudentReturn"
+      },
       "Body_auth_jwt_login_auth_login_post": {
         "properties": {
           "grant_type": {
@@ -1060,6 +1050,19 @@
         ],
         "title": "Body_auth_jwt_login_auth_login_post"
       },
+      "Body_create_attendance_api_attendances__post": {
+        "properties": {
+          "jwt": {
+            "type": "string",
+            "title": "Jwt"
+          }
+        },
+        "type": "object",
+        "required": [
+          "jwt"
+        ],
+        "title": "Body_create_attendance_api_attendances__post"
+      },
       "Body_create_student_api_students_post": {
         "properties": {
           "name": {
@@ -1099,15 +1102,14 @@
       },
       "Body_recognize_api_facial_recognition_recognize_post": {
         "properties": {
-          "image": {
+          "image_base64": {
             "type": "string",
-            "format": "binary",
-            "title": "Image"
+            "title": "Image Base64"
           }
         },
         "type": "object",
         "required": [
-          "image"
+          "image_base64"
         ],
         "title": "Body_recognize_api_facial_recognition_recognize_post"
       },
@@ -1220,51 +1222,48 @@
         ],
         "title": "Body_verify_verify_auth_verify_post"
       },
-      "DeepFaceRepresentRequest": {
+      "DeepFaceRecognizeReturn": {
         "properties": {
-          "img_path": {
-            "type": "string",
-            "title": "Img Path"
+          "verified": {
+            "type": "boolean",
+            "title": "Verified"
           },
-          "model_name": {
-            "type": "string",
-            "title": "Model Name",
-            "default": "SFace"
+          "students": {
+            "items": {
+              "$ref": "#/components/schemas/DeepFaceStudentReturn"
+            },
+            "type": "array",
+            "title": "Students"
           }
         },
         "type": "object",
         "required": [
-          "img_path"
+          "verified"
         ],
-        "title": "DeepFaceRepresentRequest"
+        "title": "DeepFaceRecognizeReturn"
       },
-      "DeepFaceVerifyRequest": {
+      "DeepFaceStudentReturn": {
         "properties": {
-          "img1_path": {
+          "name": {
             "type": "string",
-            "title": "Img1 Path"
+            "title": "Name"
           },
-          "enforce_detection": {
-            "type": "boolean",
-            "title": "Enforce Detection",
-            "default": true
+          "ra": {
+            "type": "integer",
+            "title": "Ra"
           },
-          "model_name": {
+          "token": {
             "type": "string",
-            "title": "Model Name",
-            "default": "ArcFace"
-          },
-          "align": {
-            "type": "boolean",
-            "title": "Align",
-            "default": false
+            "title": "Token"
           }
         },
         "type": "object",
         "required": [
-          "img1_path"
+          "name",
+          "ra",
+          "token"
         ],
-        "title": "DeepFaceVerifyRequest"
+        "title": "DeepFaceStudentReturn"
       },
       "ErrorModel": {
         "properties": {
@@ -1301,6 +1300,130 @@
         },
         "type": "object",
         "title": "HTTPValidationError"
+      },
+      "Student": {
+        "properties": {
+          "_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "example": "5eb7cf5a86d9755df3a6c593"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Id",
+            "description": "MongoDB document ObjectID"
+          },
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "ra": {
+            "type": "integer",
+            "title": "Ra"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active",
+            "default": true
+          },
+          "image_path": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "file-path"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Image Path"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "ra",
+          "image_path"
+        ],
+        "title": "Student"
+      },
+      "StudentCreated": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "ra": {
+            "type": "integer",
+            "title": "Ra"
+          },
+          "active": {
+            "type": "boolean",
+            "title": "Active"
+          },
+          "image_path": {
+            "type": "string",
+            "title": "Image Path"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "ra",
+          "active",
+          "image_path"
+        ],
+        "title": "StudentCreated"
+      },
+      "StudentNotCreated": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "ra": {
+            "type": "integer",
+            "title": "Ra"
+          },
+          "reason": {
+            "type": "string",
+            "title": "Reason"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "ra",
+          "reason"
+        ],
+        "title": "StudentNotCreated"
+      },
+      "StudentsCreatedByCSV": {
+        "properties": {
+          "students_created": {
+            "items": {
+              "$ref": "#/components/schemas/StudentCreated"
+            },
+            "type": "array",
+            "title": "Students Created"
+          },
+          "students_not_created": {
+            "items": {
+              "$ref": "#/components/schemas/StudentNotCreated"
+            },
+            "type": "array",
+            "title": "Students Not Created"
+          }
+        },
+        "type": "object",
+        "required": [
+          "students_created",
+          "students_not_created"
+        ],
+        "title": "StudentsCreatedByCSV"
       },
       "UserCreate": {
         "properties": {

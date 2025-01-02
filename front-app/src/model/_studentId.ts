@@ -5,6 +5,7 @@
  * OpenAPI spec version: 0.1.0
  */
 
-export interface BodyRecognizeApiFacialRecognitionRecognizePost {
-  image_base64: string;
-}
+/**
+ * MongoDB document ObjectID
+ */
+export type _StudentId = string | null;

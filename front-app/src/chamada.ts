@@ -22,7 +22,9 @@ import type {
   UseQueryResult
 } from '@tanstack/react-query'
 import type {
+  AttendanceStudentReturn,
   BodyAuthJwtLoginAuthLoginPost,
+  BodyCreateAttendanceApiAttendancesPost,
   BodyCreateStudentApiStudentsPost,
   BodyCreateStudentsByCsvApiStudentsCsvPost,
   BodyRecognizeApiFacialRecognitionRecognizePost,
@@ -31,10 +33,11 @@ import type {
   BodyUpdateStudentByRaApiStudentsStudentRaPatch,
   BodyVerifyRequestTokenAuthRequestVerifyTokenPost,
   BodyVerifyVerifyAuthVerifyPost,
-  DeepFaceRepresentRequest,
-  DeepFaceVerifyRequest,
+  DeepFaceRecognizeReturn,
   ErrorModel,
   HTTPValidationError,
+  Student,
+  StudentsCreatedByCSV,
   UserCreate,
   UserRead,
   UserUpdate
@@ -43,7 +46,6 @@ import { customInstance } from './api/mutator/custom-instance';
 import type { ErrorType, BodyType } from './api/mutator/custom-instance';
 
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
 
 
@@ -831,7 +833,7 @@ export const getAllStudentsApiStudentsGet = (
 ) => {
       
       
-      return customInstance<unknown>(
+      return customInstance<Student[]>(
       {url: `/api/students`, method: 'GET', signal
     },
       options);
@@ -923,7 +925,7 @@ formUrlEncoded.append('name', bodyCreateStudentApiStudentsPost.name)
 formUrlEncoded.append('ra', bodyCreateStudentApiStudentsPost.ra.toString())
 formUrlEncoded.append('image_base64', bodyCreateStudentApiStudentsPost.image_base64)
 
-      return customInstance<unknown>(
+      return customInstance<Student>(
       {url: `/api/students`, method: 'POST',
       headers: {'Content-Type': 'application/x-www-form-urlencoded', },
        data: formUrlEncoded, signal
@@ -982,7 +984,7 @@ export const getStudentByRaApiStudentsStudentRaGet = (
 ) => {
       
       
-      return customInstance<unknown>(
+      return customInstance<Student>(
       {url: `/api/students/${studentRa}`, method: 'GET', signal
     },
       options);
@@ -1083,7 +1085,7 @@ if(bodyUpdateStudentByRaApiStudentsStudentRaPatch.active !== undefined && bodyUp
  formUrlEncoded.append('active', bodyUpdateStudentByRaApiStudentsStudentRaPatch.active.toString())
  }
 
-      return customInstance<unknown>(
+      return customInstance<Student>(
       {url: `/api/students/${studentRa}`, method: 'PATCH',
       headers: {'Content-Type': 'application/x-www-form-urlencoded', },
        data: formUrlEncoded
@@ -1144,7 +1146,7 @@ export const createStudentsByCsvApiStudentsCsvPost = (
       const formData = new FormData();
 formData.append('csv_file', bodyCreateStudentsByCsvApiStudentsCsvPost.csv_file)
 
-      return customInstance<unknown>(
+      return customInstance<StudentsCreatedByCSV>(
       {url: `/api/students/csv`, method: 'POST',
       headers: {'Content-Type': 'multipart/form-data', },
        data: formData, signal
@@ -1202,13 +1204,13 @@ export const recognizeApiFacialRecognitionRecognizePost = (
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
-      const formData = new FormData();
-formData.append('image', bodyRecognizeApiFacialRecognitionRecognizePost.image)
+      const formUrlEncoded = new URLSearchParams();
+formUrlEncoded.append('image_base64', bodyRecognizeApiFacialRecognitionRecognizePost.image_base64)
 
-      return customInstance<unknown>(
+      return customInstance<DeepFaceRecognizeReturn>(
       {url: `/api/facial_recognition/recognize`, method: 'POST',
-      headers: {'Content-Type': 'multipart/form-data', },
-       data: formData, signal
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
     },
       options);
     }
@@ -1256,36 +1258,38 @@ export const useRecognizeApiFacialRecognitionRecognizePost = <TError = ErrorType
     }
     
 /**
- * @summary Represent Face
+ * @summary Create Attendance
  */
-export const representFaceApiFacialRecognitionRepresentPost = (
-    deepFaceRepresentRequest: BodyType<DeepFaceRepresentRequest>,
+export const createAttendanceApiAttendancesPost = (
+    bodyCreateAttendanceApiAttendancesPost: BodyType<BodyCreateAttendanceApiAttendancesPost>,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
-      
-      return customInstance<unknown>(
-      {url: `/api/facial_recognition/represent`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: deepFaceRepresentRequest, signal
+      const formUrlEncoded = new URLSearchParams();
+formUrlEncoded.append('jwt', bodyCreateAttendanceApiAttendancesPost.jwt)
+
+      return customInstance<AttendanceStudentReturn>(
+      {url: `/api/attendances/`, method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
     },
       options);
     }
   
 
 
-export const getRepresentFaceApiFacialRecognitionRepresentPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof representFaceApiFacialRecognitionRepresentPost>>, TError,{data: BodyType<DeepFaceRepresentRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof representFaceApiFacialRecognitionRepresentPost>>, TError,{data: BodyType<DeepFaceRepresentRequest>}, TContext> => {
+export const getCreateAttendanceApiAttendancesPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>, TError,{data: BodyType<BodyCreateAttendanceApiAttendancesPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>, TError,{data: BodyType<BodyCreateAttendanceApiAttendancesPost>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
       
 
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof representFaceApiFacialRecognitionRepresentPost>>, {data: BodyType<DeepFaceRepresentRequest>}> = (props) => {
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>, {data: BodyType<BodyCreateAttendanceApiAttendancesPost>}> = (props) => {
           const {data} = props ?? {};
 
-          return  representFaceApiFacialRecognitionRepresentPost(data,requestOptions)
+          return  createAttendanceApiAttendancesPost(data,requestOptions)
         }
 
         
@@ -1293,82 +1297,23 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
   return  { mutationFn, ...mutationOptions }}
 
-    export type RepresentFaceApiFacialRecognitionRepresentPostMutationResult = NonNullable<Awaited<ReturnType<typeof representFaceApiFacialRecognitionRepresentPost>>>
-    export type RepresentFaceApiFacialRecognitionRepresentPostMutationBody = BodyType<DeepFaceRepresentRequest>
-    export type RepresentFaceApiFacialRecognitionRepresentPostMutationError = ErrorType<HTTPValidationError>
+    export type CreateAttendanceApiAttendancesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>>
+    export type CreateAttendanceApiAttendancesPostMutationBody = BodyType<BodyCreateAttendanceApiAttendancesPost>
+    export type CreateAttendanceApiAttendancesPostMutationError = ErrorType<HTTPValidationError>
 
     /**
- * @summary Represent Face
+ * @summary Create Attendance
  */
-export const useRepresentFaceApiFacialRecognitionRepresentPost = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof representFaceApiFacialRecognitionRepresentPost>>, TError,{data: BodyType<DeepFaceRepresentRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
+export const useCreateAttendanceApiAttendancesPost = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>, TError,{data: BodyType<BodyCreateAttendanceApiAttendancesPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
-        Awaited<ReturnType<typeof representFaceApiFacialRecognitionRepresentPost>>,
+        Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>,
         TError,
-        {data: BodyType<DeepFaceRepresentRequest>},
+        {data: BodyType<BodyCreateAttendanceApiAttendancesPost>},
         TContext
       > => {
 
-      const mutationOptions = getRepresentFaceApiFacialRecognitionRepresentPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Verify Face
- */
-export const verifyFaceApiFacialRecognitionVerifyPost = (
-    deepFaceVerifyRequest: BodyType<DeepFaceVerifyRequest>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/api/facial_recognition/verify`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: deepFaceVerifyRequest, signal
-    },
-      options);
-    }
-  
-
-
-export const getVerifyFaceApiFacialRecognitionVerifyPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyFaceApiFacialRecognitionVerifyPost>>, TError,{data: BodyType<DeepFaceVerifyRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof verifyFaceApiFacialRecognitionVerifyPost>>, TError,{data: BodyType<DeepFaceVerifyRequest>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyFaceApiFacialRecognitionVerifyPost>>, {data: BodyType<DeepFaceVerifyRequest>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  verifyFaceApiFacialRecognitionVerifyPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type VerifyFaceApiFacialRecognitionVerifyPostMutationResult = NonNullable<Awaited<ReturnType<typeof verifyFaceApiFacialRecognitionVerifyPost>>>
-    export type VerifyFaceApiFacialRecognitionVerifyPostMutationBody = BodyType<DeepFaceVerifyRequest>
-    export type VerifyFaceApiFacialRecognitionVerifyPostMutationError = ErrorType<HTTPValidationError>
-
-    /**
- * @summary Verify Face
- */
-export const useVerifyFaceApiFacialRecognitionVerifyPost = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyFaceApiFacialRecognitionVerifyPost>>, TError,{data: BodyType<DeepFaceVerifyRequest>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof verifyFaceApiFacialRecognitionVerifyPost>>,
-        TError,
-        {data: BodyType<DeepFaceVerifyRequest>},
-        TContext
-      > => {
-
-      const mutationOptions = getVerifyFaceApiFacialRecognitionVerifyPostMutationOptions(options);
+      const mutationOptions = getCreateAttendanceApiAttendancesPostMutationOptions(options);
 
       return useMutation(mutationOptions);
     }

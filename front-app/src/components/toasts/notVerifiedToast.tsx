@@ -2,8 +2,8 @@ import { toast } from "sonner";
 import { XCircle, X } from "lucide-react";
 
 
-const notVerifyToast = () => {
-  console.log("notVerifyToast")
+const notVerifiedToast = () => {
+  console.log("notVerifiedToast")
   toast.custom(
     (t) => (
       <div className="flex border border-tst-error-foreground bg-tst-error w-full rounded-lg p-4 gap-2 justify-between sm:w-[354px]">
@@ -13,10 +13,10 @@ const notVerifyToast = () => {
           </div>
           <div>
             <p className="text-tst-text font-semibold text-sm">
-              Aluno não Identificado
+              Aluno não identificado
             </p>
             <p className="text-tst-text text-sm">
-              A presença não foi registrada tente novamente
+              A presença não foi registrada, tente novamente
             </p>
           </div>
         </div>
@@ -33,4 +33,4 @@ const notVerifyToast = () => {
   )
 }
 
-export { notVerifyToast };
+export { notVerifiedToast };
