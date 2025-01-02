@@ -1,55 +1,41 @@
 import requests
-from api.repositories.Students import StudentsRepository
-from api.repositories.Attendances import AttendancesRepository
+
+from api.schemas.represent import DeepFaceRepresentRequest, DeepFaceRepresentReturn
+from api.repositories.students_vector_searcher import StudentsVectorSearcherRepository
+
+from utils import exceptions
+
+
+def __base64_str_to_uri__(base64_str: str) -> str:
+    if base64_str.startswith("data:image/"):
+        return base64_str
+    return f"data:image/jpeg;base64,{base64_str}"
 
 
 class FacialRecognitionRepository:
-    def recognize(image):
-        pass
+    def recognize(image_base64: str):
+        return StudentsVectorSearcherRepository.query(
+            FacialRecognitionRepository.represent(image_base64).embedding, k=2
+        )
 
-    async def verify(request):
+    def represent(image_base64: str) -> DeepFaceRepresentReturn:
+        request = DeepFaceRepresentRequest(img_path=__base64_str_to_uri__(image_base64))
         try:
-            payload = request.model_dump()
-            students = await StudentsRepository.get_all_students()
-            for student in students:
-                payload["img2_path"] = "/public/" + str(student.image_path)
-                response = requests.post(
-                    "http://deepface:5000/verify",
-                    json=payload,
-                    headers={"Content-Type": "application/json"},
-                )
-                if response.json().get("verified"):
-                    await AttendancesRepository.create_attendance(student.ra)
-                    return {"verified": True, "student": student.model_dump()}
-
-            return {"verified": False}
-        except Exception as e:
-            return {"error": str(e)}
-
-    def represent(request):
-        try:
-            payload = request.model_dump()
             response = requests.post(
                 "http://deepface:5000/represent",
-                json=payload,
+                json=request.model_dump(),
                 headers={"Content-Type": "application/json"},
             )
+            return DeepFaceRepresentReturn(**(response.json()["results"])[0])
+        except TypeError:
+            raise exceptions.InvalidBase64
+        except KeyError:
+            raise exceptions.FaceNotFound
 
-            if response.status_code != 200:
-                return {
-                    "error": "Erro ao processar a imagem no DeepFace",
-                    "details": response.text,
-                }
-
-            response_data = response.json()
-            filtered_results = [
-                {
-                    "embedding": item["embedding"],
-                    "face_confidence": item["face_confidence"],
-                }
-                for item in response_data.get("results", [])
-            ]
-
-            return {"results": filtered_results}
-        except Exception as e:
-            return {"error": str(e)}
+    def _load_weights():
+        try:
+            FacialRecognitionRepository.represent(
+                "data:image/png;base64,R0lGODlhAQABAIAAAP///wAAACwAAAAAAQABAAACAkQBADs="
+            )
+        except:  # will always raise an exception since the image has no face
+            pass

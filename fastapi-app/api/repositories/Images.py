@@ -3,6 +3,8 @@ import pathlib
 import binascii
 
 from api.models.Student import Student
+from api.repositories.facial_recognition import FacialRecognitionRepository
+
 from utils.exceptions import DocumentNotFound, InvalidBase64
 
 
@@ -28,6 +30,7 @@ class ImagesRepository:
                 image_file.write(base64.b64decode(image_base64))
         except binascii.Error:
             raise InvalidBase64("image_base64 is not a valid base64 string")
+
         return path
 
     # TODO: should this return only image_path, or serve the actual image?

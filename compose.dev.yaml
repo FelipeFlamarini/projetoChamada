@@ -5,17 +5,23 @@ services:
       dockerfile: dev.Dockerfile
     ports:
       - ${FASTAPI_APP_PORT}:8000
+    init: true
+    stop_grace_period: 60s
     volumes:
       - ./fastapi-app/app.py:/app/app.py
       - ./fastapi-app/api:/app/api
       - ./fastapi-app/public:/app/public
       - ./fastapi-app/utils:/app/utils
       - students_images:/app/students_images
+      - vectors:/app/vectors
     environment:
       - MONGO_URI=mongodb://root:example@mongo:27017/
       - MONGO_DB=fastapi_db
+      - JWT_SECRET_KEY=${FASTAPI_JWT_SECRET_KEY}
+      - JWT_ALGORITHM=${FASTAPI_JWT_ALGORITHM}
     depends_on:
       - mongo
+      - deepface
 
   front-app:
     build:
@@ -32,7 +38,9 @@ services:
       - ./front-app/components.json:/app/components.json
       - ./front-app/eslint.config.js:/app/eslint.config.js
       - ./front-app/index.html:/app/index.html
+      - ./front-app/orval.config.ts:/app/orval.config.ts
       - ./front-app/postcss.config.js/:/app/postcss.config.js
+      - ./front-app/schemas.json:/app/schemas.json
       - ./front-app/tailwind.config.js:/app/tailwind.config.js
       - ./front-app/tsconfig.app.json:/app/tsconfig.app.json
       - ./front-app/tsconfig.json:/app/tsconfig.json
@@ -66,9 +74,9 @@ services:
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
       ME_CONFIG_BASICAUTH: false
 
-
-
 volumes:
   mongo_data:
 
   students_images:
+
+  vectors:

@@ -1,19 +1,26 @@
 from contextlib import asynccontextmanager
 from beanie import init_beanie
-from utils.db import db
 from starlette.middleware.cors import CORSMiddleware
-from fastapi import FastAPI, Depends
+from starlette.formparsers import MultiPartParser
+from fastapi import FastAPI
 
 from api.models.User import User
 from api.models.AccessToken import AccessToken
 from api.models.Student import Student
 from api.models.Attendance import Attendance
 
-from api.routers.user_manager import fastapi_users, auth_backend, current_active_user
+from api.routers.user_manager import fastapi_users, auth_backend
 from api.routers.facial_recognition import facial_recognition_router
 from api.routers.students import students_router
+from api.routers.attendances import attendances_router
+
+from api.repositories.Students import StudentsRepository
+from api.repositories.students_vector_searcher import StudentsVectorSearcherRepository
+from api.repositories.facial_recognition import FacialRecognitionRepository
 
 from api.schemas.user import UserRead, UserCreate, UserUpdate
+
+from utils.db import db
 
 
 @asynccontextmanager
@@ -22,10 +29,22 @@ async def lifespan(app: FastAPI):
         database=db,
         document_models=[User, AccessToken, Student, Attendance],
     )
+    FacialRecognitionRepository._load_weights()
+    try:
+        StudentsVectorSearcherRepository.load()
+    # TODO: check exceptions
+    except Exception as e:
+        print(e)
+        print(e.__class__)
+        print("Could not load students_vector_searcher")
     yield
+    if StudentsVectorSearcherRepository._index:
+        StudentsVectorSearcherRepository.save()
 
 
 app = FastAPI(lifespan=lifespan)
+
+MultiPartParser.max_part_size = 10 * 1024 * 1024  # max formdata size: 10MB
 
 origins = ["http://localhost:5173/"]
 app.add_middleware(
@@ -64,4 +83,9 @@ app.include_router(
     facial_recognition_router,
     prefix="/api/facial_recognition",
     tags=["facial recognition"],
+)
+app.include_router(
+    attendances_router,
+    prefix="/api/attendances",
+    tags=["attendances"],
 )

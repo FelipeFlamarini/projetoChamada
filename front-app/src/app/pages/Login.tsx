@@ -1,5 +1,5 @@
-import { LoginForm } from "./components/login-form";
-import { LogoCI } from "./components/logo";
+import { LoginForm } from "../../components/login-form";
+import { LogoCI } from "../../components/logo";
 
 
 function Login() {
