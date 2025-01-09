@@ -17,7 +17,9 @@ from api.models.User import User
 from api.models.AccessToken import AccessToken
 from utils.db import get_user_db, get_access_token_db
 
-SECRET = "SECRET"
+import os
+
+SECRET = os.getenv("TOKEN_SECRET")
 
 
 class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):

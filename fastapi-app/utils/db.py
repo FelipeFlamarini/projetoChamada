@@ -5,8 +5,9 @@ from fastapi_users_db_beanie.access_token import BeanieAccessTokenDatabase
 from api.models.User import User
 from api.models.AccessToken import AccessToken
 
+import os
 
-DATABASE_URL = "mongodb://root:example@mongo:27017"
+DATABASE_URL = os.getenv("CONFIG_MONGODB_URL")
 client = motor.motor_asyncio.AsyncIOMotorClient(
     DATABASE_URL, uuidRepresentation="standard"
 )

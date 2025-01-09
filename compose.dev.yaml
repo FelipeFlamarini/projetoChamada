@@ -11,6 +11,8 @@ services:
       - ./fastapi-app/public:/app/public
       - ./fastapi-app/utils:/app/utils
       - students_images:/app/students_images
+    env_file:
+      - ./.env
     environment:
       - MONGO_URI=mongodb://root:example@mongo:27017/
       - MONGO_DB=fastapi_db
@@ -51,6 +53,8 @@ services:
     restart: always
     volumes:
       - mongo_data:/data/db
+    env_file:
+      - ./.env
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
