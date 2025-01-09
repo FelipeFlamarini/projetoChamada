@@ -57,6 +57,7 @@ module.exports = {
         subText: "hsl(var(--sub-text))",
         btnGo: "hsl(var(--btn-go))",
         btn2: "hsl(var(--btn-2))",
+        btnHome:"hsl(var(--btn-home))",
         inputLogin: "hsl(var(--input-login))",
         tst: {
           text: "hsl(var(--tst-text))",

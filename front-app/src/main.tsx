@@ -6,6 +6,7 @@ import { Login } from "./app/pages/Login";
 import { Home } from "./app/pages/home";
 import { Camera } from "./app/pages/camera";
 import { Toaster } from "sonner";
+import { Chamada } from "./app/pages/chamada";
 import {
   useQuery,
   useMutation,
@@ -26,6 +27,7 @@ createRoot(document.getElementById("root")!).render(
         <Route index element={<Home />} />
         <Route path="Login" element={<Login />} />
         <Route path="camera" element={<Camera />} />
+        <Route path="chamada" element={<Chamada />} />
         {/* <Route path="teste" element={<Teste />} /> */}
       </Routes>
     </BrowserRouter>

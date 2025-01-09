@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -9,6 +8,13 @@ import {
 } from "@/components/ui/card";
 import undrawHello from "/undrawHello.svg";
 import { Link } from "react-router";
+import { ButtonHome } from "./buttons/homeBtn";
+import {
+  ClipboardCheck,
+  Download,
+  LogOut,
+  SlidersHorizontal,
+} from "lucide-react";
 
 export function CardHome() {
   return (
@@ -19,23 +25,34 @@ export function CardHome() {
           O que você deseja fazer agora?
         </CardDescription>
       </CardHeader>
-      <CardContent className="flex-1 items-start">
-        <div className="flex flex-col justify-between gap-4 h-full">
-          <div className="grid gap-3.5">
-            <Button variant={"go"} className="rounded-full" asChild>
-              <Link to="/camera">Iniciar Chamada Inteligente</Link>
-            </Button>
-            <Button variant={"goSecondary"} className="rounded-full">
-              Exportar Lista de Chamada
-            </Button>
-            <Button variant={"goOutline"} className="rounded-full" asChild>
-              <Link to="/login">Sair</Link>
-            </Button>
-          </div>
-        </div>
+      <CardContent className="grid grid-cols-2 gap-4">
+        <Link to="/camera" className="w-full">
+          <ButtonHome className="text-center p-4 pt-1">
+            <ClipboardCheck className="mb-1" />
+            Iniciar chamada Inteligente
+          </ButtonHome>
+        </Link>
+        <Link to="/camera" className="w-full">
+          <ButtonHome className="text-center p-4 pt-1">
+            <Download className="mb-1" />
+            Exportar Lista de Chamada
+          </ButtonHome>
+        </Link>
+        <Link to="/camera" className="w-full">
+          <ButtonHome className="text-center p-4 pt-1 flex items-center">
+            <SlidersHorizontal />
+            Gerenciar Estudantes
+          </ButtonHome>
+        </Link>
+        <Link to="/camera" className="w-full">
+          <ButtonHome className="p-4 pt-2 flex flex-col">
+            <LogOut className="mb-3"/>
+            <div className="flex w-full justify-center">Sair</div>
+          </ButtonHome>
+        </Link>
       </CardContent>
-      <CardFooter className="flex justify-center">
-          <img src={undrawHello} alt="" className="w-40 h-w-40" />
+      <CardFooter className="flex justify-center mt-2">
+        <img src={undrawHello} alt="" className="w-40 h-w-40" />
       </CardFooter>
     </Card>
   );
