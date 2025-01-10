@@ -1,8 +1,7 @@
 import { toast } from "sonner";
 import { Loader, X } from "lucide-react";
 
-const SendingToast = () => {
-  console.log("notVerifyToast");
+export function sendingToast() {
   toast.custom(
     (t) => (
       <div className="flex border border-blue-500 bg-blue-100 w-full rounded-lg p-4 gap-2 justify-between sm:w-[354px]">
@@ -12,7 +11,7 @@ const SendingToast = () => {
           </div>
           <div>
             <p className="text-blue-800 font-semibold text-sm">Enviando...</p>
-            <p className="text-blue-800 text-sm">estamos enviando sua imagem</p>
+            <p className="text-blue-800 text-sm">Estamos enviando sua imagem</p>
           </div>
         </div>
         <div>
@@ -26,6 +25,4 @@ const SendingToast = () => {
     ),
     { duration: 10000 }
   );
-};
-
-export { SendingToast };
+}

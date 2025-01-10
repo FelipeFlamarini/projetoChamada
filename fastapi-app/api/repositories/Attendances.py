@@ -3,44 +3,49 @@ from http import HTTPStatus
 import datetime
 
 from api.models.Attendance import Attendance, AttendanceRecord
-from api.schemas.attendance import AttendanceReturn
+from api.schemas.attendance import AttendanceStudentReturn, AttendanceDateReturn
 from api.repositories.Students import StudentsRepository
 
 TIMEZONE_GMT_MINUS_3 = datetime.timezone(datetime.timedelta(hours=-3))
 
 
-def get_current_date():
+def _get_current_date():
     return datetime.datetime.now(TIMEZONE_GMT_MINUS_3).date()
 
 
-def get_current_time():
+def _get_current_time():
     return datetime.datetime.now(TIMEZONE_GMT_MINUS_3).time()
 
 
 class AttendancesRepository:
     @staticmethod
-    async def get_attendances_by_student_ra(student_ra: int):
+    async def get_attendances_by_student_ra(
+        student_ra: int,
+    ) -> list[AttendanceStudentReturn]:
         attendances = await Attendance.find_many(
             Attendance.attendance.student_ra == student_ra
         ).to_list()
         return [
-            AttendanceReturn(date=attendance.date, times=attendance.attendance[0].times)
+            AttendanceDateReturn(
+                date=attendance.date, times=attendance.attendance[0].times
+            )
             for attendance in attendances
         ]
 
+    # TODO: typing
     @staticmethod
     async def get_attendances_by_date(date: datetime.date):
         return await Attendance.find_one(Attendance.date == date)
 
     @staticmethod
-    async def create_attendance(student_ra: int):
+    async def create_attendance(student_ra: int) -> AttendanceStudentReturn:
         if not await StudentsRepository._get_if_student_exists_by_ra(student_ra):
             raise HTTPException(
                 status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
             )
 
-        current_date = get_current_date()
-        current_time = get_current_time().isoformat()
+        current_date = _get_current_date()
+        current_time = _get_current_time().isoformat()
 
         attendance = await Attendance.find_one(Attendance.date == current_date)
         # TODO: optimize
@@ -49,11 +54,15 @@ class AttendancesRepository:
                 if record.student_ra == student_ra:
                     record.times.append(current_time)
                     await attendance.save()
-                    return record
+                    return AttendanceStudentReturn(
+                        date=current_date, ra=student_ra, **record.model_dump()
+                    )
             new_record = AttendanceRecord(student_ra=student_ra, times=[current_time])
             attendance.attendance.append(new_record)
             await attendance.save()
-            return new_record
+            return AttendanceStudentReturn(
+                date=current_date, ra=student_ra, **new_record.model_dump()
+            )
         else:
             new_attendance = Attendance(
                 date=current_date,
@@ -62,7 +71,11 @@ class AttendancesRepository:
                 ],
             )
             await new_attendance.insert()
-            return new_attendance.attendance[0]
+            return AttendanceStudentReturn(
+                date=current_date,
+                ra=student_ra,
+                **new_attendance.attendance[0].model_dump(),
+            )
 
     @staticmethod
     async def delete_attendance(student_ra: int, date: datetime.date, time: str):

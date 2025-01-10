@@ -6,9 +6,10 @@ csv.field_size_limit(20971520)  # each field can contain a maximum of 20MB of da
 
 
 # TODO: check exceptions
+# TODO: typing
 class CSVRepository:
     @staticmethod
-    def get_list_of_dicts_from_csv(csv_file: bytes):
+    def get_list_of_dicts_from_csv(csv_file: bytes) -> list[dict]:
         try:
             return list(csv.DictReader(codecs.iterdecode(csv_file, "utf-8")))
         except csv.Error as e:
