@@ -17,12 +17,14 @@ from api.models.User import User
 from api.models.AccessToken import AccessToken
 from utils.db import get_user_db, get_access_token_db
 
-SECRET = "SECRET"
+import os
+
+__SECRET__ = os.getenv("USER_TOKEN_SECRET_KEY")
 
 
 class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
-    reset_password_token_secret = SECRET
-    verification_token_secret = SECRET
+    reset_password_token_secret = __SECRET__
+    verification_token_secret = __SECRET__
 
     async def on_after_register(self, user: User, request: Optional[Request] = None):
         print(f"User {user.id} has registered.")

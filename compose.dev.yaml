@@ -15,10 +15,10 @@ services:
       - students_images:/app/students_images
       - vectors:/app/vectors
     environment:
-      - MONGO_URI=mongodb://root:example@mongo:27017/
-      - MONGO_DB=fastapi_db
-      - JWT_SECRET_KEY=${FASTAPI_JWT_SECRET_KEY}
-      - JWT_ALGORITHM=${FASTAPI_JWT_ALGORITHM}
+      MONGO_URL: ${MONGODB_URL}
+      USER_TOKEN_SECRET_KEY: ${FASTAPI_APP_USER_TOKEN_SECRET_KEY}
+      JWT_RECOGNIZE_SECRET_KEY: ${FASTAPI_APP_JWT_RECOGNIZE_SECRET_KEY}
+      JWT_ALGORITHM: ${FASTAPI_JWT_ALGORITHM}
     depends_on:
       - mongo
       - deepface
@@ -30,7 +30,7 @@ services:
     ports:
       - ${FRONT_APP_PORT}:5173
     environment:
-      - VITE_FASTAPI_APP_URL=${FASTAPI_APP_URL}
+      VITE_FASTAPI_APP_URL: ${FASTAPI_APP_URL}
     volumes:
       - ./front-app/imgs:/app/imgs
       - ./front-app/public:/app/public
@@ -60,8 +60,8 @@ services:
     volumes:
       - mongo_data:/data/db
     environment:
-      MONGO_INITDB_ROOT_USERNAME: root
-      MONGO_INITDB_ROOT_PASSWORD: example
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
 
   mongo-express:
     image: mongo-express
@@ -69,9 +69,9 @@ services:
     ports:
       - ${MONGO_EXPRESS_PORT}:8081
     environment:
-      ME_CONFIG_MONGODB_ADMINUSERNAME: root
-      ME_CONFIG_MONGODB_ADMINPASSWORD: example
-      ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_USERNAME}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_PASSWORD}
+      ME_CONFIG_MONGODB_URL: ${MONGODB_URL}
       ME_CONFIG_BASICAUTH: false
 
 volumes:
