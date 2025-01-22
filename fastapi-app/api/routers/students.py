@@ -1,6 +1,9 @@
 from typing import Annotated, List
+import json
 
-from fastapi import APIRouter, Form, UploadFile, File, BackgroundTasks
+from fastapi import APIRouter, Form, UploadFile, File
+from fastapi.responses import StreamingResponse
+from fastapi.encoders import jsonable_encoder
 from http import HTTPStatus
 
 from api.models.Student import Student
@@ -8,7 +11,7 @@ from api.models.Student import Student
 from api.repositories.Students import StudentsRepository
 from api.repositories.CSV import CSVRepository
 
-from api.schemas.student import StudentsCreatedByCSV
+from api.schemas.student import StudentsCreatedByCSV, StudentsCreatingStream
 
 students_router = APIRouter()
 
@@ -38,33 +41,57 @@ async def create_student(
 
 
 @students_router.post("/csv", status_code=HTTPStatus.CREATED)
-async def create_students_by_csv(
-    background_tasks: BackgroundTasks, csv_file: UploadFile = File(...)
-) -> StudentsCreatedByCSV:
-    background_tasks.add_task(csv_file.file.close)
-    students_created = []
-    students_not_created = []
+async def create_students_by_csv(csv_file: UploadFile = File(...)) -> StreamingResponse:
+    students = CSVRepository.get_list_of_dicts_from_csv(csv_file.file)
 
-    for student in CSVRepository.get_list_of_dicts_from_csv(csv_file.file):
-        try:
-            students_created.append(
-                await StudentsRepository.create_student(
+    async def student_creation_generator():
+        students_created = []
+        students_not_created = []
+
+        for student in students:
+            try:
+                student_created = await StudentsRepository.create_student(
                     student["name"], student["ra"], student["image_base64"]
                 )
-            )
-        # TODO: check exceptions
-        except Exception as e:
-            del student["image_base64"]
-            try:
-                student["reason"] = e.detail
-            except:
-                student["reason"] = str(e.__class__)
-            students_not_created.append(student)
+                students_created.append(student_created)
+                yield json.dumps(
+                    jsonable_encoder(
+                        StudentsCreatingStream(
+                            progress=(len(students_created) + len(students_not_created))
+                            / len(students),
+                            student_created=student_created,
+                        )
+                    )
+                )
+            except Exception as e:
+                del student["image_base64"]
+                try:
+                    student["reason"] = e.detail
+                except:
+                    student["reason"] = str(e.__class__)
+                students_not_created.append(student)
+                yield json.dumps(
+                    jsonable_encoder(
+                        StudentsCreatingStream(
+                            progress=(len(students_created) + len(students_not_created))
+                            / len(students),
+                            student_being_created=student,
+                        )
+                    )
+                )
 
-    return {
-        "students_created": students_created,
-        "students_not_created": students_not_created,
-    }
+        yield json.dumps(
+            jsonable_encoder(
+                StudentsCreatedByCSV(
+                    students_created=students_created,
+                    students_not_created=students_not_created,
+                )
+            )
+        )
+
+    return StreamingResponse(
+        student_creation_generator(), media_type="application/json"
+    )
 
 
 @students_router.patch("/bulk_activate")

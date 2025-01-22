@@ -2,7 +2,8 @@ from typing import Optional
 
 from beanie import PydanticObjectId
 from fastapi import Depends, Request
-from fastapi_users import BaseUserManager, FastAPIUsers, schemas
+from httpx_oauth.clients.google import GoogleOAuth2
+from fastapi_users import BaseUserManager, FastAPIUsers
 from fastapi_users.authentication import (
     AuthenticationBackend,
     CookieTransport,
@@ -20,6 +21,10 @@ from utils.db import get_user_db, get_access_token_db
 import os
 
 __SECRET__ = os.getenv("USER_TOKEN_SECRET_KEY")
+__GOOGLE_CLIENT_ID__ = os.getenv("OAUTH_GOOGLE_CLIENT_ID")
+__GOOGLE_CLIENT_SECRET__ = os.getenv("OAUTH_GOOGLE_CLIENT_SECRET")
+
+google_oauth_client = GoogleOAuth2(__GOOGLE_CLIENT_ID__, __GOOGLE_CLIENT_SECRET__)
 
 
 class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
