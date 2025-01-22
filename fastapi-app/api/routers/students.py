@@ -60,6 +60,16 @@ async def create_students_by_csv(
     }
 
 
+@students_router.patch("/bulk_activate")
+async def activate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+    return await StudentsRepository.activate_student_bulk_by_ra(ra_list)
+
+
+@students_router.patch("/bulk_deactivate")
+async def deactivate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+    return await StudentsRepository.deactivate_student_bulk_by_ra(ra_list)
+
+
 @students_router.patch("/{student_ra}")
 async def update_student_by_ra(
     student_ra: int,

@@ -33,14 +33,14 @@ class StudentsRepository:
     async def get_student_by_ra(student_ra: int) -> Student:
         student = await Student.find_one(Student.ra == student_ra)
         if not student:
-            raise DocumentNotFound("Student not found")
+            raise DocumentNotFound(f"Student with ra {student_ra} not found")
         return student
 
     @staticmethod
     async def get_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
         student = await Student.get(student_id)
         if not student:
-            raise DocumentNotFound("Student not found")
+            raise DocumentNotFound(f"Student with id {student_id} not found")
         return student
 
     @staticmethod
@@ -63,7 +63,6 @@ class StudentsRepository:
             StudentsVectorSearcherRepository.add_item(
                 FacialRecognitionRepository.represent(image_base64).embedding, int(ra)
             )
-            print(str(image_path))
             return await Student(name=name, ra=ra, image_path=str(image_path)).insert()
         except pymongo.errors.DuplicateKeyError:
             raise DuplicateDocument(
@@ -139,23 +138,38 @@ class StudentsRepository:
         )
 
     @staticmethod
-    async def deactivate_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
-        student = await StudentsRepository.get_student_by_id(student_id)
-        updated_student = StudentUpdate(active=False)
-        return await student.set(updated_student.model_dump(exclude_unset=True))
+    async def activate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+        students_ras = [
+            ra
+            for ra in ra_list
+            if await StudentsRepository._get_if_student_exists_by_ra(ra)
+        ]
+        students = []
+        for ra in students_ras:
+            students.append(
+                await StudentsRepository.update_student_by_ra(ra, active=True)
+            )
+        return students
 
     @staticmethod
-    async def activate_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
-        student = await StudentsRepository.get_student_by_id(student_id)
-        updated_student = StudentUpdate(active=True)
-        return await student.set(updated_student.model_dump(exclude_unset=True))
+    async def deactivate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+        students_ras = [
+            ra
+            for ra in ra_list
+            if await StudentsRepository._get_if_student_exists_by_ra(ra)
+        ]
+        students = []
+        for ra in students_ras:
+            students.append(
+                await StudentsRepository.update_student_by_ra(ra, active=False)
+            )
+        return students
 
     ################################################################################################################
     # JWT
 
     @staticmethod
     def encode_jwt(student: Student) -> str:
-        print(__JWT_ALGORITHM__)
         return jwt.encode(
             {
                 "ra": student.ra,
