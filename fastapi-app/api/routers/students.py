@@ -4,14 +4,21 @@ from fastapi import APIRouter, Form, UploadFile, File, BackgroundTasks
 from http import HTTPStatus
 
 from api.models.Student import Student
+
 from api.repositories.Students import StudentsRepository
 from api.repositories.CSV import CSVRepository
+
 from api.schemas.student import StudentsCreatedByCSV
 
 students_router = APIRouter()
 
 
 @students_router.get("")
+async def get_students(active: bool = True) -> List[Student]:
+    return await StudentsRepository.get_students(active)
+
+
+@students_router.get("/all")
 async def get_all_students() -> List[Student]:
     return await StudentsRepository.get_all_students()
 
@@ -58,6 +65,16 @@ async def create_students_by_csv(
         "students_created": students_created,
         "students_not_created": students_not_created,
     }
+
+
+@students_router.patch("/bulk_activate")
+async def activate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+    return await StudentsRepository.activate_student_bulk_by_ra(ra_list)
+
+
+@students_router.patch("/bulk_deactivate")
+async def deactivate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+    return await StudentsRepository.deactivate_student_bulk_by_ra(ra_list)
 
 
 @students_router.patch("/{student_ra}")
