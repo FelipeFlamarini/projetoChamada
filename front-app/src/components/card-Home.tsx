@@ -32,7 +32,7 @@ export function CardHome() {
             Iniciar chamada Inteligente
           </ButtonHome>
         </Link>
-        <Link to="/camera" className="w-full">
+        <Link to="/exportar" className="w-full">
           <ButtonHome className="text-center p-4 pt-1">
             <Download className="mb-1" />
             Exportar Lista de Chamada
@@ -46,7 +46,7 @@ export function CardHome() {
         </Link>
         <Link to="/camera" className="w-full">
           <ButtonHome className="p-4 pt-2 flex flex-col">
-            <LogOut className="mb-3"/>
+            <LogOut className="mb-3" />
             <div className="flex w-full justify-center">Sair</div>
           </ButtonHome>
         </Link>
