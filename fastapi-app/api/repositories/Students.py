@@ -26,6 +26,10 @@ __JWT_ALGORITHM__: str = os.getenv("JWT_ALGORITHM")
 class StudentsRepository:
 
     @staticmethod
+    async def get_students(active: bool = True) -> List[Student]:
+        return await Student.find(Student.active == active).to_list()
+
+    @staticmethod
     async def get_all_students() -> List[Student]:
         return await Student.find_all().to_list()
 
