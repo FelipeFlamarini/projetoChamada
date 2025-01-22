@@ -28,6 +28,11 @@ class StudentNotCreated(BaseModel):
     reason: str
 
 
+class StudentsCreatingStream(BaseModel):
+    progress: float
+    student_being_created: object
+
+
 class StudentsCreatedByCSV(BaseModel):
     students_created: list[Student]
     students_not_created: list[StudentNotCreated]
