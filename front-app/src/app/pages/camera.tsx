@@ -1,4 +1,5 @@
-import FaceDetection from "@/components/faceDetection";
+// import FaceDetection from "@/components/faceDetection";
+import FaceDetection from "@/components/dialogfaceDetection";
 
 export function Camera() {
   return (
