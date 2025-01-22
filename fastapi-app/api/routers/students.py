@@ -1,7 +1,7 @@
 from typing import Annotated, List
 import json
 
-from fastapi import APIRouter, Form, UploadFile, File
+from fastapi import APIRouter, Form, UploadFile, File, Depends
 from fastapi.responses import StreamingResponse
 from fastapi.encoders import jsonable_encoder
 from http import HTTPStatus
@@ -10,6 +10,7 @@ from api.models.Student import Student
 
 from api.repositories.Students import StudentsRepository
 from api.repositories.CSV import CSVRepository
+from api.repositories.user_manager import current_active_verified_user
 
 from api.schemas.student import StudentsCreatedByCSV, StudentsCreatingStream
 
@@ -17,17 +18,23 @@ students_router = APIRouter()
 
 
 @students_router.get("")
-async def get_students(active: bool = True) -> List[Student]:
+async def get_students(
+    active: bool = True, active_user=Depends(current_active_verified_user)
+) -> List[Student]:
     return await StudentsRepository.get_students(active)
 
 
 @students_router.get("/all")
-async def get_all_students() -> List[Student]:
+async def get_all_students(
+    active_user=Depends(current_active_verified_user),
+) -> List[Student]:
     return await StudentsRepository.get_all_students()
 
 
 @students_router.get("/{student_ra}")
-async def get_student_by_ra(student_ra: int) -> Student:
+async def get_student_by_ra(
+    student_ra: int, active_user=Depends(current_active_verified_user)
+) -> Student:
     return await StudentsRepository.get_student_by_ra(student_ra)
 
 
@@ -36,12 +43,15 @@ async def create_student(
     name: Annotated[str, Form()],
     ra: Annotated[int, Form()],
     image_base64: Annotated[str, Form()],
+    active_user=Depends(current_active_verified_user),
 ) -> Student:
     return await StudentsRepository.create_student(name, ra, image_base64)
 
 
 @students_router.post("/csv", status_code=HTTPStatus.CREATED)
-async def create_students_by_csv(csv_file: UploadFile = File(...)) -> StreamingResponse:
+async def create_students_by_csv(
+    csv_file: UploadFile = File(...), active_user=Depends(current_active_verified_user)
+) -> StreamingResponse:
     students = CSVRepository.get_list_of_dicts_from_csv(csv_file.file)
 
     async def student_creation_generator():
@@ -95,12 +105,16 @@ async def create_students_by_csv(csv_file: UploadFile = File(...)) -> StreamingR
 
 
 @students_router.patch("/bulk_activate")
-async def activate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+async def activate_student_bulk_by_ra(
+    ra_list: List[int], active_user=Depends(current_active_verified_user)
+) -> List[Student]:
     return await StudentsRepository.activate_student_bulk_by_ra(ra_list)
 
 
 @students_router.patch("/bulk_deactivate")
-async def deactivate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+async def deactivate_student_bulk_by_ra(
+    ra_list: List[int], active_user=Depends(current_active_verified_user)
+) -> List[Student]:
     return await StudentsRepository.deactivate_student_bulk_by_ra(ra_list)
 
 
@@ -111,6 +125,7 @@ async def update_student_by_ra(
     ra: Annotated[int | None, Form()] = None,
     image_base64: Annotated[str | None, Form()] = None,
     active: Annotated[bool | None, Form()] = None,
+    active_user=Depends(current_active_verified_user),
 ) -> Student:
     return await StudentsRepository.update_student_by_ra(
         student_ra, name, ra, image_base64, active
