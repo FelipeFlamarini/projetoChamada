@@ -10,7 +10,7 @@ import { Chamada } from "./app/pages/chamadas/chamada";
 import { DowloadChamada } from "./app/pages/chamadas/dowload";
 import { Estudantes } from "./app/pages/estudantes/estudantes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-// import { Teste } from "./app/pages/teste";
+import { ExportarChamada } from "./app/pages/exportar";
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
@@ -33,7 +33,7 @@ createRoot(document.getElementById("root")!).render(
             <Route path="dowload" element={<DowloadChamada />} />
           </Route>
           <Route path="estudantes" element={<Estudantes />} />
-          {/* <Route path="teste" element={<Teste />} /> */}
+          <Route path="exportar" element={<ExportarChamada />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>

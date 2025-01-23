@@ -1,18 +1,18 @@
-import { CalendarDays } from "lucide-react";
+import { LucideProps } from "lucide-react";
 import { Button } from "../ui/button";
-import { format } from "date-fns"
 
 interface CaledarBtnProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  field: any;
+  Icon: React.ComponentType<LucideProps>;
   placeholder: string | undefined;
+  className?: string;
 }
 
-export const CaledarBtn = ({ field,placeholder }:CaledarBtnProps) => {
+export const CaledarBtn = ({ Icon, placeholder, ...rest }: CaledarBtnProps) => {
   return (
-    <Button variant={"goSecondary"} type="button">
-      <CalendarDays />
-      {field.value ? format(field.value, "PPP") : <span>{placeholder}</span>}
+    <Button variant={"goSecondary"} type="button" {...rest}>
+      <Icon />
+      <span>{placeholder}</span>
     </Button>
   );
 };
