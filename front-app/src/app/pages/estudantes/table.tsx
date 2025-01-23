@@ -1,8 +1,5 @@
 import {
-  ColumnDef,
   flexRender,
-  getCoreRowModel,
-  useReactTable,
   Table as ReactTable,
 } from "@tanstack/react-table"
 
@@ -25,10 +22,10 @@ export function DataTableStudents<TData>({
 
   return (
     <div className="rounded-md border">
-      <Table>
+      <Table >
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
+            <TableRow key={headerGroup.id} >
               {headerGroup.headers.map((header) => {
                 return (
                   <TableHead key={header.id}>

@@ -1,8 +1,9 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { getAllStudentsApiStudentsGetResponseItem as Student } from "../schemas/endpoints/students/students.zod";
+import { getAllStudentsApiStudentsGetResponseItem as Student } from "../../schemas/endpoints/students/students.zod";
 import z from "zod";
-import { SquarePen, Trash2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Actions } from "./actions";
+
 
 export const columnsStudents: ColumnDef<z.infer<typeof Student>>[] = [
   {
@@ -28,13 +29,6 @@ export const columnsStudents: ColumnDef<z.infer<typeof Student>>[] = [
   {
     header: "Ações",
     id: "actions",
-    cell: () => {
-      return (
-        <div className="flex gap-4 items-center justify-center h-full">
-          <SquarePen />
-          <Trash2 className="text-tst-error-foreground" />
-        </div>
-      );
-    },
+    cell: ({row}) => <Actions row={row.original} />,
   },
 ];
