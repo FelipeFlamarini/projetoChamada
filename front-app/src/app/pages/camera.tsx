@@ -82,7 +82,8 @@ export function Camera() {
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://192.168.0.100:2010/api/rollcall/ws`);
+    // TODO: fix ip
+    const ws = new WebSocket(`ws://localhost:2010/api/rollcall/ws`);
 
     ws.onopen = () => {
       setIsConnected(true);
