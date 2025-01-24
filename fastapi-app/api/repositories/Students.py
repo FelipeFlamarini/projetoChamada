@@ -19,28 +19,34 @@ from api.schemas.student import StudentUpdate
 from utils.exceptions import *
 
 TIMEZONE_GMT_MINUS_3 = timezone(timedelta(hours=-3))
-__jwt_secret_key__: str = os.getenv("JWT_SECRET_KEY")
-__jwt_algorithm__: str = os.getenv("JWT_ALGORITHM")
+__JWT_SECRET_KEY__: str = os.getenv("JWT_RECOGNIZE_SECRET_KEY")
+__JWT_ALGORITHM__: str = os.getenv("JWT_ALGORITHM")
 
 
 class StudentsRepository:
+
+    @staticmethod
+    async def get_students(active: bool = True) -> List[Student]:
+        return await Student.find(Student.active == active).to_list()
 
     @staticmethod
     async def get_all_students() -> List[Student]:
         return await Student.find_all().to_list()
 
     @staticmethod
-    async def get_student_by_ra(student_ra: int) -> Student:
-        student = await Student.find_one(Student.ra == student_ra)
+    async def get_student_by_ra(student_ra: int, active: bool = True) -> Student:
+        student = await Student.find_one(
+            Student.ra == student_ra, Student.active == True
+        )
         if not student:
-            raise DocumentNotFound("Student not found")
+            raise DocumentNotFound(f"Student with ra {student_ra} not found")
         return student
 
     @staticmethod
     async def get_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
         student = await Student.get(student_id)
         if not student:
-            raise DocumentNotFound("Student not found")
+            raise DocumentNotFound(f"Student with id {student_id} not found")
         return student
 
     @staticmethod
@@ -63,7 +69,6 @@ class StudentsRepository:
             StudentsVectorSearcherRepository.add_item(
                 FacialRecognitionRepository.represent(image_base64).embedding, int(ra)
             )
-            print(str(image_path))
             return await Student(name=name, ra=ra, image_path=str(image_path)).insert()
         except pymongo.errors.DuplicateKeyError:
             raise DuplicateDocument(
@@ -139,31 +144,46 @@ class StudentsRepository:
         )
 
     @staticmethod
-    async def deactivate_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
-        student = await StudentsRepository.get_student_by_id(student_id)
-        updated_student = StudentUpdate(active=False)
-        return await student.set(updated_student.model_dump(exclude_unset=True))
+    async def activate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+        students_ras = [
+            ra
+            for ra in ra_list
+            if await StudentsRepository._get_if_student_exists_by_ra(ra)
+        ]
+        students = []
+        for ra in students_ras:
+            students.append(
+                await StudentsRepository.update_student_by_ra(ra, active=True)
+            )
+        return students
 
     @staticmethod
-    async def activate_student_by_id(student_id: beanie.PydanticObjectId) -> Student:
-        student = await StudentsRepository.get_student_by_id(student_id)
-        updated_student = StudentUpdate(active=True)
-        return await student.set(updated_student.model_dump(exclude_unset=True))
+    async def deactivate_student_bulk_by_ra(ra_list: List[int]) -> List[Student]:
+        students_ras = [
+            ra
+            for ra in ra_list
+            if await StudentsRepository._get_if_student_exists_by_ra(ra)
+        ]
+        students = []
+        for ra in students_ras:
+            students.append(
+                await StudentsRepository.update_student_by_ra(ra, active=False)
+            )
+        return students
 
     ################################################################################################################
     # JWT
 
     @staticmethod
     def encode_jwt(student: Student) -> str:
-        print(__jwt_algorithm__)
         return jwt.encode(
             {
                 "ra": student.ra,
                 "name": student.name,
                 "exp": datetime.now(TIMEZONE_GMT_MINUS_3) + timedelta(seconds=20),
             },
-            __jwt_secret_key__,
-            algorithm=__jwt_algorithm__,
+            __JWT_SECRET_KEY__,
+            algorithm=__JWT_ALGORITHM__,
         )
 
     @staticmethod
@@ -171,8 +191,8 @@ class StudentsRepository:
         try:
             return jwt.decode(
                 token,
-                __jwt_secret_key__,
-                algorithms=[__jwt_algorithm__],
+                __JWT_SECRET_KEY__,
+                algorithms=[__JWT_ALGORITHM__],
             )
         except jwt.ExpiredSignatureError:
             raise JWTExpired

@@ -2,10 +2,7 @@ import base64
 import pathlib
 import binascii
 
-from api.models.Student import Student
-from api.repositories.facial_recognition import FacialRecognitionRepository
-
-from utils.exceptions import DocumentNotFound, InvalidBase64
+from utils.exceptions import InvalidBase64
 
 
 class ImagesRepository:
@@ -32,11 +29,3 @@ class ImagesRepository:
             raise InvalidBase64("image_base64 is not a valid base64 string")
 
         return path
-
-    # TODO: should this return only image_path, or serve the actual image?
-    @staticmethod
-    async def get_image_by_student_ra(student_ra: int):
-        student = await Student.find_one(Student.ra == student_ra)
-        if not student:
-            raise DocumentNotFound("Student not found")
-        return student.image_path
