@@ -5,23 +5,125 @@
     "version": "0.1.0"
   },
   "paths": {
-    "/auth/login": {
-      "post": {
+    "/api/auth/google/authorize": {
+      "get": {
         "tags": [
           "auth"
         ],
-        "summary": "Auth:Jwt.Login",
-        "operationId": "auth_jwt_login_auth_login_post",
-        "requestBody": {
-          "content": {
-            "application/x-www-form-urlencoded": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_auth_jwt_login_auth_login_post"
+        "summary": "Oauth:Google.Jwt.Authorize",
+        "operationId": "oauth_google_jwt_authorize_api_auth_google_authorize_get",
+        "parameters": [
+          {
+            "name": "scopes",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              },
+              "title": "Scopes"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/OAuth2AuthorizeResponse"
+                }
               }
             }
           },
-          "required": true
-        },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/google/callback": {
+      "get": {
+        "tags": [
+          "auth"
+        ],
+        "summary": "Oauth:Google.Jwt.Callback",
+        "description": "The response varies based on the authentication backend used.",
+        "operationId": "oauth_google_jwt_callback_api_auth_google_callback_get",
+        "parameters": [
+          {
+            "name": "code",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Code"
+            }
+          },
+          {
+            "name": "code_verifier",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Code Verifier"
+            }
+          },
+          {
+            "name": "state",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "State"
+            }
+          },
+          {
+            "name": "error",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Error"
+            }
+          }
+        ],
         "responses": {
           "200": {
             "description": "Successful Response",
@@ -34,587 +136,16 @@
             }
           },
           "400": {
-            "description": "Bad Request",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
                 "examples": {
+                  "INVALID_STATE_TOKEN": {
+                    "summary": "Invalid state token."
+                  },
                   "LOGIN_BAD_CREDENTIALS": {
-                    "summary": "Bad credentials or the user is inactive.",
+                    "summary": "User is inactive.",
                     "value": {
                       "detail": "LOGIN_BAD_CREDENTIALS"
-                    }
-                  },
-                  "LOGIN_USER_NOT_VERIFIED": {
-                    "summary": "The user is not verified.",
-                    "value": {
-                      "detail": "LOGIN_USER_NOT_VERIFIED"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "204": {
-            "description": "No Content"
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/logout": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Auth:Jwt.Logout",
-        "operationId": "auth_jwt_logout_auth_logout_post",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "204": {
-            "description": "No Content"
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ]
-      }
-    },
-    "/auth/register": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Register:Register",
-        "operationId": "register_register_auth_register_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserCreate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "REGISTER_USER_ALREADY_EXISTS": {
-                    "summary": "A user with this email already exists.",
-                    "value": {
-                      "detail": "REGISTER_USER_ALREADY_EXISTS"
-                    }
-                  },
-                  "REGISTER_INVALID_PASSWORD": {
-                    "summary": "Password validation failed.",
-                    "value": {
-                      "detail": {
-                        "code": "REGISTER_INVALID_PASSWORD",
-                        "reason": "Password should beat least 3 characters"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/forgot-password": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Reset:Forgot Password",
-        "operationId": "reset_forgot_password_auth_forgot_password_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_reset_forgot_password_auth_forgot_password_post"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/reset-password": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Reset:Reset Password",
-        "operationId": "reset_reset_password_auth_reset_password_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_reset_reset_password_auth_reset_password_post"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "RESET_PASSWORD_BAD_TOKEN": {
-                    "summary": "Bad or expired token.",
-                    "value": {
-                      "detail": "RESET_PASSWORD_BAD_TOKEN"
-                    }
-                  },
-                  "RESET_PASSWORD_INVALID_PASSWORD": {
-                    "summary": "Password validation failed.",
-                    "value": {
-                      "detail": {
-                        "code": "RESET_PASSWORD_INVALID_PASSWORD",
-                        "reason": "Password should be at least 3 characters"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/request-verify-token": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Verify:Request-Token",
-        "operationId": "verify_request_token_auth_request_verify_token_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_verify_request_token_auth_request_verify_token_post"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "202": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/auth/verify": {
-      "post": {
-        "tags": [
-          "auth"
-        ],
-        "summary": "Verify:Verify",
-        "operationId": "verify_verify_auth_verify_post",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/Body_verify_verify_auth_verify_post"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "VERIFY_USER_BAD_TOKEN": {
-                    "summary": "Bad token, not existing user ornot the e-mail currently set for the user.",
-                    "value": {
-                      "detail": "VERIFY_USER_BAD_TOKEN"
-                    }
-                  },
-                  "VERIFY_USER_ALREADY_VERIFIED": {
-                    "summary": "The user is already verified.",
-                    "value": {
-                      "detail": "VERIFY_USER_ALREADY_VERIFIED"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/users/me": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:Current User",
-        "operationId": "users_current_user_users_me_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ]
-      },
-      "patch": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:Patch Current User",
-        "operationId": "users_patch_current_user_users_me_patch",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUpdate"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ErrorModel"
-                },
-                "examples": {
-                  "UPDATE_USER_EMAIL_ALREADY_EXISTS": {
-                    "summary": "A user with this email already exists.",
-                    "value": {
-                      "detail": "UPDATE_USER_EMAIL_ALREADY_EXISTS"
-                    }
-                  },
-                  "UPDATE_USER_INVALID_PASSWORD": {
-                    "summary": "Password validation failed.",
-                    "value": {
-                      "detail": {
-                        "code": "UPDATE_USER_INVALID_PASSWORD",
-                        "reason": "Password should beat least 3 characters"
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ]
-      }
-    },
-    "/users/{id}": {
-      "get": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:User",
-        "operationId": "users_user_users__id__get",
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "403": {
-            "description": "Not a superuser."
-          },
-          "404": {
-            "description": "The user does not exist."
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "users"
-        ],
-        "summary": "Users:Patch User",
-        "operationId": "users_patch_user_users__id__patch",
-        "security": [
-          {
-            "APIKeyCookie": []
-          }
-        ],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "title": "Id"
-            }
-          }
-        ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/UserUpdate"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/UserRead"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "403": {
-            "description": "Not a superuser."
-          },
-          "404": {
-            "description": "The user does not exist."
-          },
-          "400": {
-            "content": {
-              "application/json": {
-                "examples": {
-                  "UPDATE_USER_EMAIL_ALREADY_EXISTS": {
-                    "summary": "A user with this email already exists.",
-                    "value": {
-                      "detail": "UPDATE_USER_EMAIL_ALREADY_EXISTS"
-                    }
-                  },
-                  "UPDATE_USER_INVALID_PASSWORD": {
-                    "summary": "Password validation failed.",
-                    "value": {
-                      "detail": {
-                        "code": "UPDATE_USER_INVALID_PASSWORD",
-                        "reason": "Password should beat least 3 characters"
-                      }
                     }
                   }
                 },
@@ -636,13 +167,41 @@
             }
           }
         }
-      },
-      "delete": {
+      }
+    },
+    "/api/users/me": {
+      "get": {
         "tags": [
           "users"
         ],
-        "summary": "Users:Delete User",
-        "operationId": "users_delete_user_users__id__delete",
+        "summary": "Get Current User",
+        "operationId": "get_current_user_api_users_me_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserRead"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/students": {
+      "get": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Get Students",
+        "operationId": "get_students_api_students_get",
         "security": [
           {
             "APIKeyCookie": []
@@ -650,27 +209,30 @@
         ],
         "parameters": [
           {
-            "name": "id",
-            "in": "path",
-            "required": true,
+            "name": "active",
+            "in": "query",
+            "required": false,
             "schema": {
-              "type": "string",
-              "title": "Id"
+              "type": "boolean",
+              "default": true,
+              "title": "Active"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Successful Response"
-          },
-          "401": {
-            "description": "Missing token or inactive user."
-          },
-          "403": {
-            "description": "Not a superuser."
-          },
-          "404": {
-            "description": "The user does not exist."
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Student"
+                  },
+                  "title": "Response Get Students Api Students Get"
+                }
+              }
+            }
           },
           "422": {
             "description": "Validation Error",
@@ -683,31 +245,6 @@
             }
           }
         }
-      }
-    },
-    "/api/students": {
-      "get": {
-        "tags": [
-          "students"
-        ],
-        "summary": "Get All Students",
-        "operationId": "get_all_students_api_students_get",
-        "responses": {
-          "200": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "items": {
-                    "$ref": "#/components/schemas/Student"
-                  },
-                  "type": "array",
-                  "title": "Response Get All Students Api Students Get"
-                }
-              }
-            }
-          }
-        }
       },
       "post": {
         "tags": [
@@ -715,15 +252,20 @@
         ],
         "summary": "Create Student",
         "operationId": "create_student_api_students_post",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
         "requestBody": {
+          "required": true,
           "content": {
             "application/x-www-form-urlencoded": {
               "schema": {
                 "$ref": "#/components/schemas/Body_create_student_api_students_post"
               }
             }
-          },
-          "required": true
+          }
         },
         "responses": {
           "201": {
@@ -749,6 +291,36 @@
         }
       }
     },
+    "/api/students/all": {
+      "get": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Get All Students",
+        "operationId": "get_all_students_api_students_all_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Student"
+                  },
+                  "type": "array",
+                  "title": "Response Get All Students Api Students All Get"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
     "/api/students/{student_ra}": {
       "get": {
         "tags": [
@@ -756,6 +328,11 @@
         ],
         "summary": "Get Student By Ra",
         "operationId": "get_student_by_ra_api_students__student_ra__get",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
         "parameters": [
           {
             "name": "student_ra",
@@ -796,6 +373,11 @@
         ],
         "summary": "Update Student By Ra",
         "operationId": "update_student_by_ra_api_students__student_ra__patch",
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ],
         "parameters": [
           {
             "name": "student_ra",
@@ -863,7 +445,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/StudentsCreatedByCSV"
+
                 }
               }
             }
@@ -878,7 +460,120 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/students/bulk_activate": {
+      "patch": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Activate Student Bulk By Ra",
+        "operationId": "activate_student_bulk_by_ra_api_students_bulk_activate_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "title": "Ra List"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Student"
+                  },
+                  "type": "array",
+                  "title": "Response Activate Student Bulk By Ra Api Students Bulk Activate Patch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/students/bulk_deactivate": {
+      "patch": {
+        "tags": [
+          "students"
+        ],
+        "summary": "Deactivate Student Bulk By Ra",
+        "operationId": "deactivate_student_bulk_by_ra_api_students_bulk_deactivate_patch",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "items": {
+                  "type": "integer"
+                },
+                "type": "array",
+                "title": "Ra List"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "$ref": "#/components/schemas/Student"
+                  },
+                  "type": "array",
+                  "title": "Response Deactivate Student Bulk By Ra Api Students Bulk Deactivate Patch"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
       }
     },
     "/api/facial_recognition/recognize": {
@@ -962,6 +657,155 @@
           }
         }
       }
+    },
+    "/api/static/students/images/{student_ra}": {
+      "get": {
+        "tags": [
+          "static"
+        ],
+        "summary": "Get Student Image",
+        "operationId": "get_student_image_api_static_students_images__student_ra__get",
+        "parameters": [
+          {
+            "name": "student_ra",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Student Ra"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rollcall/active_tokens": {
+      "get": {
+        "tags": [
+          "rollcall"
+        ],
+        "summary": "Get Active Tokens",
+        "operationId": "get_active_tokens_api_rollcall_active_tokens_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "title": "Response Get Active Tokens Api Rollcall Active Tokens Get"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rollcall/start": {
+      "post": {
+        "tags": [
+          "rollcall"
+        ],
+        "summary": "Start Rollcall",
+        "operationId": "start_rollcall_api_rollcall_start_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_start_rollcall_api_rollcall_start_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/rollcall/stop": {
+      "post": {
+        "tags": [
+          "rollcall"
+        ],
+        "summary": "Stop Rollcall",
+        "operationId": "stop_rollcall_api_rollcall_stop_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_stop_rollcall_api_rollcall_stop_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -992,63 +836,6 @@
           "ra"
         ],
         "title": "AttendanceStudentReturn"
-      },
-      "Body_auth_jwt_login_auth_login_post": {
-        "properties": {
-          "grant_type": {
-            "anyOf": [
-              {
-                "type": "string",
-                "pattern": "password"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Grant Type"
-          },
-          "username": {
-            "type": "string",
-            "title": "Username"
-          },
-          "password": {
-            "type": "string",
-            "title": "Password"
-          },
-          "scope": {
-            "type": "string",
-            "title": "Scope",
-            "default": ""
-          },
-          "client_id": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Client Id"
-          },
-          "client_secret": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Client Secret"
-          }
-        },
-        "type": "object",
-        "required": [
-          "username",
-          "password"
-        ],
-        "title": "Body_auth_jwt_login_auth_login_post"
       },
       "Body_create_attendance_api_attendances__post": {
         "properties": {
@@ -1105,45 +892,44 @@
           "image_base64": {
             "type": "string",
             "title": "Image Base64"
+          },
+          "recognize_token": {
+            "type": "string",
+            "title": "Recognize Token"
           }
         },
         "type": "object",
         "required": [
-          "image_base64"
+          "image_base64",
+          "recognize_token"
         ],
         "title": "Body_recognize_api_facial_recognition_recognize_post"
       },
-      "Body_reset_forgot_password_auth_forgot_password_post": {
+      "Body_start_rollcall_api_rollcall_start_post": {
         "properties": {
-          "email": {
+          "rollcall_token": {
             "type": "string",
-            "format": "email",
-            "title": "Email"
+            "title": "Rollcall Token"
           }
         },
         "type": "object",
         "required": [
-          "email"
+          "rollcall_token"
         ],
-        "title": "Body_reset_forgot_password_auth_forgot_password_post"
+        "title": "Body_start_rollcall_api_rollcall_start_post"
       },
-      "Body_reset_reset_password_auth_reset_password_post": {
+      "Body_stop_rollcall_api_rollcall_stop_post": {
         "properties": {
-          "token": {
+          "rollcall_token": {
             "type": "string",
-            "title": "Token"
-          },
-          "password": {
-            "type": "string",
-            "title": "Password"
+            "title": "Rollcall Token"
           }
         },
         "type": "object",
         "required": [
-          "token",
-          "password"
+          "rollcall_token"
         ],
-        "title": "Body_reset_reset_password_auth_reset_password_post"
+        "title": "Body_stop_rollcall_api_rollcall_stop_post"
       },
       "Body_update_student_by_ra_api_students__student_ra__patch": {
         "properties": {
@@ -1194,33 +980,6 @@
         },
         "type": "object",
         "title": "Body_update_student_by_ra_api_students__student_ra__patch"
-      },
-      "Body_verify_request_token_auth_request_verify_token_post": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email"
-          }
-        },
-        "type": "object",
-        "required": [
-          "email"
-        ],
-        "title": "Body_verify_request_token_auth_request_verify_token_post"
-      },
-      "Body_verify_verify_auth_verify_post": {
-        "properties": {
-          "token": {
-            "type": "string",
-            "title": "Token"
-          }
-        },
-        "type": "object",
-        "required": [
-          "token"
-        ],
-        "title": "Body_verify_verify_auth_verify_post"
       },
       "DeepFaceRecognizeReturn": {
         "properties": {
@@ -1301,6 +1060,19 @@
         "type": "object",
         "title": "HTTPValidationError"
       },
+      "OAuth2AuthorizeResponse": {
+        "properties": {
+          "authorization_url": {
+            "type": "string",
+            "title": "Authorization Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "authorization_url"
+        ],
+        "title": "OAuth2AuthorizeResponse"
+      },
       "Student": {
         "properties": {
           "_id": {
@@ -1350,108 +1122,6 @@
         ],
         "title": "Student"
       },
-      "StudentNotCreated": {
-        "properties": {
-          "name": {
-            "type": "string",
-            "title": "Name"
-          },
-          "ra": {
-            "type": "integer",
-            "title": "Ra"
-          },
-          "reason": {
-            "type": "string",
-            "title": "Reason"
-          }
-        },
-        "type": "object",
-        "required": [
-          "name",
-          "ra",
-          "reason"
-        ],
-        "title": "StudentNotCreated"
-      },
-      "StudentsCreatedByCSV": {
-        "properties": {
-          "students_created": {
-            "items": {
-              "$ref": "#/components/schemas/Student"
-            },
-            "type": "array",
-            "title": "Students Created"
-          },
-          "students_not_created": {
-            "items": {
-              "$ref": "#/components/schemas/StudentNotCreated"
-            },
-            "type": "array",
-            "title": "Students Not Created"
-          }
-        },
-        "type": "object",
-        "required": [
-          "students_created",
-          "students_not_created"
-        ],
-        "title": "StudentsCreatedByCSV"
-      },
-      "UserCreate": {
-        "properties": {
-          "email": {
-            "type": "string",
-            "format": "email",
-            "title": "Email"
-          },
-          "password": {
-            "type": "string",
-            "title": "Password"
-          },
-          "is_active": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Active",
-            "default": true
-          },
-          "is_superuser": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Superuser",
-            "default": false
-          },
-          "is_verified": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Verified",
-            "default": false
-          }
-        },
-        "type": "object",
-        "required": [
-          "email",
-          "password"
-        ],
-        "title": "UserCreate"
-      },
       "UserRead": {
         "properties": {
           "id": {
@@ -1486,68 +1156,6 @@
           "email"
         ],
         "title": "UserRead"
-      },
-      "UserUpdate": {
-        "properties": {
-          "password": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Password"
-          },
-          "email": {
-            "anyOf": [
-              {
-                "type": "string",
-                "format": "email"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Email"
-          },
-          "is_active": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Active"
-          },
-          "is_superuser": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Superuser"
-          },
-          "is_verified": {
-            "anyOf": [
-              {
-                "type": "boolean"
-              },
-              {
-                "type": "null"
-              }
-            ],
-            "title": "Is Verified"
-          }
-        },
-        "type": "object",
-        "title": "UserUpdate"
       },
       "ValidationError": {
         "properties": {
