@@ -15,6 +15,7 @@ from api.routers.facial_recognition import facial_recognition_router
 from api.routers.students import students_router
 from api.routers.attendances import attendances_router
 from api.routers.user import users_router
+from api.routers.static import static_router
 
 from api.repositories.user_manager import (
     fastapi_users,
@@ -23,8 +24,6 @@ from api.repositories.user_manager import (
 )
 from api.repositories.students_vector_searcher import StudentsVectorSearcherRepository
 from api.repositories.facial_recognition import FacialRecognitionRepository
-
-from api.schemas.user import UserRead, UserCreate, UserUpdate
 
 from utils.db import db
 
@@ -85,3 +84,4 @@ app.include_router(
     prefix="/api/attendances",
     tags=["attendances"],
 )
+app.include_router(static_router, prefix="/api/static", tags=["static"])
