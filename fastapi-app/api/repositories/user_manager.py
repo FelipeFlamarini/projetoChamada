@@ -2,6 +2,7 @@ from typing import Optional
 
 from beanie import PydanticObjectId
 from fastapi import Depends, Request
+from fastapi.responses import RedirectResponse
 from httpx_oauth.clients.google import GoogleOAuth2
 from fastapi_users import BaseUserManager, FastAPIUsers
 from fastapi_users.authentication import (
@@ -23,33 +24,32 @@ import os
 __SECRET__ = os.getenv("USER_TOKEN_SECRET_KEY")
 __GOOGLE_CLIENT_ID__ = os.getenv("OAUTH_GOOGLE_CLIENT_ID")
 __GOOGLE_CLIENT_SECRET__ = os.getenv("OAUTH_GOOGLE_CLIENT_SECRET")
+__URL_REDIRECT_AFTER_LOGIN__ = os.getenv("URL_REDIRECT_AFTER_LOGIN")
+
 
 google_oauth_client = GoogleOAuth2(__GOOGLE_CLIENT_ID__, __GOOGLE_CLIENT_SECRET__)
+
+
+class AutoRedirectCookieTransport(CookieTransport):
+    async def get_login_response(self, token: str) -> RedirectResponse:
+        response = RedirectResponse(__URL_REDIRECT_AFTER_LOGIN__, status_code=302)
+        return self._set_login_cookie(response, token)
+
+    async def get_logout_response(self) -> RedirectResponse:
+        response = RedirectResponse(__URL_REDIRECT_AFTER_LOGIN__, status_code=302)
+        return self._set_logout_cookie(response)
 
 
 class UserManager(ObjectIDIDMixin, BaseUserManager[User, PydanticObjectId]):
     reset_password_token_secret = __SECRET__
     verification_token_secret = __SECRET__
 
-    async def on_after_register(self, user: User, request: Optional[Request] = None):
-        print(f"User {user.id} has registered.")
-
-    async def on_after_forgot_password(
-        self, user: User, token: str, request: Optional[Request] = None
-    ):
-        print(f"User {user.id} has forgot their password. Reset token: {token}")
-
-    async def on_after_request_verify(
-        self, user: User, token: str, request: Optional[Request] = None
-    ):
-        print(f"Verification requested for user {user.id}. Verification token: {token}")
-
 
 async def get_user_manager(user_db: BeanieUserDatabase = Depends(get_user_db)):
     yield UserManager(user_db)
 
 
-cookie_transport = CookieTransport(cookie_max_age=60 * 60 * 24)
+cookie_transport = AutoRedirectCookieTransport(cookie_max_age=60 * 60 * 24)
 
 
 def get_database_strategy(
