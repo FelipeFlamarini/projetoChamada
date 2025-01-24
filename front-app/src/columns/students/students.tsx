@@ -4,9 +4,33 @@ import { getStudentsApiStudentsGetResponseItem as Student } from "@/schemas/endp
 import z from "zod";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Actions } from "./actions";
+import { Checkbox } from "@/components/ui/checkbox"
+
 
 
 export const columnsStudents: ColumnDef<z.infer<typeof Student>>[] = [
+  {
+    id: "select",
+    header: ({ table }) => (
+      <Checkbox
+        checked={
+          table.getIsAllPageRowsSelected() ||
+          (table.getIsSomePageRowsSelected() && "indeterminate")
+        }
+        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+        aria-label="Select all"
+      />
+    ),
+    cell: ({ row }) => (
+      <Checkbox
+        checked={row.getIsSelected()}
+        onCheckedChange={(value) => row.toggleSelected(!!value)}
+        aria-label="Select row"
+      />
+    ),
+    enableSorting: false,
+    enableHiding: false,
+  },
   {
     accessorKey: "image_path",
     header: "Foto",
@@ -30,6 +54,6 @@ export const columnsStudents: ColumnDef<z.infer<typeof Student>>[] = [
   {
     header: "Ações",
     id: "actions",
-    cell: ({row}) => <Actions row={row.original} />,
+    cell: ({row}) => <Actions ra={row.original.ra} />,
   },
 ];

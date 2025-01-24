@@ -11,7 +11,10 @@ import { DowloadChamada } from "./app/pages/chamadas/dowload";
 import { Estudantes } from "./app/pages/estudantes/estudantes";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ExportarChamada } from "./app/pages/exportar";
+import { useGetCurrentUserApiUsersMeGet } from "./chamada";
+import { PageEstudantes } from "./app/pages/estudantes/page";
 const queryClient = new QueryClient();
+
 
 createRoot(document.getElementById("root")!).render(
   // <StrictMode>
@@ -32,7 +35,7 @@ createRoot(document.getElementById("root")!).render(
             <Route index element={<Chamada />} />
             <Route path="dowload" element={<DowloadChamada />} />
           </Route>
-          <Route path="estudantes" element={<Estudantes />} />
+          <Route path="estudantes" element={<PageEstudantes />} />
           <Route path="exportar" element={<ExportarChamada />} />
         </Routes>
       </BrowserRouter>

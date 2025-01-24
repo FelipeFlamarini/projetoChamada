@@ -1,3 +1,4 @@
+
 import {
   z as zod
 } from 'zod'
@@ -5,12 +6,10 @@ import {
 const createStudent = zod.object({
   "name": zod.string(),
   "ra": zod.coerce.number(),
-  "image_base64": zod.string()
+  "image_base64": zod.string() 
 })
 
-const editStudent = createStudent.extend({
-  "active": zod.string()
-})
+const editStudent = createStudent
 
 export { createStudent,editStudent }
 

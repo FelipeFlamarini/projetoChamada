@@ -8,20 +8,22 @@ import {
   useRecognizeApiFacialRecognitionRecognizePost,
   useCreateAttendanceApiAttendancesPost,
 } from "@/chamada";
-import { SmoothAPICallSimulation } from "./dialog";
-import { aw } from "node_modules/react-router/dist/production/route-data-DuV3tXo2.d.mts";
+import { SendingDialog } from "@/components/dialogs/sending";
+import { ConfirmationDialog } from "@/components/dialogs/confirmation";
+import { ConfirmedDialog } from "@/components/dialogs/recognized";
+import { NotRecognizedDialog } from "@/components/dialogs/notRecognized";
+
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
 const FaceDetection = () => {
   const recognizeMutation = useRecognizeApiFacialRecognitionRecognizePost();
-  // const confirmationMutation = useCreateAttendanceApiAttendancesPost();
+  const confirmationMutation = useCreateAttendanceApiAttendancesPost();
 
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [render, setRender] = useState(false);
 
   const [childCallback, setChildCallback] = useState(null);
-
-
 
   const [stage, setStage] = useState<
     "idle" | "sending" | "confirmation" | "confirmed" | "notRecognized"
@@ -31,9 +33,9 @@ const FaceDetection = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [dataStudent, setDataStudent] = useState<any>({});
   const [isConfirmed, setIsConfirmed] = useState<boolean>(true);
-
+  console.log(dataStudent)
   const handleAction = async () => {
-    console.log("Esperando resposta do filho...");
+    // console.log("Esperando resposta do filho...");
 
     // Cria uma promessa que será resolvida pelo componente filho
     const result = await new Promise((resolve) => {
@@ -115,17 +117,26 @@ const FaceDetection = () => {
                   image_base64: imageSrc,
                 },
               });
-              console.log(data);
+              // console.log(data);
               if (data.verified) {
-                setDataStudent(data);
+                setDataStudent(data.students); // Atualize o estado com os dados do estudante
                 setStage("confirmation");
                 await handleAction();
                 await sleep(3000);
+                setDialogOpen(false);
+                setStage("idle");
+                console.log("Presença confirmada!");
+                // if (childCallback) {
+                //   childCallback();
+                // }
               } else {
                 setStage("notRecognized");
                 await sleep(3000);
                 setDialogOpen(false);
                 setStage("idle");
+                if (childCallback) {
+                  childCallback();
+                }
                 // console.log(isConfirmed);
                 // await sleep(2000);
                 // setDialogOpen(false);
@@ -180,18 +191,60 @@ const FaceDetection = () => {
         render ? "justify-center" : "justify-between"
       }`}
     >
-      <SmoothAPICallSimulation
-        stage={stage}
-        setStage={setStage}
-        dialogOpen={dialogOpen}
-        setDialogOpen={setDialogOpen}
-        fadeOut={fadeOut}
-        setFadeOut={setFadeOut}
-        students={dataStudent}
-        isConfirmed={isConfirmed}
-        setIsConfirmed={setIsConfirmed}
-        onResponse={childCallback}
-      />
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="sm:max-w-[425px] [&>button]:hidden">
+          <DialogHeader>
+            <DialogTitle>Chamada Inteligente</DialogTitle>
+          </DialogHeader>
+
+          {stage === "sending" && <SendingDialog fadeOut={fadeOut} />}
+          {(stage === "confirmation" && dataStudent ) && (
+            <ConfirmationDialog
+              fadeOut={fadeOut}
+              students={dataStudent}
+              handleConfirm={() => {
+                confirmationMutation.mutate(dataStudent.token);
+                setStage("confirmed");
+                if (childCallback) {
+                  childCallback();
+                }
+              }}
+              handleExit={() => {
+                setStage("idle");
+                setDialogOpen(false);
+                if (childCallback) {
+                  childCallback();
+                }
+              }}
+            />
+          )}
+          {stage === "confirmed" && (
+            <ConfirmedDialog
+              fadeOut={fadeOut}
+              handleReset={() => {
+                setStage("idle");
+                setDialogOpen(false);
+                if (childCallback) {
+                  childCallback();
+                }
+              }}
+            />
+          )}
+          {stage === "notRecognized" && (
+            <NotRecognizedDialog
+              fadeOut={fadeOut}
+              handleReset={() => {
+                setStage("idle");
+                setDialogOpen(false);
+                if (childCallback) {
+                  childCallback();
+                }
+              }}
+            />
+          )}
+        </DialogContent>
+      </Dialog>
+
       <div className={`flex items-start ${render ? "" : "hidden"}`}>
         <Webcam
           ref={videoRef}
@@ -205,14 +258,6 @@ const FaceDetection = () => {
         />
       </div>
       <ClipLoader color="#ff5833" loading={!render} size={50} />
-      <Button
-        onClick={() => {
-          setDialogOpen(true);
-          setStage("confirmed");
-        }}
-      >
-        openDialog
-      </Button>
       <Button variant={"go"} className="rounded-full mt-4 w-52 sm:w-64" asChild>
         <Link to="/" onClick={stopWebcam}>
           Sair

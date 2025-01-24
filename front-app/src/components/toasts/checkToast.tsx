@@ -32,6 +32,6 @@ export function checkToast({titulo,descricao}: checkToastProps) {
         </div>
       </div>
     ),
-    { duration: 10000 }
+    { duration: 2000 }
   );
 }

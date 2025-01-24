@@ -1,4 +1,5 @@
 import { SquarePen, Trash2 } from "lucide-react";
+import { ClipLoader } from "react-spinners";
 import {
   Dialog,
   DialogContent,
@@ -14,7 +15,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputLogin } from "@/components/ui/input";
 import { UploadBtn } from "@/components/buttons/uploadBtn";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,50 +25,61 @@ import { editStudent } from "@/schemas/estudantes";
 // ver se a melhor opção é fazer um refetch ou pegar pela row
 // import { useGetStudentByRaApiStudentsStudentRaGet as useGetStudentByRa } from "@/chamada";
 import { useUpdateStudentByRaApiStudentsStudentRaPatch as useUpdateStudentsByRa } from "@/chamada";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { checkToast } from "@/components/toasts/checkToast";
 import { useQueryClient } from "@tanstack/react-query";
 import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
+import { useGetStudentByRaApiStudentsStudentRaGet as useGetStudentByRa } from "@/chamada";
 
 interface ActionsProps {
-  row: any;
+  ra: number;
 }
 
-export const Actions = ({ row }: ActionsProps) => {
+export const Actions = ({ ra }: ActionsProps) => {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
-  // const getStudentByRaQuery = useGetStudentByRa(row.ra);
+  const getStudentByRaQuery = useGetStudentByRa(ra);
+
   const updateStudentByRaMutation = useUpdateStudentsByRa();
   const queryClient = useQueryClient();
 
-  console.log(row);
-  const defaultValues = {
-    name: row.name,
-    ra: row.ra,
-    active: row.active ? "active" : "inactive",
-    image_base64: row.image_path,
-  };
+  const defaultValues = getStudentByRaQuery.data
+    ? {
+        name: getStudentByRaQuery.data.name,
+        ra: getStudentByRaQuery.data.ra,
+        image_path: getStudentByRaQuery.data.image_path,
+      }
+    : {
+        name: "",
+        ra: 0,
+        image_path: "",
+      };
   const form = useForm<z.infer<typeof editStudent>>({
     resolver: zodResolver(editStudent),
-    defaultValues: defaultValues,
+    defaultValues: {
+      name: "",
+      ra: 0,
+      image_base64: "",
+    },
+    resetOptions: {
+      keepDirtyValues: true,
+    },
   });
 
-  const onSubmit = (data: z.infer<typeof editStudent>) => {
-    const nData = {
-      ...data,
-      active: data.active === "active" ? true : false,
-    };
+  useEffect(() => {
+    if (getStudentByRaQuery.data) {
+      form.reset({
+        name: getStudentByRaQuery.data.name,
+        ra: getStudentByRaQuery.data.ra,
+        image_base64: getStudentByRaQuery.data.image_path || "",
+      });
+    }
+  }, [getStudentByRaQuery.data, form]);
 
+  const onSubmit = (data: z.infer<typeof editStudent>) => {
     updateStudentByRaMutation.mutate(
       {
-        studentRa: row.ra,
-        data: nData,
+        studentRa: ra,
+        data: data,
       },
       {
         onSuccess: () => {
@@ -85,7 +97,7 @@ export const Actions = ({ row }: ActionsProps) => {
   const deactivateStudent = () => {
     updateStudentByRaMutation.mutate(
       {
-        studentRa: row.ra,
+        studentRa: ra,
         data: {
           active: false,
         },
@@ -104,53 +116,54 @@ export const Actions = ({ row }: ActionsProps) => {
   };
 
   return (
-    <div className="flex gap-4 items-center  h-full">
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogTrigger>
-          <SquarePen />
-        </DialogTrigger>
-        <DialogContent className="gap-0">
-          <DialogHeader>
-            <DialogTitle>Cadastrar Estudante</DialogTitle>
-          </DialogHeader>
-          <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="flex flex-col gap-3 mt-6"
-            >
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <InputLogin
-                        placeholder="Nome Completo"
-                        className="rounded-3xl border border-black"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="ra"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <InputLogin
-                        placeholder="RA do Estudante"
-                        className="rounded-3xl border border-black"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {/* <FormField
+    !getStudentByRaQuery.isLoading && (
+      <div className="flex gap-4 items-center  h-full">
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogTrigger>
+            <SquarePen />
+          </DialogTrigger>
+          <DialogContent className="gap-0">
+            <DialogHeader>
+              <DialogTitle>Cadastrar Estudante</DialogTitle>
+            </DialogHeader>
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(onSubmit)}
+                className="flex flex-col gap-3 mt-6"
+              >
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputLogin
+                          placeholder="Nome Completo"
+                          className="rounded-3xl border border-black"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="ra"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormControl>
+                        <InputLogin
+                          placeholder="RA do Estudante"
+                          className="rounded-3xl border border-black"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {/* <FormField
                 control={form.control}
                 name="active"
                 render={({ field }) => (
@@ -173,54 +186,55 @@ export const Actions = ({ row }: ActionsProps) => {
                   </FormItem>
                 )}
               /> */}
-              <UploadBtn
-                className="rounded-3xl border border-black"
-                title="Faça upload da foto"
-                form={form}
-                name="image_base64"
-              />
-            </form>
-          </Form>
-          <Button
-            variant={"go"}
-            className="rounded-3xl w-full mt-6 mb-4"
-            onClick={form.handleSubmit(onSubmit)}
-          >
-            Salvar
-          </Button>
-        </DialogContent>
-      </Dialog>
-      {/* <SquarePen /> */}
-      <Dialog open={openDelete} onOpenChange={setOpenDelete}>
-        <DialogTrigger>
-          <Trash2 className="text-tst-error-foreground" />
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>
-              Tem Certeza que quer excluir este estudante?
-            </DialogTitle>
-          </DialogHeader>
-          <div className="flex flex-col gap-4">
+                <UploadBtn
+                  className="rounded-3xl border border-black"
+                  title="Faça upload da foto"
+                  form={form}
+                  name="image_base64"
+                />
+              </form>
+            </Form>
             <Button
-              className="rounded-3xl"
-              variant={"goSecondary"}
-              onClick={() => {
-                setOpen(false);
-              }}
-            >
-              Cancelar
-            </Button>
-            <Button
-              className="rounded-3xl"
               variant={"go"}
-              onClick={deactivateStudent}
+              className="rounded-3xl w-full mt-6 mb-4"
+              onClick={form.handleSubmit(onSubmit)}
             >
-              Desativar
+              Salvar
             </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
-    </div>
+          </DialogContent>
+        </Dialog>
+        <Dialog open={openDelete} onOpenChange={setOpenDelete}>
+          <DialogTrigger>
+            <Trash2 className="text-tst-error-foreground" />
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>
+                Tem Certeza que quer excluir este estudante?
+              </DialogTitle>
+            </DialogHeader>
+            <div className="flex flex-col gap-4">
+              <Button
+                className="rounded-3xl"
+                variant={"goSecondary"}
+                onClick={() => {
+                  setOpen(false);
+                }}
+              >
+                Cancelar
+              </Button>
+              <Button
+                className="rounded-3xl"
+                variant={"go"}
+                onClick={deactivateStudent}
+              >
+                Desativar
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
+      </div>
+    )
+    // getStudentByRaQuery.isLoading && (<ClipLoader />)
   );
 };

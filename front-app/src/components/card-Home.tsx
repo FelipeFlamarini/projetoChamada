@@ -38,13 +38,13 @@ export function CardHome() {
             Exportar Lista de Chamada
           </ButtonHome>
         </Link>
-        <Link to="/camera" className="w-full">
+        <Link to="/estudantes" className="w-full">
           <ButtonHome className="text-center p-4 pt-1 flex items-center">
             <SlidersHorizontal />
             Gerenciar Estudantes
           </ButtonHome>
         </Link>
-        <Link to="/camera" className="w-full">
+        <Link to="/login" className="w-full">
           <ButtonHome className="p-4 pt-2 flex flex-col">
             <LogOut className="mb-3" />
             <div className="flex w-full justify-center">Sair</div>
