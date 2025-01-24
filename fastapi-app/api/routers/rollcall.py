@@ -2,8 +2,10 @@ import os
 from typing import List, Tuple, Annotated
 from datetime import timezone, timedelta, datetime
 
-from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Form
+from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Form, Depends
 import jwt
+
+from api.repositories.user_manager import current_active_verified_user
 
 from api.schemas.rollcall import RollcallMessage, RollcallAction
 
@@ -90,12 +92,17 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 @rollcall_router.get("/active_tokens")
-async def get_active_tokens() -> List[str]:
+async def get_active_tokens(
+    current_user=Depends(current_active_verified_user),
+) -> List[str]:
     return rollcall_websockets_connection_manager.get_active_tokens()
 
 
 @rollcall_router.post("/start")
-async def start_rollcall(rollcall_token: Annotated[str, Form(...)]):
+async def start_rollcall(
+    rollcall_token: Annotated[str, Form(...)],
+    current_user=Depends(current_active_verified_user),
+):
     if await rollcall_websockets_connection_manager.start_rollcall_to_token(
         rollcall_token
     ):
@@ -104,7 +111,10 @@ async def start_rollcall(rollcall_token: Annotated[str, Form(...)]):
 
 
 @rollcall_router.post("/stop")
-async def stop_rollcall(rollcall_token: Annotated[str, Form(...)]):
+async def stop_rollcall(
+    rollcall_token: Annotated[str, Form(...)],
+    current_user=Depends(current_active_verified_user),
+):
     if await rollcall_websockets_connection_manager.stop_rollcall_to_token(
         rollcall_token
     ):
