@@ -64,9 +64,6 @@ app.add_middleware(
 )
 
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend), prefix="/api/auth", tags=["auth"]
-)
-app.include_router(
     fastapi_users.get_oauth_router(
         google_oauth_client,
         auth_backend,
@@ -74,21 +71,6 @@ app.include_router(
         is_verified_by_default=True,
     ),
     prefix="/api/auth/google",
-    tags=["auth"],
-)
-app.include_router(
-    fastapi_users.get_register_router(UserRead, UserCreate),
-    prefix="/api/auth",
-    tags=["auth"],
-)
-app.include_router(
-    fastapi_users.get_reset_password_router(),
-    prefix="/api/auth",
-    tags=["auth"],
-)
-app.include_router(
-    fastapi_users.get_verify_router(UserRead),
-    prefix="/api/auth",
     tags=["auth"],
 )
 app.include_router(users_router, prefix="/api/users", tags=["users"])
