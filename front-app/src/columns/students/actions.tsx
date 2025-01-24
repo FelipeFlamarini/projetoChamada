@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { checkToast } from "@/components/toasts/checkToast";
 import { useQueryClient } from "@tanstack/react-query";
-import { getGetAllStudentsApiStudentsGetQueryKey as allStudentsKey } from "@/chamada";
+import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
 
 interface ActionsProps {
   row: any;
@@ -71,7 +71,7 @@ export const Actions = ({ row }: ActionsProps) => {
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: allStudentsKey() });
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpen(false);
           checkToast({
             titulo: "Tudo Certo",
@@ -92,7 +92,7 @@ export const Actions = ({ row }: ActionsProps) => {
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: allStudentsKey() });
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpenDelete(false);
           checkToast({
             titulo: "Tudo Certo",
@@ -104,7 +104,7 @@ export const Actions = ({ row }: ActionsProps) => {
   };
 
   return (
-    <div className="flex gap-4 items-center justify-center h-full">
+    <div className="flex gap-4 items-center  h-full">
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger>
           <SquarePen />
@@ -150,7 +150,7 @@ export const Actions = ({ row }: ActionsProps) => {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="active"
                 render={({ field }) => (
@@ -172,7 +172,7 @@ export const Actions = ({ row }: ActionsProps) => {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <UploadBtn
                 className="rounded-3xl border border-black"
                 title="Faça upload da foto"

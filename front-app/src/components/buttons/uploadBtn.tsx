@@ -24,9 +24,10 @@ interface UploadBtnProps<T extends FieldValues> {
   title?: string;
   form: UseFormReturn<T>;
   name: Path<T>;
+  disabled?: boolean;
 }
 
-export const UploadBtn =  <T extends FieldValues>({ className, title,form,name }: UploadBtnProps<T>) => {
+export const UploadBtn =  <T extends FieldValues>({ className, title,form,name,disabled }: UploadBtnProps<T>) => {
   const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -48,7 +49,7 @@ export const UploadBtn =  <T extends FieldValues>({ className, title,form,name }
 
   return (
     <div className="flex items-center gap-4">
-      <input type="file" id="upload" onChange={handleFileChange} hidden />
+      <input type="file" id="upload" onChange={handleFileChange} hidden  disabled={disabled}/>
       <label
         htmlFor="upload"
         className={cn(

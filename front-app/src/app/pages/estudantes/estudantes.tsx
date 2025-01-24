@@ -1,9 +1,9 @@
 import { HeaderBack2 } from "@/components/headerBack2";
 import { Button } from "@/components/ui/button";
 import { InputWithEndIcon } from "@/components/inputIconEnd";
-import { Search, Upload, X } from "lucide-react";
+import { Loader2, Search, Upload, X } from "lucide-react";
 import { useState } from "react";
-import { useGetAllStudentsApiStudentsGet } from "@/chamada";
+// import { useGetAllStudentsApiStudentsGet } from "@/chamada";
 import { DataTableStudents } from "./table";
 import { columnsStudents } from "@/columns/students/students";
 import {
@@ -37,43 +37,48 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { checkToast } from "@/components/toasts/checkToast";
-import { getGetAllStudentsApiStudentsGetQueryKey as allStudentsKey } from "@/chamada";
+import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
+import { useGetStudentsApiStudentsGet } from "@/chamada";
 
 export function Estudantes() {
   const [inputValue, setInputValue] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [open, setOpen] = useState(false);
-  const { data, isLoading } = useGetAllStudentsApiStudentsGet();
+  const { data, isLoading } = useGetStudentsApiStudentsGet();
   const createStudentMutation = useCreateStudentApiStudentsPost();
-  const queryClient = useQueryClient()
- 
-
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof createStudent>>({
     resolver: zodResolver(createStudent),
-    // defaultValues: {
-    //   username: "",
-    // },
+    defaultValues: {
+      name: "",
+      ra: undefined,
+      image_base64: "",
+    },
   });
 
-  const { formState} = form
+  const { formState } = form;
   console.log(formState.errors);
 
   function onSubmit(data: z.infer<typeof createStudent>) {
-    createStudentMutation.mutate({data:data},
+    createStudentMutation.mutate(
+      { data: data },
       {
         onSuccess: () => {
           console.log("Estudante cadastrado com sucesso");
-          queryClient.invalidateQueries({queryKey:allStudentsKey()})
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpen(false);
-          checkToast({titulo:"Tudo certo!",descricao:"O estudante foi adicionado a lista de chamada"})
+          checkToast({
+            titulo: "Tudo certo!",
+            descricao: "O estudante foi adicionado a lista de chamada",
+          });
+          form.reset();
         },
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);
         },
       }
     );
-    
   }
 
   const table = useReactTable({
@@ -124,6 +129,7 @@ export function Estudantes() {
                           placeholder="Nome Completo"
                           className="rounded-3xl border border-black"
                           {...field}
+                          disabled={createStudentMutation.isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -140,6 +146,7 @@ export function Estudantes() {
                           placeholder="RA do Estudante"
                           className="rounded-3xl border border-black"
                           {...field}
+                          disabled={createStudentMutation.isPending}
                         />
                       </FormControl>
                       <FormMessage />
@@ -150,7 +157,8 @@ export function Estudantes() {
                   className="rounded-3xl border border-black"
                   title="Faça upload da foto"
                   form={form}
-                  name ="image_base64"
+                  name="image_base64"
+                  disabled={createStudentMutation.isPending}
                 />
               </form>
             </Form>
@@ -168,9 +176,21 @@ export function Estudantes() {
                 title="Faça upload da foto"
               />
             </div> */}
-            <Button variant={"go"} className="rounded-3xl w-full mt-6 mb-4" onClick={form.handleSubmit(onSubmit)}>
-              Salvar
-            </Button>
+            {!createStudentMutation.isPending && (
+              <Button
+                variant={"go"}
+                className="rounded-3xl w-full mt-6 mb-4"
+                onClick={form.handleSubmit(onSubmit)}
+              >
+                Salvar
+              </Button>
+            )}
+            {createStudentMutation.isPending && (
+              <Button disabled className="rounded-3xl w-full mt-6 mb-4">
+                <Loader2 className="animate-spin" />
+                enviando...
+              </Button>
+            )}
           </DialogContent>
         </Dialog>
         <InputWithEndIcon
@@ -182,46 +202,20 @@ export function Estudantes() {
           {inputValue && <X onClick={handleClear} />}
           {!inputValue && <Search size={20} />}
         </InputWithEndIcon>
-        <Button variant={"goSecondary"} className="rounded-3xl w-full">
-          Importar CSV <Upload />
-        </Button>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button variant={"goSecondary"} className="rounded-3xl w-full">
+              Importar CSV <Upload />
+            </Button>
+          </DialogTrigger>
+          <DialogContent>
+            <DialogHeader>
+              <DialogTitle>Importar Csv</DialogTitle>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
 
-        {!isLoading && (
-          // <Table className="border border-gray-200 rounded-lg">
-          //   <TableHeader>
-          //     <TableRow>
-          //       <TableHead className="text-left border">Foto</TableHead>
-          //       <TableHead className="text-left border ">Nome</TableHead>
-          //       <TableHead className="text-left border">RA</TableHead>
-          //       <TableHead className="text-left border">Ações</TableHead>
-          //     </TableRow>
-          //   </TableHeader>
-          //   <TableBody>
-          //     {data?.map((estudante) => (
-          //       <TableRow key={estudante._id} className="*:border">
-          //         <TableCell>
-          //           <img
-          //             className="rounded-full"
-          //             src={`http://localhost:2010/${estudante.image_path}`}
-          //             width={40}
-          //             height={40}
-          //             alt={estudante.name}
-          //           />
-          //         </TableCell>
-          //         <TableCell>{estudante.name}</TableCell>
-          //         <TableCell>{estudante.ra}</TableCell>
-          //         <TableCell >
-          //           <div className="flex gap-4 items-center justify-center h-full">
-          //             <SquarePen />
-          //             <Trash2 className="text-tst-error-foreground" />
-          //           </div>
-          //         </TableCell>
-          //       </TableRow>
-          //     ))}
-          //   </TableBody>
-          // </Table>
-          <DataTableStudents table={table} />
-        )}
+        {!isLoading && <DataTableStudents table={table} />}
       </div>
     </div>
   );

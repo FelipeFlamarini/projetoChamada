@@ -9,77 +9,13 @@ import {
 } from 'zod'
 
 /**
- * @summary Users:Current User
+ * @summary Get Current User
  */
-export const usersCurrentUserUsersMeGetResponse = zod.object({
+export const getCurrentUserApiUsersMeGetResponse = zod.object({
   "id": zod.string(),
   "email": zod.string().email(),
   "is_active": zod.boolean().optional(),
   "is_superuser": zod.boolean().optional(),
   "is_verified": zod.boolean().optional()
-})
-
-/**
- * @summary Users:Patch Current User
- */
-export const usersPatchCurrentUserUsersMePatchBody = zod.object({
-  "password": zod.string().or(zod.null()).optional(),
-  "email": zod.string().email().or(zod.null()).optional(),
-  "is_active": zod.boolean().or(zod.null()).optional(),
-  "is_superuser": zod.boolean().or(zod.null()).optional(),
-  "is_verified": zod.boolean().or(zod.null()).optional()
-})
-
-export const usersPatchCurrentUserUsersMePatchResponse = zod.object({
-  "id": zod.string(),
-  "email": zod.string().email(),
-  "is_active": zod.boolean().optional(),
-  "is_superuser": zod.boolean().optional(),
-  "is_verified": zod.boolean().optional()
-})
-
-/**
- * @summary Users:User
- */
-export const usersUserUsersIdGetParams = zod.object({
-  "id": zod.string()
-})
-
-export const usersUserUsersIdGetResponse = zod.object({
-  "id": zod.string(),
-  "email": zod.string().email(),
-  "is_active": zod.boolean().optional(),
-  "is_superuser": zod.boolean().optional(),
-  "is_verified": zod.boolean().optional()
-})
-
-/**
- * @summary Users:Patch User
- */
-export const usersPatchUserUsersIdPatchParams = zod.object({
-  "id": zod.string()
-})
-
-export const usersPatchUserUsersIdPatchBody = zod.object({
-  "password": zod.string().or(zod.null()).optional(),
-  "email": zod.string().email().or(zod.null()).optional(),
-  "is_active": zod.boolean().or(zod.null()).optional(),
-  "is_superuser": zod.boolean().or(zod.null()).optional(),
-  "is_verified": zod.boolean().or(zod.null()).optional()
-})
-
-export const usersPatchUserUsersIdPatchResponse = zod.object({
-  "id": zod.string(),
-  "email": zod.string().email(),
-  "is_active": zod.boolean().optional(),
-  "is_superuser": zod.boolean().optional(),
-  "is_verified": zod.boolean().optional()
-})
-
-/**
- * @summary Users:Delete User
- */
-export const usersDeleteUserUsersIdDeleteParams = zod.object({
-  "id": zod.string()
 })
 

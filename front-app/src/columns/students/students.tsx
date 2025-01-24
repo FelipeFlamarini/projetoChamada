@@ -1,5 +1,6 @@
 import { ColumnDef } from "@tanstack/react-table";
-import { getAllStudentsApiStudentsGetResponseItem as Student } from "../../schemas/endpoints/students/students.zod";
+// import { getAllStudentsApiStudentsGetResponseItem as Student } from "../../schemas/endpoints/students/students.zod";
+import { getStudentsApiStudentsGetResponseItem as Student } from "@/schemas/endpoints/students/students.zod";
 import z from "zod";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Actions } from "./actions";

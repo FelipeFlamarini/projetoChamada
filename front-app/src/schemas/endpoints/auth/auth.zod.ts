@@ -11,17 +11,41 @@ import {
 /**
  * @summary Auth:Jwt.Login
  */
-export const authJwtLoginAuthLoginPostResponse = zod.any()
+export const authJwtLoginApiAuthLoginPostResponse = zod.any()
 
 /**
  * @summary Auth:Jwt.Logout
  */
-export const authJwtLogoutAuthLogoutPostResponse = zod.any()
+export const authJwtLogoutApiAuthLogoutPostResponse = zod.any()
+
+/**
+ * @summary Oauth:Google.Jwt.Authorize
+ */
+export const oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryParams = zod.object({
+  "scopes": zod.array(zod.string()).optional()
+})
+
+export const oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetResponse = zod.object({
+  "authorization_url": zod.string()
+})
+
+/**
+ * The response varies based on the authentication backend used.
+ * @summary Oauth:Google.Jwt.Callback
+ */
+export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryParams = zod.object({
+  "code": zod.string().or(zod.null()).optional(),
+  "code_verifier": zod.string().or(zod.null()).optional(),
+  "state": zod.string().or(zod.null()).optional(),
+  "error": zod.string().or(zod.null()).optional()
+})
+
+export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGetResponse = zod.any()
 
 /**
  * @summary Register:Register
  */
-export const registerRegisterAuthRegisterPostBody = zod.object({
+export const registerRegisterApiAuthRegisterPostBody = zod.object({
   "email": zod.string().email(),
   "password": zod.string(),
   "is_active": zod.boolean().or(zod.null()).optional(),
@@ -32,35 +56,35 @@ export const registerRegisterAuthRegisterPostBody = zod.object({
 /**
  * @summary Reset:Forgot Password
  */
-export const resetForgotPasswordAuthForgotPasswordPostBody = zod.object({
+export const resetForgotPasswordApiAuthForgotPasswordPostBody = zod.object({
   "email": zod.string().email()
 })
 
 /**
  * @summary Reset:Reset Password
  */
-export const resetResetPasswordAuthResetPasswordPostBody = zod.object({
+export const resetResetPasswordApiAuthResetPasswordPostBody = zod.object({
   "token": zod.string(),
   "password": zod.string()
 })
 
-export const resetResetPasswordAuthResetPasswordPostResponse = zod.any()
+export const resetResetPasswordApiAuthResetPasswordPostResponse = zod.any()
 
 /**
  * @summary Verify:Request-Token
  */
-export const verifyRequestTokenAuthRequestVerifyTokenPostBody = zod.object({
+export const verifyRequestTokenApiAuthRequestVerifyTokenPostBody = zod.object({
   "email": zod.string().email()
 })
 
 /**
  * @summary Verify:Verify
  */
-export const verifyVerifyAuthVerifyPostBody = zod.object({
+export const verifyVerifyApiAuthVerifyPostBody = zod.object({
   "token": zod.string()
 })
 
-export const verifyVerifyAuthVerifyPostResponse = zod.object({
+export const verifyVerifyApiAuthVerifyPostResponse = zod.object({
   "id": zod.string(),
   "email": zod.string().email(),
   "is_active": zod.boolean().optional(),

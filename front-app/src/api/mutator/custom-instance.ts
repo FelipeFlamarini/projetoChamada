@@ -1,11 +1,16 @@
 import Axios, { AxiosError, AxiosRequestConfig } from "axios";
+// import { useOauthGoogleJwtCallbackApiAuthGoogleCallbackGet } from "@/chamada";
 
+// mudar para es2020
 const URL_CEll =
   import.meta.env.VITE_FASTAPI_APP_URL || "http://localhost:2010";
 
 export const AXIOS_INSTANCE = Axios.create({
   baseURL: URL_CEll,
+  withCredentials: true,
 }); // use your own URL here or environment variable
+
+
 
 // add a second `options` argument here if you want to pass extra options to each generated query
 export const customInstance = <T>(
