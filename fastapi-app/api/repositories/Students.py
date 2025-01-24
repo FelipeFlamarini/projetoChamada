@@ -34,8 +34,10 @@ class StudentsRepository:
         return await Student.find_all().to_list()
 
     @staticmethod
-    async def get_student_by_ra(student_ra: int) -> Student:
-        student = await Student.find_one(Student.ra == student_ra)
+    async def get_student_by_ra(student_ra: int, active: bool = True) -> Student:
+        student = await Student.find_one(
+            Student.ra == student_ra, Student.active == True
+        )
         if not student:
             raise DocumentNotFound(f"Student with ra {student_ra} not found")
         return student
