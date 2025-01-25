@@ -20,7 +20,7 @@ export function CardHome() {
   return (
     <Card className="mx-auto max-w-sm w-full border-none flex flex-col flex-1 justify-between">
       <CardHeader className="flex flex-col items-center">
-        <CardTitle className="text-2xl">Seja Bem Vindo!</CardTitle>
+        <CardTitle className="text-2xl">Seja bem-vindo!</CardTitle>
         <CardDescription className="text-subText text-center">
           O que você deseja fazer agora?
         </CardDescription>
@@ -29,19 +29,19 @@ export function CardHome() {
         <Link to="/camera" className="w-full">
           <ButtonHome className="text-center p-4 pt-1">
             <ClipboardCheck className="mb-1" />
-            Iniciar chamada Inteligente
+            Iniciar Chamada Inteligente
           </ButtonHome>
         </Link>
         <Link to="/exportar" className="w-full">
           <ButtonHome className="text-center p-4 pt-1">
             <Download className="mb-1" />
-            Exportar Lista de Chamada
+            Exportar lista de chamada
           </ButtonHome>
         </Link>
         <Link to="/estudantes" className="w-full">
           <ButtonHome className="text-center p-4 pt-1">
             <SlidersHorizontal />
-            Gerenciar Estudantes
+            Gerenciar estudantes
           </ButtonHome>
         </Link>
         <Link to="/login" className="w-full">
