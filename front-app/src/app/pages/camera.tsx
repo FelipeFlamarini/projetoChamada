@@ -5,6 +5,7 @@ import FaceDetection from "@/components/dialogfaceDetection";
 
 import { Button } from "@/components/ui/button";
 import { HeaderBack2 } from "@/components/headerBack2";
+import undrawWaiting from "/undrawWaiting.svg";
 
 enum RollcallAction {
   reset_token = "reset_token",
@@ -39,9 +40,9 @@ function WaitingForRollcallStart({
   handleResetToken,
 }: IWaitingForRollcallStart) {
   return (
-    <div className="pt-2 px-4">
-      <HeaderBack2 link="/home" />
-      <div className="flex flex-col items-center gap-2 h-dvh p-2 sm:py-8 justify-center">
+    <div className="pt-2 px-4 flex flex-col justify-between h-dvh">
+      <HeaderBack2 link="/" />
+      <div className="flex flex-col items-center gap-2 p-2 sm:py-8 justify-center">
         <p className="text-text text-center mt-10">
           {isConnected ? (
             <span className="text-2xl">
@@ -67,6 +68,7 @@ function WaitingForRollcallStart({
           Gerar novo token
         </Button>
       </div>
+      <img src={undrawWaiting} alt="" className="w-40 h-w-40 mx-auto pb-4" />
     </div>
   );
 }
