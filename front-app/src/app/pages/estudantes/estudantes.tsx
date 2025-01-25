@@ -57,6 +57,7 @@ interface Student {
 
 interface EstudantesProps {
   dataE: Student[];
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   columnsStudents: any;
 }
 

@@ -8,12 +8,14 @@ import { useOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet } from "@/chamada";
 import { useGetCurrentUser } from "@/hooks/useGetCurrentUser";
 import undrawLogin from "/undrawLogin.svg";
 
-import { FETCH_URL, FETCH_URL_WS } from "@/settings";
-
 function Login() {
   const navigate = useNavigate();
   const getCurrentUser = useGetCurrentUser();
-  if (!getCurrentUser.isLoading && getCurrentUser.data) {
+  if (
+    !getCurrentUser.error &&
+    !getCurrentUser.isLoading &&
+    getCurrentUser.data
+  ) {
     navigate("/home");
   }
 
@@ -22,11 +24,8 @@ function Login() {
   return (
     <div className="flex flex-col items-center gap-2 h-dvh p-2 sm:py-8">
       <LogoCI />
-
       <div className="flex flex-col items-center justify-center h-dvh space-y-2">
         <p className="text-text text-2xl pb-6">Seja bem-vindo!</p>
-        <p>{FETCH_URL}</p>
-        <p>{FETCH_URL_WS}</p>
         <Link to={"/camera"} className="w-full">
           <Button className="w-full">Chamada</Button>
         </Link>

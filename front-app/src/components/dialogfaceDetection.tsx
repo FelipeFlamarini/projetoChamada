@@ -13,7 +13,7 @@ import { ConfirmationDialog } from "@/components/dialogs/confirmation";
 import { ConfirmedDialog } from "@/components/dialogs/recognized";
 import { NotRecognizedDialog } from "@/components/dialogs/notRecognized";
 
-import { Student } from "@/model";
+import { DeepFaceStudentReturn } from "@/model";
 
 import {
   Dialog,
@@ -41,7 +41,7 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
   >("idle");
   const [dialogOpen, setDialogOpen] = useState(false);
   const fadeOut: boolean = false;
-  const [dataStudent, setDataStudent] = useState<Student[]>([]);
+  const [dataStudent, setDataStudent] = useState<DeepFaceStudentReturn[]>([]);
   const handleAction = async () => {
     await new Promise((resolve) => {
       setChildCallback(() => resolve);
@@ -118,7 +118,7 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
                   recognize_token: recognizeToken,
                 },
               });
-              if (data.verified) {
+              if (data.verified && data.students) {
                 setDataStudent(data.students);
                 setStage("confirmation");
                 await handleAction();
@@ -192,8 +192,7 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
             <ConfirmationDialog
               fadeOut={fadeOut}
               students={dataStudent}
-              handleConfirm={(student) => {
-                console.log(student);
+              handleConfirm={(student: DeepFaceStudentReturn) => {
                 confirmationMutation.mutate({ data: { jwt: student.token } });
                 setStage("confirmed");
                 if (childCallback) {

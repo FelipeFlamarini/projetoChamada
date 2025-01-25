@@ -135,7 +135,7 @@ export function Camera() {
 
   useEffect(() => {
     // TODO: fix ip
-    const ws = new WebSocket(`ws://localhost:2010/api/rollcall/ws`);
+    const ws = new WebSocket(`${FETCH_URL_WS}/api/rollcall/ws`);
 
     ws.onopen = () => {
       setIsConnected(true);

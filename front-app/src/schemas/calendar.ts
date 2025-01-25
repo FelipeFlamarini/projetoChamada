@@ -6,5 +6,4 @@ const calendarSchema = z.object({
   finalDate: z.date().optional(),
 });
 
-export {calendarSchema}
-
+export { calendarSchema };

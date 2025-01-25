@@ -63,13 +63,14 @@ export const Actions = ({ ra }: ActionsProps) => {
   }, [getStudentByRaQuery.data, form]);
 
   const onSubmit = (data: z.infer<typeof editStudent>) => {
+    if (!data.image_base64) {
+      data = { name: data.name, ra: data.ra };
+    }
+
     updateStudentByRaMutation.mutate(
       {
         studentRa: ra,
-        data: {
-          name: data.name,
-          ra: data.ra,
-        },
+        data: data,
       },
       {
         onSuccess: (student) => {

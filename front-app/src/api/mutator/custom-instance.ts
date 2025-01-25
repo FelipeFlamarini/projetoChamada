@@ -1,11 +1,11 @@
 import Axios, { AxiosError, AxiosRequestConfig } from "axios";
 // import { useOauthGoogleJwtCallbackApiAuthGoogleCallbackGet } from "@/chamada";
+import { FETCH_URL } from "@/settings";
 
 // mudar para es2020
-const URL_CEll = import.meta.env.VITE_FASTAPI_APP_URL;
 
 export const AXIOS_INSTANCE = Axios.create({
-  baseURL: URL_CEll,
+  baseURL: FETCH_URL,
   withCredentials: true,
 }); // use your own URL here or environment variable
 

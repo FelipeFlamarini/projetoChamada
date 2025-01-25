@@ -7,7 +7,7 @@ import { DeepFaceStudentReturn } from "@/model";
 interface ConfirmationDialogProps {
   fadeOut: boolean;
   students: DeepFaceStudentReturn[];
-  handleConfirm: () => void;
+  handleConfirm: (student: DeepFaceStudentReturn) => void;
   handleExit: () => void;
 }
 

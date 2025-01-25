@@ -27,11 +27,12 @@ services:
     build:
       context: front-app
       dockerfile: prod.Dockerfile
+      args:
+        VITE_FASTAPI_APP_URL: ${FASTAPI_APP_URL}
+        VITE_FASTAPI_APP_URL_WS: ${FASTAPI_APP_URL_WS}
+
     ports:
       - ${FRONT_APP_PORT}:8080
-    environment:
-      VITE_FASTAPI_APP_URL: ${FASTAPI_APP_URL}
-      VITE_FASTAPI_APP_URL_WS: ${FASTAPI_APP_URL_WS}
     depends_on:
       - fastapi-app
 
