@@ -110,9 +110,20 @@ class WebsocketNotConnected(HTTPException):
     def __init__(self, detail: str = "Websocket not connected"):
         super().__init__(status_code=HTTPStatus.BAD_REQUEST, detail=detail)
 
+
 class DateAttendanceNotFound(HTTPException):
     """
     Raised when a date is not found in the database.
     """
+
     def __init__(self, detail: str = "No attendances found for the given date"):
         super().__init__(status_code=HTTPStatus.NOT_FOUND, detail=detail)
+
+
+class InvalidImage(HTTPException):
+    """
+    Raised when an image is invalid.
+    """
+
+    def __init__(self, detail: str = "Invalid image"):
+        super().__init__(status_code=HTTPStatus.BAD_REQUEST, detail=detail)

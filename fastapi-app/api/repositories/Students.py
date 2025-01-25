@@ -63,6 +63,7 @@ class StudentsRepository:
             )  # for now, only "ra" field is unique
 
         try:
+            image_base64 = ImagesRepository.uri_to_base64_str(image_base64)
             image_path = ImagesRepository.save_base64_image_for_student(
                 ra, image_base64
             )

@@ -78,7 +78,7 @@ async def create_students_by_csv(
                 try:
                     student["reason"] = e.detail
                 except:
-                    student["reason"] = str(e)
+                    student["reason"] = str(e.__class__)
                 students_not_created.append(student)
                 yield json.dumps(
                     jsonable_encoder(
