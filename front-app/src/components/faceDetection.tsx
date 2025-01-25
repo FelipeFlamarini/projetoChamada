@@ -68,7 +68,7 @@ const FaceDetection = () => {
       context?.clearRect(0, 0, canvas.width, canvas.height);
 
       console.log("Detecting face...");
-      console.log(video);
+      // console.log(video);
       const detections = await faceapi.detectSingleFace(
         video,
         new faceapi.TinyFaceDetectorOptions({
@@ -76,7 +76,7 @@ const FaceDetection = () => {
           scoreThreshold: 0.5,
         })
       );
-      console.log(detections);
+      // console.log(detections);
       if (detections) {
         // console.log(detections);
         const resizedDetections = faceapi.resizeResults(
@@ -94,7 +94,7 @@ const FaceDetection = () => {
                   image_base64: imageSrc,
                 },
               });
-
+              console.log(data);
               if (data.verified) {
                 confirmationToast({
                   students: data.students,
