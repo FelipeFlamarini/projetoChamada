@@ -9,19 +9,26 @@ interface CaledarBtnProps {
   placeholder: string | undefined;
   className?: string;
   onDateChange?: (date: Date) => void;
+  dates?: string[];
 }
 
 export const CaledarBtn = ({
   Icon,
   placeholder,
   onDateChange,
+  dates = [],
   ...rest
 }: CaledarBtnProps) => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [isCalendarOpen, setIsCalendarOpen] = useState(false);
 
   const toggleCalendar = () => setIsCalendarOpen((prev) => !prev);
-
+  const includeDates = dates.map((date) => {
+    const adjustedDate = new Date(date);
+    adjustedDate.setMinutes(adjustedDate.getMinutes() + adjustedDate.getTimezoneOffset());
+    return adjustedDate;
+  });
+  
   return (
     <div className="relative">
       <Button
@@ -38,17 +45,24 @@ export const CaledarBtn = ({
         </span>
       </Button>
       {isCalendarOpen && (
-        <div className="fixed top-0 left-0 w-full h-full z-0 bg-black bg-opacity-50">
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10">
+        <div className="fixed top-0 left-0 w-full h-full z-0 bg-black bg-opacity-50" onClick={() => setIsCalendarOpen(false)}>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-10" onClick={(e) => e.stopPropagation()}>
             <DatePicker
               selected={selectedDate}
               onChange={(date) => {
-                if (date) {
-                  onDateChange?.(date);
+                if (selectedDate?.getTime() === date?.getTime()) {
+                  setIsCalendarOpen(false);
+                  return;
+
+                } else {
+                  if (date) {
+                    onDateChange?.(date);
+                  }
                   setSelectedDate(date);
-                }
-                setIsCalendarOpen(false);
+                  setIsCalendarOpen(false); // Fecha o calendário ao selecionar
+                } 
               }}
+              includeDates={includeDates}
               inline
             />
           </div>
