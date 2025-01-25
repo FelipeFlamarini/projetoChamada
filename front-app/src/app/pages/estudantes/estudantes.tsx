@@ -127,7 +127,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
           queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           checkToast({
             titulo: "Tudo certo!",
-            descricao: "Os estudantes foram excluídos da lista de chamada",
+            descricao: "Os estudantes foram desativados da lista de chamada",
           });
         },
         onError: (error) => {
@@ -266,7 +266,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
               className="rounded-3xl w-full"
               onClick={excludeStudents}
             >
-              Excluir estudantes
+              Desativar estudantes
             </Button>
             <Button
               variant="goSecondary"
