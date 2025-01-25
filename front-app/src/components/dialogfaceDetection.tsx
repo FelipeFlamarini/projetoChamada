@@ -13,6 +13,8 @@ import { ConfirmationDialog } from "@/components/dialogs/confirmation";
 import { ConfirmedDialog } from "@/components/dialogs/recognized";
 import { NotRecognizedDialog } from "@/components/dialogs/notRecognized";
 
+import { Student } from "@/model";
+
 import {
   Dialog,
   DialogContent,
@@ -38,11 +40,8 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
     "idle" | "sending" | "confirmation" | "confirmed" | "notRecognized"
   >("idle");
   const [dialogOpen, setDialogOpen] = useState(false);
-  // const [fadeOut, setFadeOut] = useState(false);
   const fadeOut: boolean = false;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [dataStudent, setDataStudent] = useState<any>({});
-  // console.log(dataStudent);
+  const [dataStudent, setDataStudent] = useState<Student[]>([]);
   const handleAction = async () => {
     await new Promise((resolve) => {
       setChildCallback(() => resolve);
@@ -126,7 +125,6 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
                 await sleep(3000);
                 setDialogOpen(false);
                 setStage("idle");
-                console.log("Presença confirmada!");
               } else {
                 setStage("notRecognized");
                 await sleep(3000);
@@ -194,8 +192,9 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
             <ConfirmationDialog
               fadeOut={fadeOut}
               students={dataStudent}
-              handleConfirm={() => {
-                confirmationMutation.mutate(dataStudent.token);
+              handleConfirm={(student) => {
+                console.log(student);
+                confirmationMutation.mutate({ data: { jwt: student.token } });
                 setStage("confirmed");
                 if (childCallback) {
                   childCallback();

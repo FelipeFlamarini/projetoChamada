@@ -18,12 +18,6 @@ from api.schemas.student import StudentUpdate
 
 from utils.exceptions import *
 
-import logging
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-
-
 TIMEZONE_GMT_MINUS_3 = timezone(timedelta(hours=-3))
 __JWT_SECRET_KEY__: str = os.getenv("JWT_RECOGNIZE_SECRET_KEY")
 __JWT_ALGORITHM__: str = os.getenv("JWT_ALGORITHM")
