@@ -8,11 +8,11 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 ## 👥 **Autores**
 
-- [Felipe Flamarini](https://www.github.com/octokatherine)
-- [Kauan Olival](https://www.github.com/octokatherine)
+- [Felipe Flamarini](https://github.com/FelipeFlamarini)
+- [Kauan Olival](https://github.com/kauan345developer)
 - [Leticia Escobar](https://www.github.com/octokatherine)
-- [Nicholas Ricardo](https://www.github.com/octokatherine)
-- [Patrick Dias](https://www.github.com/octokatherine)
+- [Nicholas Ricardo](https://github.com/nicholasss0)
+- [Patrick Dias](https://github.com/Patrick510)
 
 ---
 
