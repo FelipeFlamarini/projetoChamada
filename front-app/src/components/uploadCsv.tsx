@@ -65,14 +65,6 @@ export function FileUploadDialog() {
     setFiles([]);
   };
 
-  const handleInputClick = () => {
-    setTimeout(() => {
-      if (fileInputRef.current) {
-        fileInputRef.current.click();
-      }
-    }, 0);
-  };
-
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFiles = Array.from(event.target.files).map((file) => ({
@@ -93,11 +85,7 @@ export function FileUploadDialog() {
   return (
     <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
       <DialogTrigger asChild>
-        <Button
-          variant={"goSecondary"}
-          className="rounded-3xl w-full"
-          onClick={handleInputClick}
-        >
+        <Button variant={"goSecondary"} className="rounded-3xl w-full">
           Importar CSV <Upload />
         </Button>
       </DialogTrigger>
