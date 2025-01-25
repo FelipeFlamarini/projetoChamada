@@ -33,7 +33,7 @@ import {
 } from "@/components/ui/select";
 import { checkToast } from "@/components/toasts/checkToast";
 import { useQueryClient } from "@tanstack/react-query";
-import { getGetAllStudentsApiStudentsGetQueryKey as allStudentsKey } from "@/chamada";
+import { getGetAllStudentsApiStudentsAllGetQueryKey as allStudentsKey } from "@/chamada";
 
 interface ActionsProps {
   row: any;

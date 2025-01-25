@@ -23,24 +23,21 @@ import type {
 } from '@tanstack/react-query'
 import type {
   AttendanceStudentReturn,
-  BodyAuthJwtLoginAuthLoginPost,
   BodyCreateAttendanceApiAttendancesPost,
+  BodyCreateAttendanceCsvByDateApiAttendancesCsvPost,
   BodyCreateStudentApiStudentsPost,
   BodyCreateStudentsByCsvApiStudentsCsvPost,
   BodyRecognizeApiFacialRecognitionRecognizePost,
-  BodyResetForgotPasswordAuthForgotPasswordPost,
-  BodyResetResetPasswordAuthResetPasswordPost,
   BodyUpdateStudentByRaApiStudentsStudentRaPatch,
-  BodyVerifyRequestTokenAuthRequestVerifyTokenPost,
-  BodyVerifyVerifyAuthVerifyPost,
   DeepFaceRecognizeReturn,
   ErrorModel,
+  GetStudentsApiStudentsGetParams,
   HTTPValidationError,
+  OAuth2AuthorizeResponse,
+  OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams,
+  OauthGoogleJwtCallbackApiAuthGoogleCallbackGetParams,
   Student,
-  StudentsCreatedByCSV,
-  UserCreate,
-  UserRead,
-  UserUpdate
+  UserRead
 } from './model'
 import { customInstance } from './api/mutator/custom-instance';
 import type { ErrorType, BodyType } from './api/mutator/custom-instance';
@@ -50,508 +47,83 @@ type SecondParameter<T extends (...args: any) => any> = Parameters<T>[1];
 
 
 /**
- * @summary Auth:Jwt.Login
+ * @summary Oauth:Google.Jwt.Authorize
  */
-export const authJwtLoginAuthLoginPost = (
-    bodyAuthJwtLoginAuthLoginPost: BodyType<BodyAuthJwtLoginAuthLoginPost>,
+export const oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet = (
+    params?: OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
-      const formUrlEncoded = new URLSearchParams();
-if(bodyAuthJwtLoginAuthLoginPost.grant_type !== undefined && bodyAuthJwtLoginAuthLoginPost.grant_type !== null) {
- formUrlEncoded.append('grant_type', bodyAuthJwtLoginAuthLoginPost.grant_type)
- }
-formUrlEncoded.append('username', bodyAuthJwtLoginAuthLoginPost.username)
-formUrlEncoded.append('password', bodyAuthJwtLoginAuthLoginPost.password)
-if(bodyAuthJwtLoginAuthLoginPost.scope !== undefined) {
- formUrlEncoded.append('scope', bodyAuthJwtLoginAuthLoginPost.scope)
- }
-if(bodyAuthJwtLoginAuthLoginPost.client_id !== undefined && bodyAuthJwtLoginAuthLoginPost.client_id !== null) {
- formUrlEncoded.append('client_id', bodyAuthJwtLoginAuthLoginPost.client_id)
- }
-if(bodyAuthJwtLoginAuthLoginPost.client_secret !== undefined && bodyAuthJwtLoginAuthLoginPost.client_secret !== null) {
- formUrlEncoded.append('client_secret', bodyAuthJwtLoginAuthLoginPost.client_secret)
- }
-
-      return customInstance<unknown | void>(
-      {url: `/auth/login`, method: 'POST',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
-       data: formUrlEncoded, signal
+      
+      return customInstance<OAuth2AuthorizeResponse>(
+      {url: `/api/auth/google/authorize`, method: 'GET',
+        params, signal
     },
       options);
     }
   
 
-
-export const getAuthJwtLoginAuthLoginPostMutationOptions = <TError = ErrorType<ErrorModel | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginAuthLoginPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginAuthLoginPost>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authJwtLoginAuthLoginPost>>, {data: BodyType<BodyAuthJwtLoginAuthLoginPost>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  authJwtLoginAuthLoginPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AuthJwtLoginAuthLoginPostMutationResult = NonNullable<Awaited<ReturnType<typeof authJwtLoginAuthLoginPost>>>
-    export type AuthJwtLoginAuthLoginPostMutationBody = BodyType<BodyAuthJwtLoginAuthLoginPost>
-    export type AuthJwtLoginAuthLoginPostMutationError = ErrorType<ErrorModel | HTTPValidationError>
-
-    /**
- * @summary Auth:Jwt.Login
- */
-export const useAuthJwtLoginAuthLoginPost = <TError = ErrorType<ErrorModel | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginAuthLoginPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof authJwtLoginAuthLoginPost>>,
-        TError,
-        {data: BodyType<BodyAuthJwtLoginAuthLoginPost>},
-        TContext
-      > => {
-
-      const mutationOptions = getAuthJwtLoginAuthLoginPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Auth:Jwt.Logout
- */
-export const authJwtLogoutAuthLogoutPost = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<unknown | void>(
-      {url: `/auth/logout`, method: 'POST', signal
-    },
-      options);
-    }
-  
-
-
-export const getAuthJwtLogoutAuthLogoutPostMutationOptions = <TError = ErrorType<void>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutAuthLogoutPost>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutAuthLogoutPost>>, TError,void, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authJwtLogoutAuthLogoutPost>>, void> = () => {
-          
-
-          return  authJwtLogoutAuthLogoutPost(requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type AuthJwtLogoutAuthLogoutPostMutationResult = NonNullable<Awaited<ReturnType<typeof authJwtLogoutAuthLogoutPost>>>
-    
-    export type AuthJwtLogoutAuthLogoutPostMutationError = ErrorType<void>
-
-    /**
- * @summary Auth:Jwt.Logout
- */
-export const useAuthJwtLogoutAuthLogoutPost = <TError = ErrorType<void>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutAuthLogoutPost>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof authJwtLogoutAuthLogoutPost>>,
-        TError,
-        void,
-        TContext
-      > => {
-
-      const mutationOptions = getAuthJwtLogoutAuthLogoutPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Register:Register
- */
-export const registerRegisterAuthRegisterPost = (
-    userCreate: BodyType<UserCreate>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<UserRead>(
-      {url: `/auth/register`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: userCreate, signal
-    },
-      options);
-    }
-  
-
-
-export const getRegisterRegisterAuthRegisterPostMutationOptions = <TError = ErrorType<ErrorModel | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof registerRegisterAuthRegisterPost>>, TError,{data: BodyType<UserCreate>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof registerRegisterAuthRegisterPost>>, TError,{data: BodyType<UserCreate>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof registerRegisterAuthRegisterPost>>, {data: BodyType<UserCreate>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  registerRegisterAuthRegisterPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type RegisterRegisterAuthRegisterPostMutationResult = NonNullable<Awaited<ReturnType<typeof registerRegisterAuthRegisterPost>>>
-    export type RegisterRegisterAuthRegisterPostMutationBody = BodyType<UserCreate>
-    export type RegisterRegisterAuthRegisterPostMutationError = ErrorType<ErrorModel | HTTPValidationError>
-
-    /**
- * @summary Register:Register
- */
-export const useRegisterRegisterAuthRegisterPost = <TError = ErrorType<ErrorModel | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof registerRegisterAuthRegisterPost>>, TError,{data: BodyType<UserCreate>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof registerRegisterAuthRegisterPost>>,
-        TError,
-        {data: BodyType<UserCreate>},
-        TContext
-      > => {
-
-      const mutationOptions = getRegisterRegisterAuthRegisterPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Reset:Forgot Password
- */
-export const resetForgotPasswordAuthForgotPasswordPost = (
-    bodyResetForgotPasswordAuthForgotPasswordPost: BodyType<BodyResetForgotPasswordAuthForgotPasswordPost>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/auth/forgot-password`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: bodyResetForgotPasswordAuthForgotPasswordPost, signal
-    },
-      options);
-    }
-  
-
-
-export const getResetForgotPasswordAuthForgotPasswordPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetForgotPasswordAuthForgotPasswordPost>>, TError,{data: BodyType<BodyResetForgotPasswordAuthForgotPasswordPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof resetForgotPasswordAuthForgotPasswordPost>>, TError,{data: BodyType<BodyResetForgotPasswordAuthForgotPasswordPost>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetForgotPasswordAuthForgotPasswordPost>>, {data: BodyType<BodyResetForgotPasswordAuthForgotPasswordPost>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  resetForgotPasswordAuthForgotPasswordPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ResetForgotPasswordAuthForgotPasswordPostMutationResult = NonNullable<Awaited<ReturnType<typeof resetForgotPasswordAuthForgotPasswordPost>>>
-    export type ResetForgotPasswordAuthForgotPasswordPostMutationBody = BodyType<BodyResetForgotPasswordAuthForgotPasswordPost>
-    export type ResetForgotPasswordAuthForgotPasswordPostMutationError = ErrorType<HTTPValidationError>
-
-    /**
- * @summary Reset:Forgot Password
- */
-export const useResetForgotPasswordAuthForgotPasswordPost = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetForgotPasswordAuthForgotPasswordPost>>, TError,{data: BodyType<BodyResetForgotPasswordAuthForgotPasswordPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof resetForgotPasswordAuthForgotPasswordPost>>,
-        TError,
-        {data: BodyType<BodyResetForgotPasswordAuthForgotPasswordPost>},
-        TContext
-      > => {
-
-      const mutationOptions = getResetForgotPasswordAuthForgotPasswordPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Reset:Reset Password
- */
-export const resetResetPasswordAuthResetPasswordPost = (
-    bodyResetResetPasswordAuthResetPasswordPost: BodyType<BodyResetResetPasswordAuthResetPasswordPost>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/auth/reset-password`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: bodyResetResetPasswordAuthResetPasswordPost, signal
-    },
-      options);
-    }
-  
-
-
-export const getResetResetPasswordAuthResetPasswordPostMutationOptions = <TError = ErrorType<ErrorModel | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetResetPasswordAuthResetPasswordPost>>, TError,{data: BodyType<BodyResetResetPasswordAuthResetPasswordPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof resetResetPasswordAuthResetPasswordPost>>, TError,{data: BodyType<BodyResetResetPasswordAuthResetPasswordPost>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof resetResetPasswordAuthResetPasswordPost>>, {data: BodyType<BodyResetResetPasswordAuthResetPasswordPost>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  resetResetPasswordAuthResetPasswordPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type ResetResetPasswordAuthResetPasswordPostMutationResult = NonNullable<Awaited<ReturnType<typeof resetResetPasswordAuthResetPasswordPost>>>
-    export type ResetResetPasswordAuthResetPasswordPostMutationBody = BodyType<BodyResetResetPasswordAuthResetPasswordPost>
-    export type ResetResetPasswordAuthResetPasswordPostMutationError = ErrorType<ErrorModel | HTTPValidationError>
-
-    /**
- * @summary Reset:Reset Password
- */
-export const useResetResetPasswordAuthResetPasswordPost = <TError = ErrorType<ErrorModel | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof resetResetPasswordAuthResetPasswordPost>>, TError,{data: BodyType<BodyResetResetPasswordAuthResetPasswordPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof resetResetPasswordAuthResetPasswordPost>>,
-        TError,
-        {data: BodyType<BodyResetResetPasswordAuthResetPasswordPost>},
-        TContext
-      > => {
-
-      const mutationOptions = getResetResetPasswordAuthResetPasswordPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Verify:Request-Token
- */
-export const verifyRequestTokenAuthRequestVerifyTokenPost = (
-    bodyVerifyRequestTokenAuthRequestVerifyTokenPost: BodyType<BodyVerifyRequestTokenAuthRequestVerifyTokenPost>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<unknown>(
-      {url: `/auth/request-verify-token`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: bodyVerifyRequestTokenAuthRequestVerifyTokenPost, signal
-    },
-      options);
-    }
-  
-
-
-export const getVerifyRequestTokenAuthRequestVerifyTokenPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyRequestTokenAuthRequestVerifyTokenPost>>, TError,{data: BodyType<BodyVerifyRequestTokenAuthRequestVerifyTokenPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof verifyRequestTokenAuthRequestVerifyTokenPost>>, TError,{data: BodyType<BodyVerifyRequestTokenAuthRequestVerifyTokenPost>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyRequestTokenAuthRequestVerifyTokenPost>>, {data: BodyType<BodyVerifyRequestTokenAuthRequestVerifyTokenPost>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  verifyRequestTokenAuthRequestVerifyTokenPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type VerifyRequestTokenAuthRequestVerifyTokenPostMutationResult = NonNullable<Awaited<ReturnType<typeof verifyRequestTokenAuthRequestVerifyTokenPost>>>
-    export type VerifyRequestTokenAuthRequestVerifyTokenPostMutationBody = BodyType<BodyVerifyRequestTokenAuthRequestVerifyTokenPost>
-    export type VerifyRequestTokenAuthRequestVerifyTokenPostMutationError = ErrorType<HTTPValidationError>
-
-    /**
- * @summary Verify:Request-Token
- */
-export const useVerifyRequestTokenAuthRequestVerifyTokenPost = <TError = ErrorType<HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyRequestTokenAuthRequestVerifyTokenPost>>, TError,{data: BodyType<BodyVerifyRequestTokenAuthRequestVerifyTokenPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof verifyRequestTokenAuthRequestVerifyTokenPost>>,
-        TError,
-        {data: BodyType<BodyVerifyRequestTokenAuthRequestVerifyTokenPost>},
-        TContext
-      > => {
-
-      const mutationOptions = getVerifyRequestTokenAuthRequestVerifyTokenPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Verify:Verify
- */
-export const verifyVerifyAuthVerifyPost = (
-    bodyVerifyVerifyAuthVerifyPost: BodyType<BodyVerifyVerifyAuthVerifyPost>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<UserRead>(
-      {url: `/auth/verify`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: bodyVerifyVerifyAuthVerifyPost, signal
-    },
-      options);
-    }
-  
-
-
-export const getVerifyVerifyAuthVerifyPostMutationOptions = <TError = ErrorType<ErrorModel | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyVerifyAuthVerifyPost>>, TError,{data: BodyType<BodyVerifyVerifyAuthVerifyPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof verifyVerifyAuthVerifyPost>>, TError,{data: BodyType<BodyVerifyVerifyAuthVerifyPost>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof verifyVerifyAuthVerifyPost>>, {data: BodyType<BodyVerifyVerifyAuthVerifyPost>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  verifyVerifyAuthVerifyPost(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type VerifyVerifyAuthVerifyPostMutationResult = NonNullable<Awaited<ReturnType<typeof verifyVerifyAuthVerifyPost>>>
-    export type VerifyVerifyAuthVerifyPostMutationBody = BodyType<BodyVerifyVerifyAuthVerifyPost>
-    export type VerifyVerifyAuthVerifyPostMutationError = ErrorType<ErrorModel | HTTPValidationError>
-
-    /**
- * @summary Verify:Verify
- */
-export const useVerifyVerifyAuthVerifyPost = <TError = ErrorType<ErrorModel | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof verifyVerifyAuthVerifyPost>>, TError,{data: BodyType<BodyVerifyVerifyAuthVerifyPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof verifyVerifyAuthVerifyPost>>,
-        TError,
-        {data: BodyType<BodyVerifyVerifyAuthVerifyPost>},
-        TContext
-      > => {
-
-      const mutationOptions = getVerifyVerifyAuthVerifyPostMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Users:Current User
- */
-export const usersCurrentUserUsersMeGet = (
-    
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
-      
-      
-      return customInstance<UserRead>(
-      {url: `/users/me`, method: 'GET', signal
-    },
-      options);
-    }
-  
-
-export const getUsersCurrentUserUsersMeGetQueryKey = () => {
-    return [`/users/me`] as const;
+export const getOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryKey = (params?: OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams,) => {
+    return [`/api/auth/google/authorize`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getUsersCurrentUserUsersMeGetQueryOptions = <TData = Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError = ErrorType<void>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryOptions = <TData = Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError = ErrorType<HTTPValidationError>>(params?: OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getUsersCurrentUserUsersMeGetQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>> = ({ signal }) => usersCurrentUserUsersMeGet(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>> = ({ signal }) => oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet(params, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
 }
 
-export type UsersCurrentUserUsersMeGetQueryResult = NonNullable<Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>>
-export type UsersCurrentUserUsersMeGetQueryError = ErrorType<void>
+export type OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryResult = NonNullable<Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>>
+export type OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryError = ErrorType<HTTPValidationError>
 
 
-export function useUsersCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError = ErrorType<void>>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError, TData>> & Pick<
+export function useOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet<TData = Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError = ErrorType<HTTPValidationError>>(
+ params: undefined |  OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>,
+          Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useUsersCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError = ErrorType<void>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError, TData>> & Pick<
+export function useOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet<TData = Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError = ErrorType<HTTPValidationError>>(
+ params?: OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>,
+          Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useUsersCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError = ErrorType<void>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet<TData = Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError = ErrorType<HTTPValidationError>>(
+ params?: OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 /**
- * @summary Users:Current User
+ * @summary Oauth:Google.Jwt.Authorize
  */
 
-export function useUsersCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError = ErrorType<void>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersCurrentUserUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet<TData = Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError = ErrorType<HTTPValidationError>>(
+ params?: OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getUsersCurrentUserUsersMeGetQueryOptions(options)
+  const queryOptions = getOauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -564,140 +136,84 @@ export function useUsersCurrentUserUsersMeGet<TData = Awaited<ReturnType<typeof 
 
 
 /**
- * @summary Users:Patch Current User
+ * The response varies based on the authentication backend used.
+ * @summary Oauth:Google.Jwt.Callback
  */
-export const usersPatchCurrentUserUsersMePatch = (
-    userUpdate: BodyType<UserUpdate>,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<UserRead>(
-      {url: `/users/me`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: userUpdate
-    },
-      options);
-    }
-  
-
-
-export const getUsersPatchCurrentUserUsersMePatchMutationOptions = <TError = ErrorType<ErrorModel | void | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersPatchCurrentUserUsersMePatch>>, TError,{data: BodyType<UserUpdate>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof usersPatchCurrentUserUsersMePatch>>, TError,{data: BodyType<UserUpdate>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersPatchCurrentUserUsersMePatch>>, {data: BodyType<UserUpdate>}> = (props) => {
-          const {data} = props ?? {};
-
-          return  usersPatchCurrentUserUsersMePatch(data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type UsersPatchCurrentUserUsersMePatchMutationResult = NonNullable<Awaited<ReturnType<typeof usersPatchCurrentUserUsersMePatch>>>
-    export type UsersPatchCurrentUserUsersMePatchMutationBody = BodyType<UserUpdate>
-    export type UsersPatchCurrentUserUsersMePatchMutationError = ErrorType<ErrorModel | void | HTTPValidationError>
-
-    /**
- * @summary Users:Patch Current User
- */
-export const useUsersPatchCurrentUserUsersMePatch = <TError = ErrorType<ErrorModel | void | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersPatchCurrentUserUsersMePatch>>, TError,{data: BodyType<UserUpdate>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof usersPatchCurrentUserUsersMePatch>>,
-        TError,
-        {data: BodyType<UserUpdate>},
-        TContext
-      > => {
-
-      const mutationOptions = getUsersPatchCurrentUserUsersMePatchMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
-/**
- * @summary Users:User
- */
-export const usersUserUsersIdGet = (
-    id: string,
+export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGet = (
+    params?: OauthGoogleJwtCallbackApiAuthGoogleCallbackGetParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
-      return customInstance<UserRead>(
-      {url: `/users/${id}`, method: 'GET', signal
+      return customInstance<unknown>(
+      {url: `/api/auth/google/callback`, method: 'GET',
+        params, signal
     },
       options);
     }
   
 
-export const getUsersUserUsersIdGetQueryKey = (id: string,) => {
-    return [`/users/${id}`] as const;
+export const getOauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryKey = (params?: OauthGoogleJwtCallbackApiAuthGoogleCallbackGetParams,) => {
+    return [`/api/auth/google/callback`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getUsersUserUsersIdGetQueryOptions = <TData = Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError = ErrorType<void | HTTPValidationError>>(id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getOauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryOptions = <TData = Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError = ErrorType<ErrorModel | HTTPValidationError>>(params?: OauthGoogleJwtCallbackApiAuthGoogleCallbackGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getUsersUserUsersIdGetQueryKey(id);
+  const queryKey =  queryOptions?.queryKey ?? getOauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof usersUserUsersIdGet>>> = ({ signal }) => usersUserUsersIdGet(id, requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>> = ({ signal }) => oauthGoogleJwtCallbackApiAuthGoogleCallbackGet(params, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, enabled: !!(id), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
 }
 
-export type UsersUserUsersIdGetQueryResult = NonNullable<Awaited<ReturnType<typeof usersUserUsersIdGet>>>
-export type UsersUserUsersIdGetQueryError = ErrorType<void | HTTPValidationError>
+export type OauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryResult = NonNullable<Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>>
+export type OauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryError = ErrorType<ErrorModel | HTTPValidationError>
 
 
-export function useUsersUserUsersIdGet<TData = Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError = ErrorType<void | HTTPValidationError>>(
- id: string, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError, TData>> & Pick<
+export function useOauthGoogleJwtCallbackApiAuthGoogleCallbackGet<TData = Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError = ErrorType<ErrorModel | HTTPValidationError>>(
+ params: undefined |  OauthGoogleJwtCallbackApiAuthGoogleCallbackGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof usersUserUsersIdGet>>,
+          Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useUsersUserUsersIdGet<TData = Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError = ErrorType<void | HTTPValidationError>>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError, TData>> & Pick<
+export function useOauthGoogleJwtCallbackApiAuthGoogleCallbackGet<TData = Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError = ErrorType<ErrorModel | HTTPValidationError>>(
+ params?: OauthGoogleJwtCallbackApiAuthGoogleCallbackGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof usersUserUsersIdGet>>,
+          Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useUsersUserUsersIdGet<TData = Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError = ErrorType<void | HTTPValidationError>>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useOauthGoogleJwtCallbackApiAuthGoogleCallbackGet<TData = Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError = ErrorType<ErrorModel | HTTPValidationError>>(
+ params?: OauthGoogleJwtCallbackApiAuthGoogleCallbackGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 /**
- * @summary Users:User
+ * @summary Oauth:Google.Jwt.Callback
  */
 
-export function useUsersUserUsersIdGet<TData = Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError = ErrorType<void | HTTPValidationError>>(
- id: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof usersUserUsersIdGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useOauthGoogleJwtCallbackApiAuthGoogleCallbackGet<TData = Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError = ErrorType<ErrorModel | HTTPValidationError>>(
+ params?: OauthGoogleJwtCallbackApiAuthGoogleCallbackGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof oauthGoogleJwtCallbackApiAuthGoogleCallbackGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getUsersUserUsersIdGetQueryOptions(id,options)
+  const queryOptions = getOauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -710,197 +226,171 @@ export function useUsersUserUsersIdGet<TData = Awaited<ReturnType<typeof usersUs
 
 
 /**
- * @summary Users:Patch User
+ * @summary Get Current User
  */
-export const usersPatchUserUsersIdPatch = (
-    id: string,
-    userUpdate: BodyType<UserUpdate>,
- options?: SecondParameter<typeof customInstance>,) => {
+export const getCurrentUserApiUsersMeGet = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
       
       
       return customInstance<UserRead>(
-      {url: `/users/${id}`, method: 'PATCH',
-      headers: {'Content-Type': 'application/json', },
-      data: userUpdate
+      {url: `/api/users/me`, method: 'GET', signal
     },
       options);
     }
   
 
-
-export const getUsersPatchUserUsersIdPatchMutationOptions = <TError = ErrorType<ErrorModel | void | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersPatchUserUsersIdPatch>>, TError,{id: string;data: BodyType<UserUpdate>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof usersPatchUserUsersIdPatch>>, TError,{id: string;data: BodyType<UserUpdate>}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
-
-      
-
-
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersPatchUserUsersIdPatch>>, {id: string;data: BodyType<UserUpdate>}> = (props) => {
-          const {id,data} = props ?? {};
-
-          return  usersPatchUserUsersIdPatch(id,data,requestOptions)
-        }
-
-        
-
-
-  return  { mutationFn, ...mutationOptions }}
-
-    export type UsersPatchUserUsersIdPatchMutationResult = NonNullable<Awaited<ReturnType<typeof usersPatchUserUsersIdPatch>>>
-    export type UsersPatchUserUsersIdPatchMutationBody = BodyType<UserUpdate>
-    export type UsersPatchUserUsersIdPatchMutationError = ErrorType<ErrorModel | void | HTTPValidationError>
-
-    /**
- * @summary Users:Patch User
- */
-export const useUsersPatchUserUsersIdPatch = <TError = ErrorType<ErrorModel | void | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersPatchUserUsersIdPatch>>, TError,{id: string;data: BodyType<UserUpdate>}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof usersPatchUserUsersIdPatch>>,
-        TError,
-        {id: string;data: BodyType<UserUpdate>},
-        TContext
-      > => {
-
-      const mutationOptions = getUsersPatchUserUsersIdPatchMutationOptions(options);
-
-      return useMutation(mutationOptions);
+export const getGetCurrentUserApiUsersMeGetQueryKey = () => {
+    return [`/api/users/me`] as const;
     }
+
     
-/**
- * @summary Users:Delete User
- */
-export const usersDeleteUserUsersIdDelete = (
-    id: string,
- options?: SecondParameter<typeof customInstance>,) => {
-      
-      
-      return customInstance<void>(
-      {url: `/users/${id}`, method: 'DELETE'
-    },
-      options);
-    }
+export const getGetCurrentUserApiUsersMeGetQueryOptions = <TData = Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCurrentUserApiUsersMeGetQueryKey();
+
   
 
-
-export const getUsersDeleteUserUsersIdDeleteMutationOptions = <TError = ErrorType<void | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersDeleteUserUsersIdDelete>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationOptions<Awaited<ReturnType<typeof usersDeleteUserUsersIdDelete>>, TError,{id: string}, TContext> => {
-const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>> = ({ signal }) => getCurrentUserApiUsersMeGet(requestOptions, signal);
 
       
 
+      
 
-      const mutationFn: MutationFunction<Awaited<ReturnType<typeof usersDeleteUserUsersIdDelete>>, {id: string}> = (props) => {
-          const {id} = props ?? {};
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
 
-          return  usersDeleteUserUsersIdDelete(id,requestOptions)
-        }
-
-        
+export type GetCurrentUserApiUsersMeGetQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>>
+export type GetCurrentUserApiUsersMeGetQueryError = ErrorType<unknown>
 
 
-  return  { mutationFn, ...mutationOptions }}
+export function useGetCurrentUserApiUsersMeGet<TData = Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
 
-    export type UsersDeleteUserUsersIdDeleteMutationResult = NonNullable<Awaited<ReturnType<typeof usersDeleteUserUsersIdDelete>>>
-    
-    export type UsersDeleteUserUsersIdDeleteMutationError = ErrorType<void | HTTPValidationError>
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentUserApiUsersMeGet<TData = Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
 
-    /**
- * @summary Users:Delete User
- */
-export const useUsersDeleteUserUsersIdDelete = <TError = ErrorType<void | HTTPValidationError>,
-    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof usersDeleteUserUsersIdDelete>>, TError,{id: string}, TContext>, request?: SecondParameter<typeof customInstance>}
-): UseMutationResult<
-        Awaited<ReturnType<typeof usersDeleteUserUsersIdDelete>>,
-        TError,
-        {id: string},
-        TContext
-      > => {
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetCurrentUserApiUsersMeGet<TData = Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
-      const mutationOptions = getUsersDeleteUserUsersIdDeleteMutationOptions(options);
-
-      return useMutation(mutationOptions);
-    }
-    
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 /**
- * @summary Get All Students
+ * @summary Get Current User
  */
-export const getAllStudentsApiStudentsGet = (
-    
+
+export function useGetCurrentUserApiUsersMeGet<TData = Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrentUserApiUsersMeGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetCurrentUserApiUsersMeGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Get Students
+ */
+export const getStudentsApiStudentsGet = (
+    params?: GetStudentsApiStudentsGetParams,
  options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
 ) => {
       
       
       return customInstance<Student[]>(
-      {url: `/api/students`, method: 'GET', signal
+      {url: `/api/students`, method: 'GET',
+        params, signal
     },
       options);
     }
   
 
-export const getGetAllStudentsApiStudentsGetQueryKey = () => {
-    return [`/api/students`] as const;
+export const getGetStudentsApiStudentsGetQueryKey = (params?: GetStudentsApiStudentsGetParams,) => {
+    return [`/api/students`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getGetAllStudentsApiStudentsGetQueryOptions = <TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetStudentsApiStudentsGetQueryOptions = <TData = Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError = ErrorType<HTTPValidationError>>(params?: GetStudentsApiStudentsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetAllStudentsApiStudentsGetQueryKey();
+  const queryKey =  queryOptions?.queryKey ?? getGetStudentsApiStudentsGetQueryKey(params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>> = ({ signal }) => getAllStudentsApiStudentsGet(requestOptions, signal);
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStudentsApiStudentsGet>>> = ({ signal }) => getStudentsApiStudentsGet(params, requestOptions, signal);
 
       
 
       
 
-   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
 }
 
-export type GetAllStudentsApiStudentsGetQueryResult = NonNullable<Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>>
-export type GetAllStudentsApiStudentsGetQueryError = ErrorType<unknown>
+export type GetStudentsApiStudentsGetQueryResult = NonNullable<Awaited<ReturnType<typeof getStudentsApiStudentsGet>>>
+export type GetStudentsApiStudentsGetQueryError = ErrorType<HTTPValidationError>
 
 
-export function useGetAllStudentsApiStudentsGet<TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError = ErrorType<unknown>>(
-  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError, TData>> & Pick<
+export function useGetStudentsApiStudentsGet<TData = Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError = ErrorType<HTTPValidationError>>(
+ params: undefined |  GetStudentsApiStudentsGetParams, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>,
+          Awaited<ReturnType<typeof getStudentsApiStudentsGet>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAllStudentsApiStudentsGet<TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError, TData>> & Pick<
+export function useGetStudentsApiStudentsGet<TData = Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError = ErrorType<HTTPValidationError>>(
+ params?: GetStudentsApiStudentsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
-          Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>,
+          Awaited<ReturnType<typeof getStudentsApiStudentsGet>>,
           TError,
           TData
         > , 'initialData'
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAllStudentsApiStudentsGet<TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetStudentsApiStudentsGet<TData = Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError = ErrorType<HTTPValidationError>>(
+ params?: GetStudentsApiStudentsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
 /**
- * @summary Get All Students
+ * @summary Get Students
  */
 
-export function useGetAllStudentsApiStudentsGet<TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError = ErrorType<unknown>>(
-  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export function useGetStudentsApiStudentsGet<TData = Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError = ErrorType<HTTPValidationError>>(
+ params?: GetStudentsApiStudentsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentsApiStudentsGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
 
-  const queryOptions = getGetAllStudentsApiStudentsGetQueryOptions(options)
+  const queryOptions = getGetStudentsApiStudentsGetQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
 
@@ -975,6 +465,94 @@ export const useCreateStudentApiStudentsPost = <TError = ErrorType<HTTPValidatio
       return useMutation(mutationOptions);
     }
     
+/**
+ * @summary Get All Students
+ */
+export const getAllStudentsApiStudentsAllGet = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<Student[]>(
+      {url: `/api/students/all`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getGetAllStudentsApiStudentsAllGetQueryKey = () => {
+    return [`/api/students/all`] as const;
+    }
+
+    
+export const getGetAllStudentsApiStudentsAllGetQueryOptions = <TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAllStudentsApiStudentsAllGetQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>> = ({ signal }) => getAllStudentsApiStudentsAllGet(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetAllStudentsApiStudentsAllGetQueryResult = NonNullable<Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>>
+export type GetAllStudentsApiStudentsAllGetQueryError = ErrorType<unknown>
+
+
+export function useGetAllStudentsApiStudentsAllGet<TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAllStudentsApiStudentsAllGet<TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAllStudentsApiStudentsAllGet<TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary Get All Students
+ */
+
+export function useGetAllStudentsApiStudentsAllGet<TData = Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAllStudentsApiStudentsAllGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetAllStudentsApiStudentsAllGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
 /**
  * @summary Get Student By Ra
  */
@@ -1146,7 +724,7 @@ export const createStudentsByCsvApiStudentsCsvPost = (
       const formData = new FormData();
 formData.append('csv_file', bodyCreateStudentsByCsvApiStudentsCsvPost.csv_file)
 
-      return customInstance<StudentsCreatedByCSV>(
+      return customInstance<unknown>(
       {url: `/api/students/csv`, method: 'POST',
       headers: {'Content-Type': 'multipart/form-data', },
        data: formData, signal
@@ -1192,6 +770,122 @@ export const useCreateStudentsByCsvApiStudentsCsvPost = <TError = ErrorType<HTTP
       > => {
 
       const mutationOptions = getCreateStudentsByCsvApiStudentsCsvPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Activate Student Bulk By Ra
+ */
+export const activateStudentBulkByRaApiStudentsBulkActivatePatch = (
+    activateStudentBulkByRaApiStudentsBulkActivatePatchBody: BodyType<number[]>,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<Student[]>(
+      {url: `/api/students/bulk_activate`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: activateStudentBulkByRaApiStudentsBulkActivatePatchBody
+    },
+      options);
+    }
+  
+
+
+export const getActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>, TError,{data: BodyType<number[]>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>, TError,{data: BodyType<number[]>}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>, {data: BodyType<number[]>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  activateStudentBulkByRaApiStudentsBulkActivatePatch(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type ActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationResult = NonNullable<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>>
+    export type ActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationBody = BodyType<number[]>
+    export type ActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Activate Student Bulk By Ra
+ */
+export const useActivateStudentBulkByRaApiStudentsBulkActivatePatch = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>, TError,{data: BodyType<number[]>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>,
+        TError,
+        {data: BodyType<number[]>},
+        TContext
+      > => {
+
+      const mutationOptions = getActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Deactivate Student Bulk By Ra
+ */
+export const deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch = (
+    deactivateStudentBulkByRaApiStudentsBulkDeactivatePatchBody: BodyType<number[]>,
+ options?: SecondParameter<typeof customInstance>,) => {
+      
+      
+      return customInstance<Student[]>(
+      {url: `/api/students/bulk_deactivate`, method: 'PATCH',
+      headers: {'Content-Type': 'application/json', },
+      data: deactivateStudentBulkByRaApiStudentsBulkDeactivatePatchBody
+    },
+      options);
+    }
+  
+
+
+export const getDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>, TError,{data: BodyType<number[]>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>, TError,{data: BodyType<number[]>}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>, {data: BodyType<number[]>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type DeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationResult = NonNullable<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>>
+    export type DeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationBody = BodyType<number[]>
+    export type DeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Deactivate Student Bulk By Ra
+ */
+export const useDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatch = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>, TError,{data: BodyType<number[]>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>,
+        TError,
+        {data: BodyType<number[]>},
+        TContext
+      > => {
+
+      const mutationOptions = getDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
@@ -1258,6 +952,94 @@ export const useRecognizeApiFacialRecognitionRecognizePost = <TError = ErrorType
     }
     
 /**
+ * @summary Get Attendances Dates
+ */
+export const getAttendancesDatesApiAttendancesAttendanceDatesGet = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<unknown>(
+      {url: `/api/attendances/attendance-dates`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryKey = () => {
+    return [`/api/attendances/attendance-dates`] as const;
+    }
+
+    
+export const getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryOptions = <TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>> = ({ signal }) => getAttendancesDatesApiAttendancesAttendanceDatesGet(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetAttendancesDatesApiAttendancesAttendanceDatesGetQueryResult = NonNullable<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>>
+export type GetAttendancesDatesApiAttendancesAttendanceDatesGetQueryError = ErrorType<unknown>
+
+
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary Get Attendances Dates
+ */
+
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
  * @summary Create Attendance
  */
 export const createAttendanceApiAttendancesPost = (
@@ -1318,3 +1100,152 @@ export const useCreateAttendanceApiAttendancesPost = <TError = ErrorType<HTTPVal
       return useMutation(mutationOptions);
     }
     
+/**
+ * @summary Create Attendance Csv By Date
+ */
+export const createAttendanceCsvByDateApiAttendancesCsvPost = (
+    bodyCreateAttendanceCsvByDateApiAttendancesCsvPost: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      const formUrlEncoded = new URLSearchParams();
+formUrlEncoded.append('date', bodyCreateAttendanceCsvByDateApiAttendancesCsvPost.date)
+
+      return customInstance<unknown>(
+      {url: `/api/attendances/csv`, method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
+    },
+      options);
+    }
+  
+
+
+export const getCreateAttendanceCsvByDateApiAttendancesCsvPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, {data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAttendanceCsvByDateApiAttendancesCsvPost(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationResult = NonNullable<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>>
+    export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationBody = BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>
+    export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Create Attendance Csv By Date
+ */
+export const useCreateAttendanceCsvByDateApiAttendancesCsvPost = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>,
+        TError,
+        {data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>},
+        TContext
+      > => {
+
+      const mutationOptions = getCreateAttendanceCsvByDateApiAttendancesCsvPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Get Student Image
+ */
+export const getStudentImageApiStaticStudentsImagesStudentRaGet = (
+    studentRa: number,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<unknown>(
+      {url: `/api/static/students/images/${studentRa}`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryKey = (studentRa: number,) => {
+    return [`/api/static/students/images/${studentRa}`] as const;
+    }
+
+    
+export const getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryOptions = <TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryKey(studentRa);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>> = ({ signal }) => getStudentImageApiStaticStudentsImagesStudentRaGet(studentRa, requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(studentRa), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetStudentImageApiStaticStudentsImagesStudentRaGetQueryResult = NonNullable<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>>
+export type GetStudentImageApiStaticStudentsImagesStudentRaGetQueryError = ErrorType<HTTPValidationError>
+
+
+export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+ studentRa: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+ studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+ studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary Get Student Image
+ */
+
+export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+ studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryOptions(studentRa,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+

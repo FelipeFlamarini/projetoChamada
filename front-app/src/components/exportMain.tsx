@@ -3,6 +3,7 @@ import { Calendar } from "lucide-react";
 import { ExportarBtn } from "./buttons/exportarBtn";
 import { useState } from "react";
 import { toast } from "sonner";
+import { getAttendancesDatesApiAttendancesAttendanceDatesGet as getAttendancesDates } from "@/chamada";
 
 export const ExportarMain = () => {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
@@ -17,6 +18,8 @@ export const ExportarMain = () => {
       selectedDate.toLocaleDateString("pt-BR")
     );
   };
+  const attendancesDate = getAttendancesDates();
+  console.log(attendancesDate);
 
   return (
     <div className="flex flex-col items-center justify-center gap-2 text-center flex-1">

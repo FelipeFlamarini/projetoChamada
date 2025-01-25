@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { InputWithEndIcon } from "@/components/inputIconEnd";
 import { Search, Upload, X } from "lucide-react";
 import { useState } from "react";
-import { useGetAllStudentsApiStudentsGet } from "@/chamada";
+import { useGetAllStudentsApiStudentsAllGet } from "@/chamada";
 import { DataTableStudents } from "./table";
 import { columnsStudents } from "@/columns/students/students";
 import {
@@ -37,17 +37,15 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { checkToast } from "@/components/toasts/checkToast";
-import { getGetAllStudentsApiStudentsGetQueryKey as allStudentsKey } from "@/chamada";
+import { getGetAllStudentsApiStudentsAllGetQueryKey as allStudentsKey } from "@/chamada";
 
 export function Estudantes() {
   const [inputValue, setInputValue] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [open, setOpen] = useState(false);
-  const { data, isLoading } = useGetAllStudentsApiStudentsGet();
+  const { data, isLoading } = useGetAllStudentsApiStudentsAllGet();
   const createStudentMutation = useCreateStudentApiStudentsPost();
-  const queryClient = useQueryClient()
- 
-
+  const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof createStudent>>({
     resolver: zodResolver(createStudent),
@@ -56,24 +54,27 @@ export function Estudantes() {
     // },
   });
 
-  const { formState} = form
+  const { formState } = form;
   console.log(formState.errors);
 
   function onSubmit(data: z.infer<typeof createStudent>) {
-    createStudentMutation.mutate({data:data},
+    createStudentMutation.mutate(
+      { data: data },
       {
         onSuccess: () => {
           console.log("Estudante cadastrado com sucesso");
-          queryClient.invalidateQueries({queryKey:allStudentsKey()})
+          queryClient.invalidateQueries({ queryKey: allStudentsKey() });
           setOpen(false);
-          checkToast({titulo:"Tudo certo!",descricao:"O estudante foi adicionado a lista de chamada"})
+          checkToast({
+            titulo: "Tudo certo!",
+            descricao: "O estudante foi adicionado a lista de chamada",
+          });
         },
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);
         },
       }
     );
-    
   }
 
   const table = useReactTable({
@@ -150,7 +151,7 @@ export function Estudantes() {
                   className="rounded-3xl border border-black"
                   title="Faça upload da foto"
                   form={form}
-                  name ="image_base64"
+                  name="image_base64"
                 />
               </form>
             </Form>
@@ -168,7 +169,11 @@ export function Estudantes() {
                 title="Faça upload da foto"
               />
             </div> */}
-            <Button variant={"go"} className="rounded-3xl w-full mt-6 mb-4" onClick={form.handleSubmit(onSubmit)}>
+            <Button
+              variant={"go"}
+              className="rounded-3xl w-full mt-6 mb-4"
+              onClick={form.handleSubmit(onSubmit)}
+            >
               Salvar
             </Button>
           </DialogContent>
