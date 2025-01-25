@@ -4,7 +4,13 @@ import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+} from "@/components/ui/form";
 import { useStartRollcallApiRollcallStartPost } from "@/chamada";
 
 const formSchema = z.object({
@@ -34,25 +40,32 @@ export function Iniciar() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="grid gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="h-dvh flex flex-col gap-12 px-2 pt-8 pb-2 sm:py-2 sm:gap-2 items-center justify-center"
+      >
         <FormField
           control={form.control}
           name="rollcall_token"
           render={({ field }) => (
-            <FormItem>
+            <FormItem className="flex flex-col">
+              <FormLabel className="text-center">
+                Insira o token de chamada
+              </FormLabel>
               <FormControl>
                 <Input
                   id="rollcall_token"
                   type="text"
                   placeholder="Token da chamada"
                   required
+                  className="w-44"
                   {...field}
                 />
               </FormControl>
             </FormItem>
           )}
         />
-        <Button className="rounded-full" variant={"go"}>
+        <Button className="rounded-md w-44" variant={"go"}>
           Iniciar chamada
         </Button>
       </form>

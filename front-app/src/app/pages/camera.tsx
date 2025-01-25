@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import FaceDetection from "@/components/faceDetection";
 
 import { Button } from "@/components/ui/button";
+import { LogoCI } from "@/components/logo";
+import { ArrowLeft, LoaderCircle } from "lucide-react";
 
 enum RollcallAction {
   reset_token = "reset_token",
@@ -13,6 +15,7 @@ enum RollcallAction {
 interface IWaitingForRollcallStart {
   rollcallToken: string;
   isConnected: boolean;
+  handleResetToken: () => void;
 }
 
 interface IStartingRollcall {
@@ -33,22 +36,33 @@ function generateRandomString(length: number = 4): string {
 function WaitingForRollcallStart({
   rollcallToken,
   isConnected,
+  handleResetToken,
 }: IWaitingForRollcallStart) {
   return (
-    <div className="mx-auto flex flex-col items-center">
-      <p className="text-text text-center">
+    <div className="flex flex-col items-center gap-2 h-dvh p-2 sm:py-8 justify-center">
+      <p className="text-text text-center mt-10">
         {isConnected ? (
           <>
             Token da chamada: <span className="font-bold">{rollcallToken}</span>
           </>
         ) : (
-          "Conectando"
+          <span className="flex items-center justify-center">
+            <svg
+              className="mr-3 h-5 w-5 animate-spin text-[#FF6947]"
+              viewBox="0 0 24 24"
+            >
+              <LoaderCircle />
+            </svg>
+            Conectando...
+          </span>
         )}
       </p>
       <p className="text-subText text-center">
         Aguarde enquanto o professor inicia a chamada.
       </p>
-      <Button variant="go">Gerar novo token</Button>
+      <Button variant="go" onClick={handleResetToken}>
+        Gerar novo token
+      </Button>
     </div>
   );
 }
@@ -73,6 +87,29 @@ function StartingRollcall(props: IStartingRollcall) {
   );
 }
 
+function Disconnected() {
+  return (
+    <div className="w-full h-dvh flex flex-col items-center justify-center gap-12 px-2 pt-8 pb-2 sm:py-2 sm:gap-2">
+      <p className="text-text text-center mt-10">
+        <span className="flex items-center justify-center">
+          Conexão perdida
+        </span>
+      </p>
+      <p className="text-subText text-center">
+        Verifique sua conexão com a internet e tente novamente.
+      </p>
+      <Button
+        variant="go"
+        onClick={() => {
+          window.location.reload();
+        }}
+      >
+        Tentar novamente
+      </Button>
+    </div>
+  );
+}
+
 export function Camera() {
   const [chamada, setChamada] = useState<boolean>(false);
   const [rollcallToken, setRollcallToken] = useState<string>(
@@ -80,6 +117,11 @@ export function Camera() {
   );
   const [recognizeToken, setRecognizeToken] = useState<string>("");
   const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [isDisconnected, setIsDisconnected] = useState<boolean>(false);
+
+  function handleResetToken() {
+    window.location.reload();
+  }
 
   useEffect(() => {
     // TODO: fix ip
@@ -112,11 +154,13 @@ export function Camera() {
     };
 
     ws.onclose = () => {
+      setIsDisconnected(true);
       setIsConnected(false);
       console.log("WebSocket connection closed");
     };
 
     ws.onerror = (error) => {
+      setIsDisconnected(true);
       setIsConnected(false);
       console.error("WebSocket error:", error);
     };
@@ -134,12 +178,15 @@ export function Camera() {
         isConnected={isConnected}
       />
     );
-  } else {
+  } else if (isConnected && !chamada) {
     return (
       <WaitingForRollcallStart
         rollcallToken={rollcallToken}
         isConnected={isConnected}
+        handleResetToken={handleResetToken}
       />
     );
+  } else if (isDisconnected) {
+    return <Disconnected />;
   }
 }
