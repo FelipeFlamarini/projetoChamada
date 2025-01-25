@@ -69,7 +69,7 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
   cd projetoChamada
 ```  
 
-3. Crie uma cópia do arquivo **.env.example** e renomeie para **.env**:  
+3. Crie uma cópia do arquivo **.env.example** e renomeie para **.env**. O usuário pode alterar as variáveis conforme desejar, mas seguiremos usando as variáveis padrões no decorrer deste guia.
 
 ```bash
   cp .env.example .env
@@ -93,25 +93,27 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 ## 🛠️ **Executando ambiente de desenvolvimento**
 
-### **Construindo os contêineres:**  
+O ambiente de desenvolvimento possui módulos **hot-reload** para o front-end e back-end, permitindo a visualização instantânea das alterações realizadas. No Windows, é necessário clonar o repositório em uma instância do WSL 2 para garantir a compatibilidade com o Docker e o **hot-reload**.
+
+### **Construindo os contêineres de desenvolvimento:**  
 
 ```bash
   docker compose -p projetochamada-dev -f compose.dev.yaml build
 ```
 
-### **Iniciando os contêineres:**  
+### **Iniciando os contêineres de desenvolvimento:**  
 
 ```bash
   docker compose -p projetochamada-dev -f compose.dev.yaml up
 ```
 
-### **Parando os contêineres:**  
+### **Parando os contêineres de desenvolvimento:**  
 
 ```bash
   docker compose -p projetochamada-dev -f compose.dev.yaml down
 ```
 
-### **Removendo os contêineres:**  
+### **Removendo os contêineres de desenvolvimento:**  
 
 ```bash
   docker compose -p projetochamada-dev -f compose.dev.yaml rm
@@ -121,7 +123,7 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 ## 🌐 **Rotas (Ambiente de desenvolvimento)**
 
-Com os contêineres já em execução e utilizando as variáveis padrão definidas no arquivo `.env.example`, é possível acessar as seguintes rotas:
+Com os contêineres já em execução e utilizando as variáveis padrões definidas no arquivo `.env.example`, é possível acessar as seguintes rotas:
 
 ### **Frontend (Vite e React)**
 
@@ -155,6 +157,55 @@ No **VSCode**, é possível acessar as tasks configuradas:
 | ⏹️ **(dev) Stop containers**            | Para todos os contêineres.                                               |
 | ❌ **(dev) Remove containers**          | Remove os contêineres parados.                                           |
 | 🔥 **(dev) remove mongo_data**          | Remove o volume `projetochamada_mongo_data` após confirmação interativa. |
+
+---
+
+## 🛠️ **Executando ambiente de produção**
+
+O ambiente de produção traz mais estabilidade para o sistema, perdendo o **hot-reload** mas garantindo a confiabilidade para a execução.
+
+### **Construindo os contêineres de produção:**  
+
+```bash
+  docker compose -p projetochamada-prod -f compose.prod.yaml build
+```
+
+### **Iniciando os contêineres de produção:**  
+
+```bash
+  docker compose -p projetochamada-prod -f compose.prod.yaml up
+```
+
+### **Parando os contêineres de produção:**  
+
+```bash
+  docker compose -p projetochamada-prod -f compose.prod.yaml down
+```
+
+### **Removendo os contêineres de produção:**  
+
+```bash
+  docker compose -p projetochamada-prod -f compose.prod.yaml rm
+```
+
+## Rotas (Ambiente de produção)
+
+São as mesmas do ambiente de desenvolvimento, exceto pelo mongo express, que não é utilizado em produção.
+
+## Tasks Configuradas no VSCode (Ambiente de produção)
+
+No **VSCode**, é possível acessar as tasks configuradas:
+
+1. Abra o **Command Palette** (`F1` ou `Ctrl+Shift+P`).
+2. Selecione a opção **Run Task**.
+
+| **Task**                                | **Descrição**                                                            |
+| --------------------------------------- | ------------------------------------------------------------------------ |
+| 🏗️ **(prod) Build containers**           | Constrói os contêineres baseados no arquivo `compose.prod.yaml`.          |
+| ▶️ **(prod) Start containers**           | Inicia os contêineres já construídos.                                    |
+| 🔄 **(prod) Build and start containers** | Constrói e inicia os contêineres em sequência.                           |
+| ⏹️ **(prod) Stop containers**            | Para todos os contêineres.                                               |
+| ❌ **(prod) Remove containers**          | Remove os contêineres parados.                                           |
 
 ---
 
