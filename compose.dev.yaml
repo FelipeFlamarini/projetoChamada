@@ -35,6 +35,7 @@ services:
       - ${FRONT_APP_PORT}:5173
     environment:
       VITE_FASTAPI_APP_URL: ${FASTAPI_APP_URL}
+      VITE_FASTAPI_APP_URL_WS: ${FASTAPI_APP_URL_WS}
     volumes:
       - ./front-app/imgs:/app/imgs
       - ./front-app/public:/app/public

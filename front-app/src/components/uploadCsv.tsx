@@ -152,6 +152,7 @@ export function FileUploadDialog() {
                     <Download className="h-4 w-4" />
                   </label>
                 ) : null}
+                <p className="text-center">Limite de tamanho: 500MB</p>
               </div>
             </>
           )}

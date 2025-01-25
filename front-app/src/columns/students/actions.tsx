@@ -21,16 +21,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { editStudent } from "@/schemas/estudantes";
-// ver se a melhor opção é fazer um refetch ou pegar pela row
-// import { useGetStudentByRaApiStudentsStudentRaGet as useGetStudentByRa } from "@/chamada";
 import { useUpdateStudentByRaApiStudentsStudentRaPatch as useUpdateStudentByRa } from "@/chamada";
 import { checkToast } from "@/components/toasts/checkToast";
 import { useQueryClient } from "@tanstack/react-query";
-import {
-  getGetStudentsApiStudentsGetQueryKey as activeStudentsKey,
-  getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryKey as studentImageKey,
-  getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryOptions as studentImageOptions,
-} from "@/chamada";
+import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
 import { useGetStudentByRaApiStudentsStudentRaGet as useGetStudentByRa } from "@/chamada";
 
 interface ActionsProps {
@@ -69,17 +63,21 @@ export const Actions = ({ ra }: ActionsProps) => {
   }, [getStudentByRaQuery.data, form]);
 
   const onSubmit = (data: z.infer<typeof editStudent>) => {
-    if (data.image_base64 === "") {
-      delete data.image_base64;
-    }
-
     updateStudentByRaMutation.mutate(
       {
         studentRa: ra,
-        data: data,
+        data: {
+          name: data.name,
+          ra: data.ra,
+        },
       },
       {
-        onSuccess: () => {
+        onSuccess: (student) => {
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
+          queryClient.invalidateQueries({
+            queryKey: ["studentImage", student.ra],
+          });
+
           setOpen(false);
           checkToast({
             titulo: "Tudo certo!",
@@ -88,13 +86,6 @@ export const Actions = ({ ra }: ActionsProps) => {
         },
         onError: (error) => {
           console.error("onSubmit onError", error);
-        },
-        onSettled: (student) => {
-          console.log(studentImageOptions(student.ra));
-          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
-          queryClient.invalidateQueries({
-            queryKey: ["studentImage", student.ra],
-          });
         },
       }
     );
@@ -110,6 +101,7 @@ export const Actions = ({ ra }: ActionsProps) => {
       },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpenDelete(false);
           checkToast({
             titulo: "Tudo certo!",
@@ -119,12 +111,10 @@ export const Actions = ({ ra }: ActionsProps) => {
         onError: (error) => {
           console.error("deactivateStudent onError", error);
         },
-        onSettled: () => {
-          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
-        },
       }
     );
   };
+
   return (
     !getStudentByRaQuery.isLoading && (
       <div className="flex gap-4 items-center  h-full">
@@ -182,7 +172,7 @@ export const Actions = ({ ra }: ActionsProps) => {
                 <Button
                   variant={"go"}
                   className="rounded-3xl w-full mt-6 mb-4"
-                  disabled={updateStudentByRaMutation.isLoading}
+                  disabled={updateStudentByRaMutation.isPending}
                 >
                   Salvar
                 </Button>

@@ -7,6 +7,7 @@ import FaceDetection from "@/components/dialogfaceDetection";
 import { Button } from "@/components/ui/button";
 import { HeaderBack2 } from "@/components/headerBack2";
 import undrawWaiting from "/undrawWaiting.svg";
+import { FETCH_URL_WS } from "@/settings";
 
 enum RollcallAction {
   reset_token = "reset_token",

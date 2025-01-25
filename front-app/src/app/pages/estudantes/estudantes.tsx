@@ -100,6 +100,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
       { data: data },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpen(false);
           checkToast({
             titulo: "Tudo certo!",
@@ -109,9 +110,6 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
         },
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);
-        },
-        onSettled: () => {
-          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
         },
       }
     );
@@ -125,6 +123,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
       { data: ras },
       {
         onSuccess: () => {
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           checkToast({
             titulo: "Tudo certo!",
             descricao: "Os estudantes foram excluídos da lista de chamada",
@@ -132,9 +131,6 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
         },
         onError: (error) => {
           console.error("Erro ao excluir estudantes", error);
-        },
-        onSettled: () => {
-          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
         },
       }
     );
@@ -259,18 +255,6 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
               {inputValue && <X onClick={handleClear} />}
               {!inputValue && <Search size={20} />}
             </InputWithEndIcon>
-            {/* <Dialog>
-          <DialogTrigger asChild>
-            <Button variant={"goSecondary"} className="rounded-3xl w-full">
-              Importar CSV <Upload />
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Importar Csv</DialogTitle>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog> */}
             <FileUploadDialog />
           </div>
         )}

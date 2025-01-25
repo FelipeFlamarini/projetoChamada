@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
+import { FETCH_URL } from "@/settings";
 
 interface UploadData {
   data: {
@@ -17,8 +18,7 @@ export default function usePostUploadStudentsCsv(
       const formData = new FormData();
       formData.append("csv_file", data.data.csv_file);
 
-      const URL = import.meta.env.VITE_FASTAPI_APP_URL;
-      const response = await fetch(`${URL}/api/students/csv`, {
+      const response = await fetch(`${FETCH_URL}/api/students/csv`, {
         method: "POST",
         body: formData,
         headers: {
