@@ -26,7 +26,11 @@ import { editStudent } from "@/schemas/estudantes";
 import { useUpdateStudentByRaApiStudentsStudentRaPatch as useUpdateStudentByRa } from "@/chamada";
 import { checkToast } from "@/components/toasts/checkToast";
 import { useQueryClient } from "@tanstack/react-query";
-import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
+import {
+  getGetStudentsApiStudentsGetQueryKey as activeStudentsKey,
+  getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryKey as studentImageKey,
+  getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryOptions as studentImageOptions,
+} from "@/chamada";
 import { useGetStudentByRaApiStudentsStudentRaGet as useGetStudentByRa } from "@/chamada";
 
 interface ActionsProps {
@@ -50,6 +54,7 @@ export const Actions = ({ ra }: ActionsProps) => {
     },
     resetOptions: {
       keepDirtyValues: true,
+      keepDefaultValues: false,
     },
   });
 
@@ -58,12 +63,16 @@ export const Actions = ({ ra }: ActionsProps) => {
       form.reset({
         name: getStudentByRaQuery.data.name,
         ra: getStudentByRaQuery.data.ra,
-        image_base64: getStudentByRaQuery.data.image_path || "",
+        image_base64: "",
       });
     }
   }, [getStudentByRaQuery.data, form]);
 
   const onSubmit = (data: z.infer<typeof editStudent>) => {
+    if (data.image_base64 === "") {
+      delete data.image_base64;
+    }
+
     updateStudentByRaMutation.mutate(
       {
         studentRa: ra,
@@ -71,11 +80,20 @@ export const Actions = ({ ra }: ActionsProps) => {
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpen(false);
           checkToast({
             titulo: "Tudo certo!",
             descricao: "As alterações foram salvas com sucesso!",
+          });
+        },
+        onError: (error) => {
+          console.error("onSubmit onError", error);
+        },
+        onSettled: (student) => {
+          console.log(studentImageOptions(student.ra));
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
+          queryClient.invalidateQueries({
+            queryKey: ["studentImage", student.ra],
           });
         },
       }
@@ -92,17 +110,21 @@ export const Actions = ({ ra }: ActionsProps) => {
       },
       {
         onSuccess: () => {
-          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpenDelete(false);
           checkToast({
             titulo: "Tudo certo!",
             descricao: "O estudante foi desativado com sucesso!",
           });
         },
+        onError: (error) => {
+          console.error("deactivateStudent onError", error);
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
+        },
       }
     );
   };
-
   return (
     !getStudentByRaQuery.isLoading && (
       <div className="flex gap-4 items-center  h-full">
@@ -117,7 +139,7 @@ export const Actions = ({ ra }: ActionsProps) => {
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(onSubmit)}
-                className="flex flex-col gap-3 mt-6"
+                className="flex flex-col space-y-3 mt-6"
               >
                 <FormField
                   control={form.control}
@@ -157,15 +179,15 @@ export const Actions = ({ ra }: ActionsProps) => {
                   form={form}
                   name="image_base64"
                 />
+                <Button
+                  variant={"go"}
+                  className="rounded-3xl w-full mt-6 mb-4"
+                  disabled={updateStudentByRaMutation.isLoading}
+                >
+                  Salvar
+                </Button>
               </form>
             </Form>
-            <Button
-              variant={"go"}
-              className="rounded-3xl w-full mt-6 mb-4"
-              onClick={form.handleSubmit(onSubmit)}
-            >
-              Salvar
-            </Button>
           </DialogContent>
         </Dialog>
         <Dialog open={openDelete} onOpenChange={setOpenDelete}>

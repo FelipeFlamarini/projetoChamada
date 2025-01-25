@@ -1,7 +1,17 @@
-import { useState, useEffect } from "react";
+import { useQuery } from "@tanstack/react-query";
 
 import { Avatar, AvatarImage, AvatarFallback } from "./ui/avatar";
 import { getStudentImageApiStaticStudentsImagesStudentRaGet as getStudentImage } from "@/chamada";
+
+// TODO: check if there is a better way to do this with orval
+function useGetStudentImage(ra: number) {
+  return useQuery({
+    queryFn: () => {
+      return getStudentImage(ra);
+    },
+    queryKey: ["studentImage", ra],
+  });
+}
 
 export const StudentImageCell = ({
   ra,
@@ -10,21 +20,12 @@ export const StudentImageCell = ({
   ra: number;
   name: string;
 }) => {
-  const [image, setImage] = useState<string | null>(null);
-
-  useEffect(() => {
-    const fetchImage = async () => {
-      const studentImage = await getStudentImage(ra);
-      setImage(`data:image/jpeg;base64,${studentImage}`);
-    };
-
-    fetchImage();
-  }, [ra]);
+  const { data: studentImage, isLoading } = useGetStudentImage(ra);
 
   return (
     <Avatar>
       <AvatarImage
-        src={image || undefined}
+        src={!isLoading ? `data:image/jpeg;base64,${studentImage}` : undefined}
         alt={name}
         className="object-cover"
       />

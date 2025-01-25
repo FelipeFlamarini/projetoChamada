@@ -83,7 +83,6 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
   const createStudentMutation = useCreateStudentApiStudentsPost();
   const deactivateStudentsMutation = useDeactivateStudents();
   const queryClient = useQueryClient();
-  console.log(rowSelection);
   const form = useForm<z.infer<typeof createStudent>>({
     resolver: zodResolver(createStudent),
     defaultValues: {
@@ -101,8 +100,6 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
       { data: data },
       {
         onSuccess: () => {
-          console.log("Estudante cadastrado com sucesso");
-          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpen(false);
           checkToast({
             titulo: "Tudo certo!",
@@ -112,6 +109,9 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
         },
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
         },
       }
     );
@@ -125,8 +125,6 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
       { data: ras },
       {
         onSuccess: () => {
-          console.log("Estudantes excluídos com sucesso");
-          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           checkToast({
             titulo: "Tudo certo!",
             descricao: "Os estudantes foram excluídos da lista de chamada",
@@ -134,6 +132,9 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
         },
         onError: (error) => {
           console.error("Erro ao excluir estudantes", error);
+        },
+        onSettled: () => {
+          queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
         },
       }
     );
@@ -242,7 +243,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
                 {createStudentMutation.isPending && (
                   <Button disabled className="rounded-3xl w-full mt-6 mb-4">
                     <Loader2 className="animate-spin" />
-                    enviando...
+                    Enviando...
                   </Button>
                 )}
               </DialogContent>
