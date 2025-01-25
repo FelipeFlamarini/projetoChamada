@@ -147,7 +147,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
   return (
     <>
       <div className="flex flex-col pt-2 px-4 gap-2 max-w-sm mx-auto">
-        <HeaderBack2 link="/" />
+        <HeaderBack2 link="/home" />
         {table.getSelectedRowModel().rows.length === 0 && (
           <div className="flex flex-col gap-2 mt-4">
             <Dialog open={open} onOpenChange={setOpen}>

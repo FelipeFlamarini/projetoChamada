@@ -23,6 +23,7 @@ import type {
 } from '@tanstack/react-query'
 import type {
   AttendanceStudentReturn,
+  BodyAuthJwtLoginApiAuthLoginPost,
   BodyCreateAttendanceApiAttendancesPost,
   BodyCreateAttendanceCsvByDateApiAttendancesCsvPost,
   BodyCreateStudentApiStudentsPost,
@@ -227,6 +228,137 @@ export function useOauthGoogleJwtCallbackApiAuthGoogleCallbackGet<TData = Awaite
 
 
 
+/**
+ * @summary Auth:Jwt.Login
+ */
+export const authJwtLoginApiAuthLoginPost = (
+    bodyAuthJwtLoginApiAuthLoginPost: BodyType<BodyAuthJwtLoginApiAuthLoginPost>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      const formUrlEncoded = new URLSearchParams();
+if(bodyAuthJwtLoginApiAuthLoginPost.grant_type !== undefined && bodyAuthJwtLoginApiAuthLoginPost.grant_type !== null) {
+ formUrlEncoded.append('grant_type', bodyAuthJwtLoginApiAuthLoginPost.grant_type)
+ }
+formUrlEncoded.append('username', bodyAuthJwtLoginApiAuthLoginPost.username)
+formUrlEncoded.append('password', bodyAuthJwtLoginApiAuthLoginPost.password)
+if(bodyAuthJwtLoginApiAuthLoginPost.scope !== undefined) {
+ formUrlEncoded.append('scope', bodyAuthJwtLoginApiAuthLoginPost.scope)
+ }
+if(bodyAuthJwtLoginApiAuthLoginPost.client_id !== undefined && bodyAuthJwtLoginApiAuthLoginPost.client_id !== null) {
+ formUrlEncoded.append('client_id', bodyAuthJwtLoginApiAuthLoginPost.client_id)
+ }
+if(bodyAuthJwtLoginApiAuthLoginPost.client_secret !== undefined && bodyAuthJwtLoginApiAuthLoginPost.client_secret !== null) {
+ formUrlEncoded.append('client_secret', bodyAuthJwtLoginApiAuthLoginPost.client_secret)
+ }
+
+      return customInstance<unknown | void>(
+      {url: `/api/auth/login`, method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
+    },
+      options);
+    }
+  
+
+
+export const getAuthJwtLoginApiAuthLoginPostMutationOptions = <TError = ErrorType<ErrorModel | HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>, {data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  authJwtLoginApiAuthLoginPost(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AuthJwtLoginApiAuthLoginPostMutationResult = NonNullable<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>>
+    export type AuthJwtLoginApiAuthLoginPostMutationBody = BodyType<BodyAuthJwtLoginApiAuthLoginPost>
+    export type AuthJwtLoginApiAuthLoginPostMutationError = ErrorType<ErrorModel | HTTPValidationError>
+
+    /**
+ * @summary Auth:Jwt.Login
+ */
+export const useAuthJwtLoginApiAuthLoginPost = <TError = ErrorType<ErrorModel | HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>,
+        TError,
+        {data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>},
+        TContext
+      > => {
+
+      const mutationOptions = getAuthJwtLoginApiAuthLoginPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Auth:Jwt.Logout
+ */
+export const authJwtLogoutApiAuthLogoutPost = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<unknown | void>(
+      {url: `/api/auth/logout`, method: 'POST', signal
+    },
+      options);
+    }
+  
+
+
+export const getAuthJwtLogoutApiAuthLogoutPostMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>, TError,void, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>, void> = () => {
+          
+
+          return  authJwtLogoutApiAuthLogoutPost(requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AuthJwtLogoutApiAuthLogoutPostMutationResult = NonNullable<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>>
+    
+    export type AuthJwtLogoutApiAuthLogoutPostMutationError = ErrorType<void>
+
+    /**
+ * @summary Auth:Jwt.Logout
+ */
+export const useAuthJwtLogoutApiAuthLogoutPost = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getAuthJwtLogoutApiAuthLogoutPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary Get Current User
  */

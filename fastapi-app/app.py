@@ -73,6 +73,11 @@ app.include_router(
     prefix="/api/auth/google",
     tags=["auth"],
 )
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/api/auth",
+    tags=["auth"],
+)
 app.include_router(users_router, prefix="/api/users", tags=["users"])
 app.include_router(students_router, prefix="/api/students", tags=["students"])
 app.include_router(

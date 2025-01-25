@@ -8,14 +8,15 @@ import { Camera } from "./app/pages/camera";
 import { Iniciar } from "./app/pages/iniciar";
 import { Toaster } from "sonner";
 import { Chamada } from "./app/pages/chamadas/chamada";
-import { DowloadChamada } from "./app/pages/chamadas/dowload";
+import { DownloadChamada } from "./app/pages/chamadas/download";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ExportarChamada } from "./app/pages/exportar";
 import { PageEstudantes } from "./app/pages/estudantes/page";
+import { NotFound } from "./app/pages/notFound";
+import { PrivateRoute } from "./components/privateRoute";
 const queryClient = new QueryClient();
 
 createRoot(document.getElementById("root")!).render(
-  // <StrictMode>
   <>
     <QueryClientProvider client={queryClient}>
       <Toaster
@@ -26,19 +27,62 @@ createRoot(document.getElementById("root")!).render(
       />
       <BrowserRouter>
         <Routes>
-          <Route index element={<Home />} />
-          <Route path="Login" element={<Login />} />
+          <Route index element={<Login />} />
           <Route path="camera" element={<Camera />} />
-          <Route path="iniciar" element={<Iniciar />} />
+
+          <Route
+            path="home"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="iniciar"
+            element={
+              <PrivateRoute>
+                <Iniciar />
+              </PrivateRoute>
+            }
+          />
           <Route path="chamada">
-            <Route index element={<Chamada />} />
-            <Route path="dowload" element={<DowloadChamada />} />
+            <Route
+              index
+              element={
+                <PrivateRoute>
+                  <Chamada />
+                </PrivateRoute>
+              }
+            />
+            <Route
+              path="dowload"
+              element={
+                <PrivateRoute>
+                  <DownloadChamada />
+                </PrivateRoute>
+              }
+            />
           </Route>
-          <Route path="estudantes" element={<PageEstudantes />} />
-          <Route path="exportar" element={<ExportarChamada />} />
+          <Route
+            path="estudantes"
+            element={
+              <PrivateRoute>
+                <PageEstudantes />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="exportar"
+            element={
+              <PrivateRoute>
+                <ExportarChamada />
+              </PrivateRoute>
+            }
+          />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </QueryClientProvider>
   </>
-  // </StrictMode>
 );

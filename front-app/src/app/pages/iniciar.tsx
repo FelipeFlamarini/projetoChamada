@@ -19,6 +19,7 @@ import {
 } from "@/chamada";
 import { checkToast } from "@/components/toasts/checkToast";
 import { errorToast } from "@/components/toasts/errorToast";
+import undrawReading from "/undrawReading.svg";
 
 const formSchema = z.object({
   rollcall_token: z.string().min(4).max(4),
@@ -75,7 +76,7 @@ export function Iniciar() {
 
   return (
     <div className="pt-5 px-4 h-screen flex flex-col justify-between max-w-sm w-full mx-auto">
-      <HeaderBack2 link="/" />
+      <HeaderBack2 link="/home" />
       <Form {...form}>
         <form className="flex-1 flex flex-col gap-5 items-center justify-center">
           <FormField
@@ -116,6 +117,9 @@ export function Iniciar() {
           </div>
         </form>
       </Form>
+      <div className="w-full flex justify-center pb-4">
+        <img src={undrawReading} alt="" className="w-40 h-w-40" />
+      </div>
     </div>
   );
 }
