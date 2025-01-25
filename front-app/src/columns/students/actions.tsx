@@ -75,7 +75,7 @@ export const Actions = ({ ra }: ActionsProps) => {
           queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpen(false);
           checkToast({
-            titulo: "Tudo Certo",
+            titulo: "Tudo certo!",
             descricao: "As alterações foram salvas com sucesso!",
           });
         },
@@ -96,7 +96,7 @@ export const Actions = ({ ra }: ActionsProps) => {
           queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpenDelete(false);
           checkToast({
-            titulo: "Tudo certo",
+            titulo: "Tudo certo!",
             descricao: "O estudante foi desativado com sucesso!",
           });
         },

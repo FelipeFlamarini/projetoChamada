@@ -1173,7 +1173,7 @@ export const getStudentImageApiStaticStudentsImagesStudentRaGet = (
 ) => {
       
       
-      return customInstance<unknown>(
+      return customInstance<string>(
       {url: `/api/static/students/images/${studentRa}`, method: 'GET', signal
     },
       options);

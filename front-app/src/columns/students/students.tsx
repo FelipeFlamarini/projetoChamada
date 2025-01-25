@@ -1,10 +1,10 @@
 import { ColumnDef } from "@tanstack/react-table";
 import z from "zod";
 
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Actions } from "./actions";
 import { getStudentsApiStudentsGetResponseItem as Student } from "@/schemas/endpoints/students/students.zod";
 import { Checkbox } from "@/components/ui/checkbox";
+import { StudentImageCell } from "@/components/studentImageCell";
 
 export function getColumnsStudents(): ColumnDef<z.infer<typeof Student>>[] {
   return [
@@ -33,19 +33,9 @@ export function getColumnsStudents(): ColumnDef<z.infer<typeof Student>>[] {
     {
       accessorKey: "image_path",
       header: "Foto",
-      cell: (cell) => {
-        return (
-          <Avatar>
-            <AvatarImage
-              src={cell.row.original.image_path!}
-              alt={cell.row.original.name}
-            />
-            <AvatarFallback className="uppercase">
-              {cell.row.original.name[0]}
-            </AvatarFallback>
-          </Avatar>
-        );
-      },
+      cell: ({ row }) => (
+        <StudentImageCell ra={row.original.ra} name={row.original.name} />
+      ),
     },
     {
       accessorKey: "name",
