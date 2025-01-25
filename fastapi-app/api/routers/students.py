@@ -69,23 +69,22 @@ async def create_students_by_csv(
                         StudentsCreatingStream(
                             progress=(len(students_created) + len(students_not_created))
                             / len(students),
-                            student_created=student_created,
                         )
                     )
                 )
             except Exception as e:
+                print(e)
                 del student["image_base64"]
                 try:
                     student["reason"] = e.detail
                 except:
-                    student["reason"] = str(e.__class__)
+                    student["reason"] = str(e)
                 students_not_created.append(student)
                 yield json.dumps(
                     jsonable_encoder(
                         StudentsCreatingStream(
                             progress=(len(students_created) + len(students_not_created))
                             / len(students),
-                            student_being_created=student,
                         )
                     )
                 )
