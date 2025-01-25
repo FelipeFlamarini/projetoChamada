@@ -91,3 +91,10 @@ class JWTInvalidSignature(HTTPException):
 
     def __init__(self, detail: str = "JWT invalid signature"):
         super().__init__(status_code=HTTPStatus.UNAUTHORIZED, detail=detail)
+
+class DateAttendanceNotFound(HTTPException):
+    """
+    Raised when a date is not found in the database.
+    """
+    def __init__(self, detail: str = "No attendances found for the given date"):
+        super().__init__(status_code=HTTPStatus.NOT_FOUND, detail=detail)
