@@ -91,3 +91,21 @@ class JWTInvalidSignature(HTTPException):
 
     def __init__(self, detail: str = "JWT invalid signature"):
         super().__init__(status_code=HTTPStatus.UNAUTHORIZED, detail=detail)
+
+
+class RollcallTokenNotFound(HTTPException):
+    """
+    Raised when a rollcall token is not found.
+    """
+
+    def __init__(self, detail: str = "Rollcall token not found"):
+        super().__init__(status_code=HTTPStatus.NOT_FOUND, detail=detail)
+
+
+class WebsocketNotConnected(HTTPException):
+    """
+    Raised when a websocket is not connected.
+    """
+
+    def __init__(self, detail: str = "Websocket not connected"):
+        super().__init__(status_code=HTTPStatus.BAD_REQUEST, detail=detail)

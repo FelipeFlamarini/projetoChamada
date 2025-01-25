@@ -39,7 +39,7 @@ export function CardHome() {
           </ButtonHome>
         </Link>
         <Link to="/estudantes" className="w-full">
-          <ButtonHome className="text-center p-4 pt-1 flex items-center">
+          <ButtonHome className="text-center p-4 pt-1">
             <SlidersHorizontal />
             Gerenciar Estudantes
           </ButtonHome>

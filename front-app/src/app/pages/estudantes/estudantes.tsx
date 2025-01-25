@@ -1,10 +1,9 @@
 import { HeaderBack2 } from "@/components/headerBack2";
 import { Button } from "@/components/ui/button";
 import { InputWithEndIcon } from "@/components/inputIconEnd";
-import { Loader2, Search, Upload, X } from "lucide-react";
+import { Loader2, Search, X } from "lucide-react";
 import { useState } from "react";
 // import { useGetAllStudentsApiStudentsGet } from "@/chamada";
-import { DataTableStudents } from "./table";
 
 import {
   getCoreRowModel,
@@ -47,7 +46,6 @@ import { z } from "zod";
 import { useQueryClient } from "@tanstack/react-query";
 import { checkToast } from "@/components/toasts/checkToast";
 import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
-import { useGetStudentsApiStudentsGet } from "@/chamada";
 import { FileUploadDialog } from "@/components/uploadCsv";
 import { useDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatch as useDeactivateStudents } from "@/chamada";
 
@@ -56,7 +54,7 @@ interface EstudantesProps {
   columnsStudents: any;
 }
 
-export function Estudantes({dataE ,columnsStudents}: EstudantesProps) {
+export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
   const [inputValue, setInputValue] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [open, setOpen] = useState(false);
@@ -113,8 +111,6 @@ export function Estudantes({dataE ,columnsStudents}: EstudantesProps) {
     );
   }
 
-
-
   function excludeStudents() {
     const ras = table.getSelectedRowModel().rows.map((row) => row.original.ra);
     deactivateStudentsMutation.mutate(
@@ -148,73 +144,71 @@ export function Estudantes({dataE ,columnsStudents}: EstudantesProps) {
     table.getColumn("name")?.setFilterValue("");
   }
 
-
-
   return (
     <>
-        <div className="flex flex-col pt-2 px-4 gap-2">
-          <HeaderBack2 link="/" />
-          {table.getSelectedRowModel().rows.length === 0 && (
-            <div className="flex flex-col gap-2 mt-4">
-              <Dialog open={open} onOpenChange={setOpen}>
-                <DialogTrigger>
-                  <Button variant={"go"} className="rounded-3xl w-full">
-                    Adicionar estudante
-                  </Button>
-                </DialogTrigger>
-                <DialogContent className="gap-0">
-                  <DialogHeader>
-                    <DialogTitle>Cadastrar Estudante</DialogTitle>
-                  </DialogHeader>
-                  <Form {...form}>
-                    <form
-                      onSubmit={form.handleSubmit(onSubmit)}
-                      className="flex flex-col gap-3 mt-6"
-                    >
-                      <FormField
-                        control={form.control}
-                        name="name"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <InputLogin
-                                placeholder="Nome Completo"
-                                className="rounded-3xl border border-black"
-                                {...field}
-                                disabled={createStudentMutation.isPending}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <FormField
-                        control={form.control}
-                        name="ra"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormControl>
-                              <InputLogin
-                                placeholder="RA do Estudante"
-                                className="rounded-3xl border border-black"
-                                {...field}
-                                disabled={createStudentMutation.isPending}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                      <UploadBtn
-                        className="rounded-3xl border border-black"
-                        title="Faça upload da foto"
-                        form={form}
-                        name="image_base64"
-                        disabled={createStudentMutation.isPending}
-                      />
-                    </form>
-                  </Form>
-                  {/* <div className="flex flex-col gap-3 mt-6">
+      <div className="flex flex-col pt-2 px-4 gap-2">
+        <HeaderBack2 link="/" />
+        {table.getSelectedRowModel().rows.length === 0 && (
+          <div className="flex flex-col gap-2 mt-4">
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger>
+                <Button variant={"go"} className="rounded-3xl w-full">
+                  Adicionar estudante
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="gap-0">
+                <DialogHeader>
+                  <DialogTitle>Cadastrar Estudante</DialogTitle>
+                </DialogHeader>
+                <Form {...form}>
+                  <form
+                    onSubmit={form.handleSubmit(onSubmit)}
+                    className="flex flex-col gap-3 mt-6"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="name"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <InputLogin
+                              placeholder="Nome Completo"
+                              className="rounded-3xl border border-black"
+                              {...field}
+                              disabled={createStudentMutation.isPending}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="ra"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormControl>
+                            <InputLogin
+                              placeholder="RA do Estudante"
+                              className="rounded-3xl border border-black"
+                              {...field}
+                              disabled={createStudentMutation.isPending}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <UploadBtn
+                      className="rounded-3xl border border-black w-full"
+                      title="Faça upload da foto"
+                      form={form}
+                      name="image_base64"
+                      disabled={createStudentMutation.isPending}
+                    />
+                  </form>
+                </Form>
+                {/* <div className="flex flex-col gap-3 mt-6">
               <InputLogin
                 placeholder="Nome Completo"
                 className="rounded-3xl border border-black"
@@ -228,35 +222,35 @@ export function Estudantes({dataE ,columnsStudents}: EstudantesProps) {
                 title="Faça upload da foto"
               />
             </div> */}
-                  {!createStudentMutation.isPending && (
-                    <Button
-                      variant={"go"}
-                      className="rounded-3xl w-full mt-6 mb-4"
-                      onClick={form.handleSubmit(onSubmit)}
-                    >
-                      Salvar
-                    </Button>
-                  )}
-                  {createStudentMutation.isPending && (
-                    <Button disabled className="rounded-3xl w-full mt-6 mb-4">
-                      <Loader2 className="animate-spin" />
-                      enviando...
-                    </Button>
-                  )}
-                </DialogContent>
-              </Dialog>
-              <InputWithEndIcon
-                placeholder="Busque pelo nome do estudante"
-                className="rounded-3xl"
-                value={
-                  (table.getColumn("name")?.getFilterValue() as string) ?? ""
-                }
-                onChange={handleChange}
-              >
-                {inputValue && <X onClick={handleClear} />}
-                {!inputValue && <Search size={20} />}
-              </InputWithEndIcon>
-              {/* <Dialog>
+                {!createStudentMutation.isPending && (
+                  <Button
+                    variant={"go"}
+                    className="rounded-3xl w-full mt-6 mb-4"
+                    onClick={form.handleSubmit(onSubmit)}
+                  >
+                    Salvar
+                  </Button>
+                )}
+                {createStudentMutation.isPending && (
+                  <Button disabled className="rounded-3xl w-full mt-6 mb-4">
+                    <Loader2 className="animate-spin" />
+                    enviando...
+                  </Button>
+                )}
+              </DialogContent>
+            </Dialog>
+            <InputWithEndIcon
+              placeholder="Busque pelo nome do estudante"
+              className="rounded-3xl"
+              value={
+                (table.getColumn("name")?.getFilterValue() as string) ?? ""
+              }
+              onChange={handleChange}
+            >
+              {inputValue && <X onClick={handleClear} />}
+              {!inputValue && <Search size={20} />}
+            </InputWithEndIcon>
+            {/* <Dialog>
           <DialogTrigger asChild>
             <Button variant={"goSecondary"} className="rounded-3xl w-full">
               Importar CSV <Upload />
@@ -268,72 +262,76 @@ export function Estudantes({dataE ,columnsStudents}: EstudantesProps) {
             </DialogHeader>
           </DialogContent>
         </Dialog> */}
-              <FileUploadDialog />
-            </div>
-          )}
-          {table.getSelectedRowModel().rows.length !== 0 && (
-            <div className="flex flex-col gap-2 mt-4">
-              <Button
-                variant={"go"}
-                className="rounded-3xl w-full"
-                onClick={excludeStudents}
-              >
-                Excluir estudantes
-              </Button>
-              <Button variant="goSecondary" className="rounded-3xl w-full" onClick={() => table.toggleAllPageRowsSelected(false)}>
-                Cancelar
-              </Button>
-            </div>
-          )}
-
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                {table.getHeaderGroups().map((headerGroup) => (
-                  <TableRow key={headerGroup.id}>
-                    {headerGroup.headers.map((header) => {
-                      return (
-                        <TableHead key={header.id}>
-                          {header.isPlaceholder
-                            ? null
-                            : flexRender(
-                                header.column.columnDef.header,
-                                header.getContext()
-                              )}
-                        </TableHead>
-                      );
-                    })}
-                  </TableRow>
-                ))}
-              </TableHeader>
-              <TableBody>
-                {table.getRowModel()?.rows?.length ? (
-                  table.getRowModel().rows.map((row) => (
-                    <TableRow>
-                      {row.getVisibleCells().map((cell) => (
-                        <TableCell key={cell.id}>
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
-                        </TableCell>
-                      ))}
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell
-                      colSpan={table.getAllColumns().length}
-                      className="h-24 text-center"
-                    >
-                      No results.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
+            <FileUploadDialog />
           </div>
+        )}
+        {table.getSelectedRowModel().rows.length !== 0 && (
+          <div className="flex flex-col gap-2 mt-4">
+            <Button
+              variant={"go"}
+              className="rounded-3xl w-full"
+              onClick={excludeStudents}
+            >
+              Excluir estudantes
+            </Button>
+            <Button
+              variant="goSecondary"
+              className="rounded-3xl w-full"
+              onClick={() => table.toggleAllPageRowsSelected(false)}
+            >
+              Cancelar
+            </Button>
+          </div>
+        )}
+
+        <div className="rounded-md border">
+          <Table>
+            <TableHeader>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableRow key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableHead key={header.id}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
+                      </TableHead>
+                    );
+                  })}
+                </TableRow>
+              ))}
+            </TableHeader>
+            <TableBody>
+              {table.getRowModel()?.rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableRow>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableCell key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                ))
+              ) : (
+                <TableRow>
+                  <TableCell
+                    colSpan={table.getAllColumns().length}
+                    className="h-24 text-center"
+                  >
+                    Não há estudantes cadastrados.
+                  </TableCell>
+                </TableRow>
+              )}
+            </TableBody>
+          </Table>
         </div>
+      </div>
     </>
   );
 }

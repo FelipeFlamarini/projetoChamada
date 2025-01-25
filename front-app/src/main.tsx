@@ -5,6 +5,7 @@ import "./index.css";
 import { Login } from "./app/pages/Login";
 import { Home } from "./app/pages/home";
 import { Camera } from "./app/pages/camera";
+import { Iniciar } from "./app/pages/iniciar";
 import { Toaster } from "sonner";
 import { Chamada } from "./app/pages/chamadas/chamada";
 import { DowloadChamada } from "./app/pages/chamadas/dowload";
@@ -31,6 +32,7 @@ createRoot(document.getElementById("root")!).render(
           <Route index element={<Home />} />
           <Route path="Login" element={<Login />} />
           <Route path="camera" element={<Camera />} />
+          <Route path="iniciar" element={<Iniciar />} />
           <Route path="chamada">
             <Route index element={<Chamada />} />
             <Route path="dowload" element={<DowloadChamada />} />

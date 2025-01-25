@@ -42,17 +42,6 @@ export const Actions = ({ ra }: ActionsProps) => {
   const updateStudentByRaMutation = useUpdateStudentsByRa();
   const queryClient = useQueryClient();
 
-  const defaultValues = getStudentByRaQuery.data
-    ? {
-        name: getStudentByRaQuery.data.name,
-        ra: getStudentByRaQuery.data.ra,
-        image_path: getStudentByRaQuery.data.image_path,
-      }
-    : {
-        name: "",
-        ra: 0,
-        image_path: "",
-      };
   const form = useForm<z.infer<typeof editStudent>>({
     resolver: zodResolver(editStudent),
     defaultValues: {
@@ -124,7 +113,7 @@ export const Actions = ({ ra }: ActionsProps) => {
           </DialogTrigger>
           <DialogContent className="gap-0">
             <DialogHeader>
-              <DialogTitle>Cadastrar Estudante</DialogTitle>
+              <DialogTitle>Editar estudante</DialogTitle>
             </DialogHeader>
             <Form {...form}>
               <form
@@ -138,7 +127,7 @@ export const Actions = ({ ra }: ActionsProps) => {
                     <FormItem>
                       <FormControl>
                         <InputLogin
-                          placeholder="Nome Completo"
+                          placeholder="Nome completo"
                           className="rounded-3xl border border-black"
                           {...field}
                         />
@@ -154,7 +143,7 @@ export const Actions = ({ ra }: ActionsProps) => {
                     <FormItem>
                       <FormControl>
                         <InputLogin
-                          placeholder="RA do Estudante"
+                          placeholder="RA do estudante"
                           className="rounded-3xl border border-black"
                           {...field}
                         />
@@ -163,32 +152,9 @@ export const Actions = ({ ra }: ActionsProps) => {
                     </FormItem>
                   )}
                 />
-                {/* <FormField
-                control={form.control}
-                name="active"
-                render={({ field }) => (
-                  <FormItem>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <FormControl>
-                        <SelectTrigger className="bg-inputLogin rounded-3xl">
-                          <SelectValue />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="active">Ativo</SelectItem>
-                        <SelectItem value="inactive">Inativo</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
                 <UploadBtn
-                  className="rounded-3xl border border-black"
-                  title="Faça upload da foto"
+                  className="rounded-3xl border border-black w-full"
+                  title="Trocar foto"
                   form={form}
                   name="image_base64"
                 />
@@ -210,7 +176,7 @@ export const Actions = ({ ra }: ActionsProps) => {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                Tem Certeza que quer excluir este estudante?
+                Tem certeza que quer desativar este estudante?
               </DialogTitle>
             </DialogHeader>
             <div className="flex flex-col gap-4">
@@ -235,6 +201,5 @@ export const Actions = ({ ra }: ActionsProps) => {
         </Dialog>
       </div>
     )
-    // getStudentByRaQuery.isLoading && (<ClipLoader />)
   );
 };

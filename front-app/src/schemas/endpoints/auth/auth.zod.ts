@@ -9,16 +9,6 @@ import {
 } from 'zod'
 
 /**
- * @summary Auth:Jwt.Login
- */
-export const authJwtLoginApiAuthLoginPostResponse = zod.any()
-
-/**
- * @summary Auth:Jwt.Logout
- */
-export const authJwtLogoutApiAuthLogoutPostResponse = zod.any()
-
-/**
  * @summary Oauth:Google.Jwt.Authorize
  */
 export const oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryParams = zod.object({
@@ -41,54 +31,4 @@ export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryParams = zod.obj
 })
 
 export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGetResponse = zod.any()
-
-/**
- * @summary Register:Register
- */
-export const registerRegisterApiAuthRegisterPostBody = zod.object({
-  "email": zod.string().email(),
-  "password": zod.string(),
-  "is_active": zod.boolean().or(zod.null()).optional(),
-  "is_superuser": zod.boolean().or(zod.null()).optional(),
-  "is_verified": zod.boolean().or(zod.null()).optional()
-})
-
-/**
- * @summary Reset:Forgot Password
- */
-export const resetForgotPasswordApiAuthForgotPasswordPostBody = zod.object({
-  "email": zod.string().email()
-})
-
-/**
- * @summary Reset:Reset Password
- */
-export const resetResetPasswordApiAuthResetPasswordPostBody = zod.object({
-  "token": zod.string(),
-  "password": zod.string()
-})
-
-export const resetResetPasswordApiAuthResetPasswordPostResponse = zod.any()
-
-/**
- * @summary Verify:Request-Token
- */
-export const verifyRequestTokenApiAuthRequestVerifyTokenPostBody = zod.object({
-  "email": zod.string().email()
-})
-
-/**
- * @summary Verify:Verify
- */
-export const verifyVerifyApiAuthVerifyPostBody = zod.object({
-  "token": zod.string()
-})
-
-export const verifyVerifyApiAuthVerifyPostResponse = zod.object({
-  "id": zod.string(),
-  "email": zod.string().email(),
-  "is_active": zod.boolean().optional(),
-  "is_superuser": zod.boolean().optional(),
-  "is_verified": zod.boolean().optional()
-})
 

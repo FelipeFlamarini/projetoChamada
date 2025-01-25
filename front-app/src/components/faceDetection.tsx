@@ -13,7 +13,11 @@ import {
   useCreateAttendanceApiAttendancesPost,
 } from "@/chamada";
 
-const FaceDetection = () => {
+interface IFaceDetection {
+  recognizeToken: str;
+}
+
+const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
   const recognizeMutation = useRecognizeApiFacialRecognitionRecognizePost();
   const confirmationMutation = useCreateAttendanceApiAttendancesPost();
 
@@ -92,6 +96,7 @@ const FaceDetection = () => {
               const data = await recognizeMutation.mutateAsync({
                 data: {
                   image_base64: imageSrc,
+                  recognize_token: recognizeToken,
                 },
               });
               console.log(data);
@@ -132,7 +137,7 @@ const FaceDetection = () => {
 
       await sleep(650);
     }
-  }, [recognizeMutation, confirmationMutation]);
+  }, [recognizeMutation, confirmationMutation, recognizeToken]);
 
   const stopWebcam = () => {
     const stream = videoRef.current?.video?.srcObject as MediaStream;
