@@ -24,7 +24,7 @@ import { z } from "zod";
 import { editStudent } from "@/schemas/estudantes";
 // ver se a melhor opção é fazer um refetch ou pegar pela row
 // import { useGetStudentByRaApiStudentsStudentRaGet as useGetStudentByRa } from "@/chamada";
-import { useUpdateStudentByRaApiStudentsStudentRaPatch as useUpdateStudentsByRa } from "@/chamada";
+import { useUpdateStudentByRaApiStudentsStudentRaPatch as useUpdateStudentByRa } from "@/chamada";
 import { checkToast } from "@/components/toasts/checkToast";
 import { useQueryClient } from "@tanstack/react-query";
 import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
@@ -39,7 +39,7 @@ export const Actions = ({ ra }: ActionsProps) => {
   const [openDelete, setOpenDelete] = useState(false);
   const getStudentByRaQuery = useGetStudentByRa(ra);
 
-  const updateStudentByRaMutation = useUpdateStudentsByRa();
+  const updateStudentByRaMutation = useUpdateStudentByRa();
   const queryClient = useQueryClient();
 
   const form = useForm<z.infer<typeof editStudent>>({
@@ -96,7 +96,7 @@ export const Actions = ({ ra }: ActionsProps) => {
           queryClient.invalidateQueries({ queryKey: activeStudentsKey() });
           setOpenDelete(false);
           checkToast({
-            titulo: "Tudo Certo",
+            titulo: "Tudo certo",
             descricao: "O estudante foi desativado com sucesso!",
           });
         },
@@ -184,7 +184,7 @@ export const Actions = ({ ra }: ActionsProps) => {
                 className="rounded-3xl"
                 variant={"goSecondary"}
                 onClick={() => {
-                  setOpen(false);
+                  setOpenDelete(false);
                 }}
               >
                 Cancelar

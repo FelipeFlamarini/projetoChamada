@@ -39,7 +39,7 @@ function WaitingForRollcallStart({
   handleResetToken,
 }: IWaitingForRollcallStart) {
   return (
-    <>
+    <div className="pt-2 px-4">
       <HeaderBack2 link="/" />
       <div className="flex flex-col items-center gap-2 h-dvh p-2 sm:py-8 justify-center">
         <p className="text-text text-center mt-10">
@@ -67,7 +67,7 @@ function WaitingForRollcallStart({
           Gerar novo token
         </Button>
       </div>
-    </>
+    </div>
   );
 }
 
