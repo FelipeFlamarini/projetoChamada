@@ -58,6 +58,14 @@ export const updateStudentByRaApiStudentsStudentRaPatchParams = zod.object({
   "student_ra": zod.number()
 })
 
+export const updateStudentByRaApiStudentsStudentRaPatchResponse = zod.object({
+  "_id": zod.string().or(zod.null()).optional(),
+  "name": zod.string(),
+  "ra": zod.number(),
+  "active": zod.boolean().optional(),
+  "image_path": zod.string().or(zod.null())
+})
+
 /**
  * @summary Activate Student Bulk By Ra
  */

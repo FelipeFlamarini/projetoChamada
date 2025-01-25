@@ -16,6 +16,7 @@ export * from './bodyAuthJwtLoginAuthLoginPostClientId';
 export * from './bodyAuthJwtLoginAuthLoginPostClientSecret';
 export * from './bodyAuthJwtLoginAuthLoginPostGrantType';
 export * from './bodyCreateAttendanceApiAttendancesPost';
+export * from './bodyCreateAttendanceCsvByDateApiAttendancesCsvPost';
 export * from './bodyCreateStudentApiStudentsPost';
 export * from './bodyCreateStudentsByCsvApiStudentsCsvPost';
 export * from './bodyRecognizeApiFacialRecognitionRecognizePost';
