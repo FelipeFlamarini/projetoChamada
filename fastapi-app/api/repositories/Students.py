@@ -98,6 +98,10 @@ class StudentsRepository:
         if ra and ra != student.ra:
             if await StudentsRepository._get_if_student_exists_by_ra(ra):
                 raise DuplicateDocument(f"RA {ra} already exists")
+
+        if active == False:
+            StudentsVectorSearcherRepository.remove_item(student.ra)
+
         try:
             image_path = None
             if image_base64:
