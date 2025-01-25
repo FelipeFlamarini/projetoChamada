@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button";
 import {
-  DialogDescription,
   DialogFooter,
   DialogTitle,
   DialogHeader,
@@ -22,9 +21,9 @@ export const ConfirmedDialog = ({
   >
     <DialogHeader>
       <DialogTitle className="text-center">Presença confirmada!</DialogTitle>
-      <DialogDescription className="text-center mb-4">
+      {/* <DialogDescription className="text-center mb-4">
         Parabéns sua presença foi confirmada!
-      </DialogDescription>
+      </DialogDescription> */}
     </DialogHeader>
     <DialogFooter className="mt-1">
       <Button onClick={handleReset}>Fechar</Button>
