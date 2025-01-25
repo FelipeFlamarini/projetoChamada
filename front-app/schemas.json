@@ -7,9 +7,7 @@
   "paths": {
     "/api/auth/google/authorize": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Oauth:Google.Jwt.Authorize",
         "operationId": "oauth_google_jwt_authorize_api_auth_google_authorize_get",
         "parameters": [
@@ -52,9 +50,7 @@
     },
     "/api/auth/google/callback": {
       "get": {
-        "tags": [
-          "auth"
-        ],
+        "tags": ["auth"],
         "summary": "Oauth:Google.Jwt.Callback",
         "description": "The response varies based on the authentication backend used.",
         "operationId": "oauth_google_jwt_callback_api_auth_google_callback_get",
@@ -129,9 +125,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           },
@@ -171,9 +165,7 @@
     },
     "/api/users/me": {
       "get": {
-        "tags": [
-          "users"
-        ],
+        "tags": ["users"],
         "summary": "Get Current User",
         "operationId": "get_current_user_api_users_me_get",
         "responses": {
@@ -197,9 +189,7 @@
     },
     "/api/students": {
       "get": {
-        "tags": [
-          "students"
-        ],
+        "tags": ["students"],
         "summary": "Get Students",
         "operationId": "get_students_api_students_get",
         "security": [
@@ -247,9 +237,7 @@
         }
       },
       "post": {
-        "tags": [
-          "students"
-        ],
+        "tags": ["students"],
         "summary": "Create Student",
         "operationId": "create_student_api_students_post",
         "security": [
@@ -293,9 +281,7 @@
     },
     "/api/students/all": {
       "get": {
-        "tags": [
-          "students"
-        ],
+        "tags": ["students"],
         "summary": "Get All Students",
         "operationId": "get_all_students_api_students_all_get",
         "responses": {
@@ -323,9 +309,7 @@
     },
     "/api/students/{student_ra}": {
       "get": {
-        "tags": [
-          "students"
-        ],
+        "tags": ["students"],
         "summary": "Get Student By Ra",
         "operationId": "get_student_by_ra_api_students__student_ra__get",
         "security": [
@@ -367,10 +351,8 @@
           }
         }
       },
-      "post": {
-        "tags": [
-          "students"
-        ],
+      "patch": {
+        "tags": ["students"],
         "summary": "Update Student By Ra",
         "operationId": "update_student_by_ra_api_students__student_ra__patch",
         "security": [
@@ -399,7 +381,7 @@
           }
         },
         "responses": {
-          "201": {
+          "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
@@ -424,9 +406,7 @@
     },
     "/api/students/csv": {
       "post": {
-        "tags": [
-          "students"
-        ],
+        "tags": ["students"],
         "summary": "Create Students By Csv",
         "operationId": "create_students_by_csv_api_students_csv_post",
         "requestBody": {
@@ -444,9 +424,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           },
@@ -470,9 +448,7 @@
     },
     "/api/students/bulk_activate": {
       "patch": {
-        "tags": [
-          "students"
-        ],
+        "tags": ["students"],
         "summary": "Activate Student Bulk By Ra",
         "operationId": "activate_student_bulk_by_ra_api_students_bulk_activate_patch",
         "requestBody": {
@@ -524,9 +500,7 @@
     },
     "/api/students/bulk_deactivate": {
       "patch": {
-        "tags": [
-          "students"
-        ],
+        "tags": ["students"],
         "summary": "Deactivate Student Bulk By Ra",
         "operationId": "deactivate_student_bulk_by_ra_api_students_bulk_deactivate_patch",
         "requestBody": {
@@ -578,9 +552,7 @@
     },
     "/api/facial_recognition/recognize": {
       "post": {
-        "tags": [
-          "facial recognition"
-        ],
+        "tags": ["facial recognition"],
         "summary": "Recognize",
         "operationId": "recognize_api_facial_recognition_recognize_post",
         "requestBody": {
@@ -617,11 +589,31 @@
         }
       }
     },
+    "/api/attendances/attendance-dates": {
+      "get": {
+        "tags": ["attendances"],
+        "summary": "Get Attendances Dates",
+        "operationId": "get_attendances_dates_api_attendances_attendance_dates_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
     "/api/attendances/": {
       "post": {
-        "tags": [
-          "attendances"
-        ],
+        "tags": ["attendances"],
         "summary": "Create Attendance",
         "operationId": "create_attendance_api_attendances__post",
         "requestBody": {
@@ -635,54 +627,12 @@
           "required": true
         },
         "responses": {
-          "201": {
-            "description": "Successful Response",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AttendanceStudentReturn"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "Validation Error",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/HTTPValidationError"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/static/students/images/{student_ra}": {
-      "get": {
-        "tags": [
-          "static"
-        ],
-        "summary": "Get Student Image",
-        "operationId": "get_student_image_api_static_students_images__student_ra__get",
-        "parameters": [
-          {
-            "name": "student_ra",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "title": "Student Ra"
-            }
-          }
-        ],
-        "responses": {
           "200": {
             "description": "Successful Response",
             "content": {
               "application/json": {
                 "schema": {
-
+                  "$ref": "#/components/schemas/AttendanceStudentReturn"
                 }
               }
             }
@@ -705,11 +655,89 @@
         ]
       }
     },
+    "/api/attendances/csv": {
+      "post": {
+        "tags": ["attendances"],
+        "summary": "Create Attendance Csv By Date",
+        "operationId": "create_attendance_csv_by_date_api_attendances_csv_post",
+        "requestBody": {
+          "content": {
+            "application/x-www-form-urlencoded": {
+              "schema": {
+                "$ref": "#/components/schemas/Body_create_attendance_csv_by_date_api_attendances_csv_post"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
+      }
+    },
+    "/api/static/students/images/{student_ra}": {
+      "get": {
+        "tags": ["static"],
+        "summary": "Get Student Image",
+        "operationId": "get_student_image_api_static_students_images__student_ra__get",
+        "parameters": [
+          {
+            "name": "student_ra",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "title": "Student Ra"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/rollcall/active_tokens": {
       "get": {
-        "tags": [
-          "rollcall"
-        ],
+        "tags": ["rollcall"],
         "summary": "Get Active Tokens",
         "operationId": "get_active_tokens_api_rollcall_active_tokens_get",
         "responses": {
@@ -737,9 +765,7 @@
     },
     "/api/rollcall/start": {
       "post": {
-        "tags": [
-          "rollcall"
-        ],
+        "tags": ["rollcall"],
         "summary": "Start Rollcall",
         "operationId": "start_rollcall_api_rollcall_start_post",
         "requestBody": {
@@ -757,9 +783,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           },
@@ -773,14 +797,17 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
       }
     },
     "/api/rollcall/stop": {
       "post": {
-        "tags": [
-          "rollcall"
-        ],
+        "tags": ["rollcall"],
         "summary": "Stop Rollcall",
         "operationId": "stop_rollcall_api_rollcall_stop_post",
         "requestBody": {
@@ -798,9 +825,7 @@
             "description": "Successful Response",
             "content": {
               "application/json": {
-                "schema": {
-
-                }
+                "schema": {}
               }
             }
           },
@@ -814,7 +839,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "APIKeyCookie": []
+          }
+        ]
       }
     }
   },
@@ -840,11 +870,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "date",
-          "times",
-          "ra"
-        ],
+        "required": ["date", "times", "ra"],
         "title": "AttendanceStudentReturn"
       },
       "Body_create_attendance_api_attendances__post": {
@@ -855,10 +881,19 @@
           }
         },
         "type": "object",
-        "required": [
-          "jwt"
-        ],
+        "required": ["jwt"],
         "title": "Body_create_attendance_api_attendances__post"
+      },
+      "Body_create_attendance_csv_by_date_api_attendances_csv_post": {
+        "properties": {
+          "date": {
+            "type": "string",
+            "title": "Date"
+          }
+        },
+        "type": "object",
+        "required": ["date"],
+        "title": "Body_create_attendance_csv_by_date_api_attendances_csv_post"
       },
       "Body_create_student_api_students_post": {
         "properties": {
@@ -876,11 +911,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "ra",
-          "image_base64"
-        ],
+        "required": ["name", "ra", "image_base64"],
         "title": "Body_create_student_api_students_post"
       },
       "Body_create_students_by_csv_api_students_csv_post": {
@@ -892,9 +923,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "csv_file"
-        ],
+        "required": ["csv_file"],
         "title": "Body_create_students_by_csv_api_students_csv_post"
       },
       "Body_recognize_api_facial_recognition_recognize_post": {
@@ -909,10 +938,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "image_base64",
-          "recognize_token"
-        ],
+        "required": ["image_base64", "recognize_token"],
         "title": "Body_recognize_api_facial_recognition_recognize_post"
       },
       "Body_start_rollcall_api_rollcall_start_post": {
@@ -923,9 +949,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "rollcall_token"
-        ],
+        "required": ["rollcall_token"],
         "title": "Body_start_rollcall_api_rollcall_start_post"
       },
       "Body_stop_rollcall_api_rollcall_stop_post": {
@@ -936,9 +960,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "rollcall_token"
-        ],
+        "required": ["rollcall_token"],
         "title": "Body_stop_rollcall_api_rollcall_stop_post"
       },
       "Body_update_student_by_ra_api_students__student_ra__patch": {
@@ -1006,9 +1028,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "verified"
-        ],
+        "required": ["verified"],
         "title": "DeepFaceRecognizeReturn"
       },
       "DeepFaceStudentReturn": {
@@ -1027,11 +1047,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "ra",
-          "token"
-        ],
+        "required": ["name", "ra", "token"],
         "title": "DeepFaceStudentReturn"
       },
       "ErrorModel": {
@@ -1052,9 +1068,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "detail"
-        ],
+        "required": ["detail"],
         "title": "ErrorModel"
       },
       "HTTPValidationError": {
@@ -1078,9 +1092,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "authorization_url"
-        ],
+        "required": ["authorization_url"],
         "title": "OAuth2AuthorizeResponse"
       },
       "Student": {
@@ -1125,11 +1137,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "name",
-          "ra",
-          "image_path"
-        ],
+        "required": ["name", "ra", "image_path"],
         "title": "Student"
       },
       "UserRead": {
@@ -1161,10 +1169,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "id",
-          "email"
-        ],
+        "required": ["id", "email"],
         "title": "UserRead"
       },
       "ValidationError": {
@@ -1193,11 +1198,7 @@
           }
         },
         "type": "object",
-        "required": [
-          "loc",
-          "msg",
-          "type"
-        ],
+        "required": ["loc", "msg", "type"],
         "title": "ValidationError"
       }
     },

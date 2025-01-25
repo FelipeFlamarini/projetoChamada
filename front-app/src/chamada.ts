@@ -24,6 +24,7 @@ import type {
 import type {
   AttendanceStudentReturn,
   BodyCreateAttendanceApiAttendancesPost,
+  BodyCreateAttendanceCsvByDateApiAttendancesCsvPost,
   BodyCreateStudentApiStudentsPost,
   BodyCreateStudentsByCsvApiStudentsCsvPost,
   BodyRecognizeApiFacialRecognitionRecognizePost,
@@ -648,8 +649,7 @@ export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnT
 export const updateStudentByRaApiStudentsStudentRaPatch = (
     studentRa: number,
     bodyUpdateStudentByRaApiStudentsStudentRaPatch: BodyType<BodyUpdateStudentByRaApiStudentsStudentRaPatch>,
- options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
-) => {
+ options?: SecondParameter<typeof customInstance>,) => {
       
       const formUrlEncoded = new URLSearchParams();
 if(bodyUpdateStudentByRaApiStudentsStudentRaPatch.name !== undefined && bodyUpdateStudentByRaApiStudentsStudentRaPatch.name !== null) {
@@ -666,9 +666,9 @@ if(bodyUpdateStudentByRaApiStudentsStudentRaPatch.active !== undefined && bodyUp
  }
 
       return customInstance<Student>(
-      {url: `/api/students/${studentRa}`, method: 'POST',
+      {url: `/api/students/${studentRa}`, method: 'PATCH',
       headers: {'Content-Type': 'application/x-www-form-urlencoded', },
-       data: formUrlEncoded, signal
+       data: formUrlEncoded
     },
       options);
     }
@@ -955,6 +955,94 @@ export const useRecognizeApiFacialRecognitionRecognizePost = <TError = ErrorType
     }
     
 /**
+ * @summary Get Attendances Dates
+ */
+export const getAttendancesDatesApiAttendancesAttendanceDatesGet = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<unknown>(
+      {url: `/api/attendances/attendance-dates`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryKey = () => {
+    return [`/api/attendances/attendance-dates`] as const;
+    }
+
+    
+export const getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryOptions = <TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>> = ({ signal }) => getAttendancesDatesApiAttendancesAttendanceDatesGet(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetAttendancesDatesApiAttendancesAttendanceDatesGetQueryResult = NonNullable<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>>
+export type GetAttendancesDatesApiAttendancesAttendanceDatesGetQueryError = ErrorType<unknown>
+
+
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary Get Attendances Dates
+ */
+
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
  * @summary Create Attendance
  */
 export const createAttendanceApiAttendancesPost = (
@@ -1011,6 +1099,67 @@ export const useCreateAttendanceApiAttendancesPost = <TError = ErrorType<HTTPVal
       > => {
 
       const mutationOptions = getCreateAttendanceApiAttendancesPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Create Attendance Csv By Date
+ */
+export const createAttendanceCsvByDateApiAttendancesCsvPost = (
+    bodyCreateAttendanceCsvByDateApiAttendancesCsvPost: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      const formUrlEncoded = new URLSearchParams();
+formUrlEncoded.append('date', bodyCreateAttendanceCsvByDateApiAttendancesCsvPost.date)
+
+      return customInstance<unknown>(
+      {url: `/api/attendances/csv`, method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
+    },
+      options);
+    }
+  
+
+
+export const getCreateAttendanceCsvByDateApiAttendancesCsvPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, {data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  createAttendanceCsvByDateApiAttendancesCsvPost(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationResult = NonNullable<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>>
+    export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationBody = BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>
+    export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Create Attendance Csv By Date
+ */
+export const useCreateAttendanceCsvByDateApiAttendancesCsvPost = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>,
+        TError,
+        {data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>},
+        TContext
+      > => {
+
+      const mutationOptions = getCreateAttendanceCsvByDateApiAttendancesCsvPostMutationOptions(options);
 
       return useMutation(mutationOptions);
     }
