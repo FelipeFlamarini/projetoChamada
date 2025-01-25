@@ -3,6 +3,7 @@ import { DialogDescription, DialogFooter } from "@/components/ui/dialog";
 
 interface ConfirmationDialogProps {
   fadeOut: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   students: any; // Replace with appropriate type
   handleConfirm: () => void;
   handleExit: () => void;

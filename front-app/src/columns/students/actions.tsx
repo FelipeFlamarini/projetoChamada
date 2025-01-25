@@ -1,5 +1,4 @@
 import { SquarePen, Trash2 } from "lucide-react";
-import { ClipLoader } from "react-spinners";
 import {
   Dialog,
   DialogContent,

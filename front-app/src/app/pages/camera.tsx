@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { LoaderCircle } from "lucide-react";
+import { useNavigate } from "react-router";
 
 import FaceDetection from "@/components/dialogfaceDetection";
 
@@ -125,8 +126,10 @@ export function Camera() {
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [isDisconnected, setIsDisconnected] = useState<boolean>(false);
 
+  const navigate = useNavigate();
+
   function handleResetToken() {
-    window.location.reload();
+    navigate(0);
   }
 
   useEffect(() => {
@@ -139,14 +142,12 @@ export function Camera() {
     };
 
     ws.onmessage = (event) => {
-      console.log(JSON.parse(event.data).action);
       switch (JSON.parse(event.data).action) {
         case RollcallAction.reset_token:
           setRollcallToken(generateRandomString(4));
           ws.send(rollcallToken);
           break;
         case RollcallAction.start:
-          console.log(event.data);
           setRecognizeToken(JSON.parse(event.data).recognize_token);
           setChamada(true);
           break;

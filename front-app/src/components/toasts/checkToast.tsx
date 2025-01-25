@@ -3,10 +3,10 @@ import { CircleCheck, X } from "lucide-react";
 
 interface checkToastProps {
   titulo: string;
-  descricao: string;
+  descricao?: string;
 }
 
-export function checkToast({ titulo, descricao }: checkToastProps) {
+export function checkToast({ titulo, descricao = "" }: checkToastProps) {
   toast.custom(
     (t) => (
       <div className="flex border border-tst-success-foreground bg-tst-success w-full rounded-lg p-4 gap-2 justify-between sm:w-[354px]">

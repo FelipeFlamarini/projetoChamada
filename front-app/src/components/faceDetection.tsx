@@ -14,7 +14,7 @@ import {
 } from "@/chamada";
 
 interface IFaceDetection {
-  recognizeToken: str;
+  recognizeToken: string;
 }
 
 const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
@@ -32,7 +32,6 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
     try {
       const MODEL_URL = "/models"; // Verifique o caminho correto
       await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-      console.log("Modelos carregados com sucesso.");
     } catch (error) {
       console.error("Erro ao carregar os modelos:", error);
     }
@@ -100,7 +99,7 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
                 },
               });
               console.log(data);
-              if (data.verified) {
+              if (data.verified && data.students) {
                 confirmationToast({
                   students: data.students,
                   confirmationMutation: (token) => {
@@ -110,15 +109,19 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
                       },
                       {
                         onSuccess: async (data) => {
-                          verifiedToast(data.times.pop().split(".")[0]);
+                          if (data.times && data.times.length > 0) {
+                            const time = data.times.pop();
+                            if (time) {
+                              verifiedToast(time.split(".")[0]);
+                            }
+                          }
                         },
                       }
                     );
                   },
                 });
                 await sleep(5000);
-              }
-              if (!data.verified) {
+              } else {
                 notVerifiedToast();
                 await sleep(2200);
               }
@@ -152,7 +155,6 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
 
     if (video) {
       video.addEventListener("loadeddata", () => {
-        console.log("Vídeo carregado com sucesso.");
         handleVideoPlay();
       });
     }

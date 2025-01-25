@@ -1,18 +1,9 @@
-import { useNavigate } from "react-router";
-
 import { Button } from "@/components/ui/button";
 
 import { HeaderBack } from "@/components/headerBack";
 import { SearchWithIcons } from "@/components/comp-26";
-import { useGetCurrentUserApiUsersMeGet } from "@/chamada";
 
 function DownloadChamada() {
-  const navigate = useNavigate();
-  const useGetCurrentUser = useGetCurrentUserApiUsersMeGet();
-  if (!useGetCurrentUser.data) {
-    navigate("/");
-  }
-
   return (
     <div className="flex justify-center h-screen ">
       <div className="flex flex-col items-center gap-4 h-dvh p-2 px-3 sm:py-8 w-full max-w-screen-md">

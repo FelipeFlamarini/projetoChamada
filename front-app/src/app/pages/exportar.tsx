@@ -1,17 +1,8 @@
-import { useNavigate } from "react-router";
-
 import { ExportarMain } from "@/components/exportMain";
 import { HeaderBack2 } from "@/components/headerBack2";
 import undrawDownload from "/undraw_download.svg";
-import { useGetCurrentUserApiUsersMeGet } from "@/chamada";
 
 export const ExportarChamada = () => {
-  const navigate = useNavigate();
-  const useGetCurrentUser = useGetCurrentUserApiUsersMeGet();
-  if (!useGetCurrentUser.data) {
-    navigate("/");
-  }
-
   return (
     <div className="pt-5 px-4 h-screen flex flex-col justify-between max-w-sm w-full mx-auto">
       <HeaderBack2 link="/home" />

@@ -7,7 +7,7 @@ export const StudentImageCell = ({
   ra,
   name,
 }: {
-  ra: string;
+  ra: number;
   name: string;
 }) => {
   const [image, setImage] = useState<string | null>(null);
@@ -23,7 +23,11 @@ export const StudentImageCell = ({
 
   return (
     <Avatar>
-      <AvatarImage src={image} alt={name} className="object-cover" />
+      <AvatarImage
+        src={image || undefined}
+        alt={name}
+        className="object-cover"
+      />
       <AvatarFallback className="uppercase">{name[0]}</AvatarFallback>
     </Avatar>
   );

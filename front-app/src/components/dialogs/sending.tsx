@@ -1,5 +1,4 @@
 import { Loader2 } from "lucide-react";
-import { DialogDescription } from "@/components/ui/dialog";
 
 interface SendingDialogProps {
   fadeOut: boolean;

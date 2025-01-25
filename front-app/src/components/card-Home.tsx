@@ -47,24 +47,19 @@ export function CardHome() {
             Gerenciar estudantes
           </ButtonHome>
         </Link>
-        <Link className="w-full">
-          <ButtonHome
-            className="p-4 pt-2 flex flex-col"
-            onClick={() => {
-              logout.mutate(
-                {},
-                {
-                  onSettled: () => {
-                    window.location.href = "/";
-                  },
-                }
-              );
-            }}
-          >
-            <LogOut className="mb-3" />
-            <div className="flex w-full justify-center">Sair</div>
-          </ButtonHome>
-        </Link>
+        <ButtonHome
+          className="p-4 pt-2 flex flex-col w-full"
+          onClick={() => {
+            logout.mutate(undefined, {
+              onSettled: () => {
+                window.location.href = "/";
+              },
+            });
+          }}
+        >
+          <LogOut className="mb-3" />
+          <div className="flex w-full justify-center">Sair</div>
+        </ButtonHome>
       </CardContent>
       <CardFooter className="flex justify-center mt-2">
         <img src={undrawHello} alt="" className="w-40 h-w-40" />

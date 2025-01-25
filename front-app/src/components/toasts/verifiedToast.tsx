@@ -1,7 +1,7 @@
 import { toast } from "sonner";
 import { CircleCheck, X } from "lucide-react";
 
-export function verifiedToast(time: str) {
+export function verifiedToast(time: string) {
   toast.custom(
     (t) => (
       <div className="flex border border-tst-success-foreground bg-tst-success w-full rounded-lg p-4 gap-2 justify-between sm:w-[354px]">

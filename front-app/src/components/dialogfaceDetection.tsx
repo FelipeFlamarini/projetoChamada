@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/dialog";
 
 interface IFaceDetection {
-  recognizeToken: str;
+  recognizeToken: string;
 }
 
 const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
@@ -32,19 +32,19 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [render, setRender] = useState(false);
 
-  const [childCallback, setChildCallback] = useState(null);
+  const [childCallback, setChildCallback] = useState<(() => void) | null>(null);
 
   const [stage, setStage] = useState<
     "idle" | "sending" | "confirmation" | "confirmed" | "notRecognized"
   >("idle");
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [fadeOut, setFadeOut] = useState(false);
+  // const [fadeOut, setFadeOut] = useState(false);
+  const fadeOut: boolean = false;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [dataStudent, setDataStudent] = useState<any>({});
-  const [isConfirmed, setIsConfirmed] = useState<boolean>(true);
-  console.log(dataStudent);
+  // console.log(dataStudent);
   const handleAction = async () => {
-    const result = await new Promise((resolve) => {
+    await new Promise((resolve) => {
       setChildCallback(() => resolve);
     });
   };
@@ -56,7 +56,6 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
     try {
       const MODEL_URL = "/models";
       await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-      console.log("Modelos carregados com sucesso.");
     } catch (error) {
       console.error("Erro ao carregar os modelos:", error);
     }
@@ -167,7 +166,6 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
 
     if (video) {
       video.addEventListener("loadeddata", () => {
-        console.log("Vídeo carregado com sucesso.");
         handleVideoPlay();
       });
     }

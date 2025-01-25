@@ -6,8 +6,8 @@ import { Button } from "../ui/button";
 import { DeepFaceStudentReturn } from "@/model";
 
 interface iConfirmationToast {
-  students: DeepFaceStudentReturn;
-  confirmationMutation: () => void;
+  students: DeepFaceStudentReturn[];
+  confirmationMutation: (token: string) => void;
 }
 
 export function confirmationToast({ ...props }: iConfirmationToast) {

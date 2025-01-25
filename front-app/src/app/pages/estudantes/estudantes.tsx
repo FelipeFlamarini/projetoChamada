@@ -49,8 +49,14 @@ import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/cha
 import { FileUploadDialog } from "@/components/uploadCsv";
 import { useDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatch as useDeactivateStudents } from "@/chamada";
 
+interface Student {
+  ra: number;
+  name: string;
+  image_base64?: string;
+}
+
 interface EstudantesProps {
-  dataE: any;
+  dataE: Student[];
   columnsStudents: any;
 }
 
@@ -60,7 +66,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
   const [open, setOpen] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
 
-  const table = useReactTable({
+  const table = useReactTable<Student>({
     columns: columnsStudents,
     data: dataE,
     getCoreRowModel: getCoreRowModel(),
@@ -112,7 +118,9 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
   }
 
   function excludeStudents() {
-    const ras = table.getSelectedRowModel().rows.map((row) => row.original.ra);
+    const ras = table
+      .getSelectedRowModel()
+      .rows.map((row) => (row.original as Student).ra);
     deactivateStudentsMutation.mutate(
       { data: ras },
       {
@@ -131,9 +139,9 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
     );
   }
 
-  function isEmpty(obj) {
-    return Object.keys(obj).length === 0;
-  }
+  // function isEmpty(obj) {
+  //   return Object.keys(obj).length === 0;
+  // }
 
   function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
     table.getColumn("name")?.setFilterValue(e.target.value);
@@ -307,7 +315,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
             <TableBody>
               {table.getRowModel()?.rows?.length ? (
                 table.getRowModel().rows.map((row) => (
-                  <TableRow>
+                  <TableRow key={row.id}>
                     {row.getVisibleCells().map((cell) => (
                       <TableCell key={cell.id}>
                         {flexRender(

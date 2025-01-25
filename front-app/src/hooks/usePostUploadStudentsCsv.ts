@@ -1,6 +1,11 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
-import { exec } from "child_process";
+
+interface UploadData {
+  data: {
+    csv_file: File;
+  };
+}
 
 export default function usePostUploadStudentsCsv(
   setUploadProgress: (progress: number) => void
@@ -8,7 +13,7 @@ export default function usePostUploadStudentsCsv(
   const queryClient = useQueryClient();
   return useMutation({
     mutationKey: [`/api/students/csv`, `POST`],
-    mutationFn: async (data) => {
+    mutationFn: async (data: UploadData) => {
       const formData = new FormData();
       formData.append("csv_file", data.data.csv_file);
 

@@ -3,16 +3,15 @@
 
 import { format } from "date-fns";
 import { CalendarDays } from "lucide-react";
-import { ptBR } from "date-fns/locale"
+import { ptBR } from "date-fns/locale";
 import { UseFormReturn } from "react-hook-form";
 import { z } from "zod";
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 // import { toast } from "@/components/hooks/use-toast";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -46,7 +45,7 @@ interface DatePickerFormProps {
 export function DatePickerForm({
   form,
   name,
-  placeholder = "" ,
+  placeholder = "",
   label,
   disabled = false,
   calendarDisabled = undefined,
@@ -61,7 +60,11 @@ export function DatePickerForm({
           <Popover>
             <PopoverTrigger asChild>
               <FormControl className="w-full">
-                <Button variant={"goSecondary"} className="rounded-3xl w-full" disabled={disabled}>
+                <Button
+                  variant={"goSecondary"}
+                  className="rounded-3xl w-full"
+                  disabled={disabled}
+                >
                   <CalendarDays />
                   {field.value ? (
                     format(field.value, "dd/MM/yyyy", { locale: ptBR })

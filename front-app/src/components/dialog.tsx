@@ -1,6 +1,11 @@
 "use client";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { SendingDialog } from "@/components/dialogs/sending";
 import { ConfirmationDialog } from "@/components/dialogs/confirmation";
 import { ConfirmedDialog } from "@/components/dialogs/recognized";
@@ -18,7 +23,9 @@ interface SmoothAPICallSimulationProps {
   setIsConfirmed: (value: boolean) => void;
   fadeOut: boolean;
   setFadeOut: (value: boolean) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   students: any; // Replace with appropriate type
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onResponse: any; // Replace with appropriate type
 }
 
@@ -78,8 +85,12 @@ export function SmoothAPICallSimulation({
             handleExit={handleExit}
           />
         )}
-        {stage === "confirmed" && <ConfirmedDialog fadeOut={fadeOut} handleReset={handleReset} />}
-        {stage === "notRecognized" && <NotRecognizedDialog fadeOut={fadeOut} handleReset={handleReset} />}
+        {stage === "confirmed" && (
+          <ConfirmedDialog fadeOut={fadeOut} handleReset={handleReset} />
+        )}
+        {stage === "notRecognized" && (
+          <NotRecognizedDialog fadeOut={fadeOut} handleReset={handleReset} />
+        )}
       </DialogContent>
     </Dialog>
   );

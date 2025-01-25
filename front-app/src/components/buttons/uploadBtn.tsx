@@ -1,19 +1,7 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { Upload, X } from "lucide-react";
-import { UseFormReturn,FieldValues,Path, PathValue } from "react-hook-form";
-import { createStudent } from "@/schemas/estudantes";
-import {
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-
-import { z } from "zod";
-
+import { UseFormReturn, FieldValues, Path, PathValue } from "react-hook-form";
 
 // interface ImagePath {
 //   image_path?: string;
@@ -27,7 +15,13 @@ interface UploadBtnProps<T extends FieldValues> {
   disabled?: boolean;
 }
 
-export const UploadBtn =  <T extends FieldValues>({ className, title,form,name,disabled }: UploadBtnProps<T>) => {
+export const UploadBtn = <T extends FieldValues>({
+  className,
+  title,
+  form,
+  name,
+  disabled,
+}: UploadBtnProps<T>) => {
   const [preview, setPreview] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +43,13 @@ export const UploadBtn =  <T extends FieldValues>({ className, title,form,name,d
 
   return (
     <div className="flex items-center gap-4">
-      <input type="file" id="upload" onChange={handleFileChange} hidden  disabled={disabled}/>
+      <input
+        type="file"
+        id="upload"
+        onChange={handleFileChange}
+        hidden
+        disabled={disabled}
+      />
       <label
         htmlFor="upload"
         className={cn(
@@ -61,7 +61,11 @@ export const UploadBtn =  <T extends FieldValues>({ className, title,form,name,d
       </label>
       {preview && (
         <div className="relative">
-          <img src={preview} alt="Preview" className="h-10 w-10 rounded-md object-cover" />
+          <img
+            src={preview}
+            alt="Preview"
+            className="h-10 w-10 rounded-md object-cover"
+          />
           <button
             type="button"
             className="absolute -top-2.5 -right-2 bg-tst-error-foreground text-white rounded-full p-1 opacity-70 hover:opacity-100"
@@ -74,4 +78,3 @@ export const UploadBtn =  <T extends FieldValues>({ className, title,form,name,d
     </div>
   );
 };
-
