@@ -38,4 +38,7 @@ class ImagesRepository:
 
     @staticmethod
     def uri_to_base64_str(uri: str) -> str:
-        return uri.split(",")[1]
+        if "," in uri:
+            return uri.split(",")[1]
+        else:
+            return uri

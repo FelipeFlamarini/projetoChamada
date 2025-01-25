@@ -18,6 +18,12 @@ from api.schemas.student import StudentUpdate
 
 from utils.exceptions import *
 
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
 TIMEZONE_GMT_MINUS_3 = timezone(timedelta(hours=-3))
 __JWT_SECRET_KEY__: str = os.getenv("JWT_RECOGNIZE_SECRET_KEY")
 __JWT_ALGORITHM__: str = os.getenv("JWT_ALGORITHM")
@@ -57,11 +63,11 @@ class StudentsRepository:
 
     @staticmethod
     async def create_student(name: str, ra: int, image_base64: str) -> Student:
+
         if await StudentsRepository._get_if_student_exists_by_ra(ra):
             raise DuplicateDocument(
                 f"RA {ra} already exists"
             )  # for now, only "ra" field is unique
-
         try:
             image_base64 = ImagesRepository.uri_to_base64_str(image_base64)
             image_path = ImagesRepository.save_base64_image_for_student(
@@ -95,6 +101,7 @@ class StudentsRepository:
         try:
             image_path = None
             if image_base64:
+                image_base64 = ImagesRepository.uri_to_base64_str(image_base64)
                 image_path = ImagesRepository.save_base64_image_for_student(
                     ra if ra else student.ra, image_base64
                 )

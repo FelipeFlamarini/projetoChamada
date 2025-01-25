@@ -23,8 +23,6 @@ class FacialRecognitionRepository:
                 json=request.model_dump(),
                 headers={"Content-Type": "application/json"},
             )
-            print(response.json())
-            print(response.json().keys())
             if "error" in response.json().keys():
                 raise exceptions.InvalidImage
 

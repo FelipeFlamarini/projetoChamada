@@ -64,6 +64,7 @@ async def create_students_by_csv(
                     student["name"], student["ra"], student["image_base64"]
                 )
                 students_created.append(student_created)
+
                 yield json.dumps(
                     jsonable_encoder(
                         StudentsCreatingStream(
@@ -73,7 +74,6 @@ async def create_students_by_csv(
                     )
                 )
             except Exception as e:
-                print(e)
                 del student["image_base64"]
                 try:
                     student["reason"] = e.detail
