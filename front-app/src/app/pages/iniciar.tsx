@@ -40,39 +40,39 @@ export function Iniciar() {
   }
 
   return (
-    <>
+    <div className="pt-5 px-4 h-screen flex flex-col justify-between max-w-sm w-full mx-auto">
       <HeaderBack2 link="/" />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-dvh flex flex-col gap-12 px-2 pt-8 pb-2 sm:py-2 sm:gap-2 items-center justify-center"
+          className="flex-1 flex flex-col gap-5 items-center justify-center"
         >
           <FormField
             control={form.control}
             name="rollcall_token"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel className="text-center">
+              <FormItem className="flex flex-col gap-2 w-full">
+                <FormLabel className="text-center text-xl">
                   Insira o token de chamada
                 </FormLabel>
-                <FormControl>
+                <FormControl className="w-full">
                   <Input
                     id="rollcall_token"
                     type="text"
                     placeholder="Token da chamada"
                     required
-                    className="w-44"
+                    className="w-full text-center"
                     {...field}
                   />
                 </FormControl>
               </FormItem>
             )}
           />
-          <Button className="rounded-md w-44" variant={"go"}>
+          <Button className="rounded-md w-full" variant={"go"}>
             Iniciar chamada
           </Button>
         </form>
       </Form>
-    </>
+    </ div>
   );
 }
