@@ -19,7 +19,7 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 ## 💻 **Stacks utilizadas**
 
-### **Frontend:**
+### **Front-end:**
 
 - ⚛️ <a href="https://reactjs.org/" style="color: inherit; text-decoration: none; font-weight: bold;">React</a>
 - 🛠️ <a href="https://www.typescriptlang.org/" style="color: inherit; text-decoration: none; font-weight: bold;">TypeScript</a>
@@ -32,11 +32,12 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 - 📍 <a href="https://reactrouter.com/" style="color: inherit; text-decoration: none; font-weight: bold;">React Router</a>
 - 👁️ <a href="https://justadudewhohacks.github.io/face-api.js/docs/index.html" style="color: inherit; text-decoration: none; font-weight: bold;">FaceAPI.js</a>
 
-### **Backend:**
+### **Back-end:**
 
 - 🐍 <a href="https://www.python.org/" style="color: inherit; text-decoration: none; font-weight: bold;">Python</a>
 - 🚀 <a href="https://fastapi.tiangolo.com/" style="color: inherit; text-decoration: none; font-weight: bold;">FastAPI</a>
 - 🤖 <a href="https://www.tensorflow.org/" style="color: inherit; text-decoration: none; font-weight: bold;">TensorFlow</a> & <a href="https://github.com/serengil/deepface" style="color: inherit; text-decoration: none; font-weight: bold;">DeepFace</a>
+- 🌐 <a href="https://nginx.org/" style="color: inherit; text-decoration: none; font-weight: bold;">Nginx</a>
 
 ### **Banco de Dados:**
 
@@ -125,12 +126,12 @@ O ambiente de desenvolvimento possui módulos **hot-reload** para o front-end e 
 
 Com os contêineres já em execução e utilizando as variáveis padrões definidas no arquivo `.env.example`, é possível acessar as seguintes rotas:
 
-### **Frontend (Vite e React)**
+### **Front-end (Vite e React)**
 
 - 🌐 URL: [http://localhost:2009](http://localhost:2009)
 - Interface do usuário desenvolvida com Vite e React.
 
-### **Backend (FastAPI)**
+### **Back-end (FastAPI)**
 
 - 📜 URL: [http://localhost:2010/docs](http://localhost:2010/docs)
 - Documentação interativa da API (Swagger UI), permitindo a visualização e execução de endpoints.
@@ -188,7 +189,7 @@ O ambiente de produção traz mais estabilidade para o sistema, perdendo o **hot
   docker compose -p projetochamada-prod -f compose.prod.yaml rm
 ```
 
-## Rotas (Ambiente de produção)
+## 🌐 Rotas (Ambiente de produção)
 
 São as mesmas do ambiente de desenvolvimento, exceto pelo mongo express, que não é utilizado em produção.
 
@@ -211,7 +212,7 @@ No **VSCode**, é possível acessar as tasks configuradas:
 
 ## 📚 **Como usar nosso sistema**
 
-Este guia explica detalhadamente como o usuário pode interagir com as rotas do sistema:
+Este guia explica detalhadamente como o usuário pode interagir com as rotas do nosso front-end, no endereço [http://localhost:2009](http://localhost:2009).
 
 ### **Rota 1: /** - Página inicial
 
