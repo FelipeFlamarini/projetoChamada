@@ -13,9 +13,18 @@ import { ConfirmationDialog } from "@/components/dialogs/confirmation";
 import { ConfirmedDialog } from "@/components/dialogs/recognized";
 import { NotRecognizedDialog } from "@/components/dialogs/notRecognized";
 
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
-const FaceDetection = () => {
+interface IFaceDetection {
+  recognizeToken: str;
+}
+
+const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
   const recognizeMutation = useRecognizeApiFacialRecognitionRecognizePost();
   const confirmationMutation = useCreateAttendanceApiAttendancesPost();
 
@@ -33,13 +42,9 @@ const FaceDetection = () => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [dataStudent, setDataStudent] = useState<any>({});
   const [isConfirmed, setIsConfirmed] = useState<boolean>(true);
-  console.log(dataStudent)
+  console.log(dataStudent);
   const handleAction = async () => {
-    // console.log("Esperando resposta do filho...");
-
-    // Cria uma promessa que será resolvida pelo componente filho
     const result = await new Promise((resolve) => {
-      // Passa o resolvedor como prop para o filho
       setChildCallback(() => resolve);
     });
   };
@@ -49,7 +54,7 @@ const FaceDetection = () => {
 
   const loadModels = async () => {
     try {
-      const MODEL_URL = "/models"; // Verifique o caminho correto
+      const MODEL_URL = "/models";
       await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
       console.log("Modelos carregados com sucesso.");
     } catch (error) {
@@ -87,12 +92,9 @@ const FaceDetection = () => {
     faceapi.matchDimensions(canvas, displaySize, true);
 
     while (true) {
-      // console.log(isConfirmed)
-      // if (isConfirmed) {
       const context = canvas.getContext("2d");
       context?.clearRect(0, 0, canvas.width, canvas.height);
 
-      // console.log("Detecting face...");
       const detections = await faceapi.detectSingleFace(
         video,
         new faceapi.TinyFaceDetectorOptions({
@@ -115,20 +117,17 @@ const FaceDetection = () => {
               const data = await recognizeMutation.mutateAsync({
                 data: {
                   image_base64: imageSrc,
+                  recognize_token: recognizeToken,
                 },
               });
-              // console.log(data);
               if (data.verified) {
-                setDataStudent(data.students); // Atualize o estado com os dados do estudante
+                setDataStudent(data.students);
                 setStage("confirmation");
                 await handleAction();
                 await sleep(3000);
                 setDialogOpen(false);
                 setStage("idle");
                 console.log("Presença confirmada!");
-                // if (childCallback) {
-                //   childCallback();
-                // }
               } else {
                 setStage("notRecognized");
                 await sleep(3000);
@@ -137,11 +136,6 @@ const FaceDetection = () => {
                 if (childCallback) {
                   childCallback();
                 }
-                // console.log(isConfirmed);
-                // await sleep(2000);
-                // setDialogOpen(false);
-                // setStage("idle");
-                // await sleep(1000);
               }
             } catch (e) {
               console.log(e);
@@ -158,7 +152,7 @@ const FaceDetection = () => {
 
       await sleep(650);
     }
-  }, [recognizeMutation]);
+  }, [recognizeMutation, childCallback, recognizeToken]);
 
   const stopWebcam = () => {
     const stream = videoRef.current?.video?.srcObject as MediaStream;
@@ -198,7 +192,7 @@ const FaceDetection = () => {
           </DialogHeader>
 
           {stage === "sending" && <SendingDialog fadeOut={fadeOut} />}
-          {(stage === "confirmation" && dataStudent ) && (
+          {stage === "confirmation" && dataStudent && (
             <ConfirmationDialog
               fadeOut={fadeOut}
               students={dataStudent}

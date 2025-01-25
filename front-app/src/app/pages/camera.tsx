@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { LoaderCircle } from "lucide-react";
 
-import FaceDetection from "@/components/faceDetection";
+import FaceDetection from "@/components/dialogfaceDetection";
 
 import { Button } from "@/components/ui/button";
 import { HeaderBack2 } from "@/components/headerBack2";
