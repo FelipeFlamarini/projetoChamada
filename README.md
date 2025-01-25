@@ -13,7 +13,7 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 - [Leticia Escobar](https://www.github.com/octokatherine)
 - [Nicholas Ricardo](https://github.com/nicholasss0)
 - [Patrick Dias](https://github.com/Patrick510)
-
+- [Pedro Samuel](https://github.com/PsSave)
 ---
 
 ## 💻 **Stacks Utilizadas**
