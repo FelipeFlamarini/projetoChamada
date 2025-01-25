@@ -36,7 +36,7 @@ class StudentsRepository:
     @staticmethod
     async def get_student_by_ra(student_ra: int, active: bool = True) -> Student:
         student = await Student.find_one(
-            Student.ra == student_ra, Student.active == True
+            Student.ra == student_ra, Student.active == active
         )
         if not student:
             raise DocumentNotFound(f"Student with ra {student_ra} not found")
