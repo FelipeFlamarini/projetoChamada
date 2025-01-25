@@ -8,15 +8,16 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 ## 👥 **Autores**
 
-- [Felipe Flamarini](https://github.com/FelipeFlamarini)
-- [Kauan Olival](https://github.com/kauan345developer)
-- [Leticia Escobar](https://www.github.com/octokatherine)
-- [Nicholas Ricardo](https://github.com/nicholasss0)
-- [Patrick Dias](https://github.com/Patrick510)
-- [Pedro Samuel](https://github.com/PsSave)
+- [Felipe Flamarini](https://www.github.com/felipeflamarini)  
+- [Kauan Olival](https://www.github.com/kauan345developer)  
+- [Leticia Escobar](https://www.github.com/LetEscobar)  
+- [Nicholas Ricardo](https://www.github.com/nicholasss0)  
+- [Patrick Dias](https://www.github.com/patrick510)
+- [Pedro Samuel](https://www.github.com/PsSave)
+
 ---
 
-## 💻 **Stacks Utilizadas**
+## 💻 **Stacks utilizadas**
 
 ### **Frontend:**
 
@@ -56,44 +57,61 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 ## 🚀 **Instalação**
 
-1. **Clone** o repositório:
+1. **Clone** o repositório:  
 
 ```bash
   git clone https://github.com/FelipeFlamarini/projetoChamada.git
 ```
 
-2. Acesse o **diretório do projeto**:
+2. Acesse o **diretório do projeto**:  
 
 ```bash
   cd projetoChamada
+```  
+
+3. Crie uma cópia do arquivo **.env.example** e renomeie para **.env**:  
+
+```bash
+  cp .env.example .env
 ```
 
-3. Configure o arquivo **.env** conforme descrito na seção [Variáveis de Ambiente](#variaveis-de-ambiente).
-4. Configurar OAuth.
+4. Crie uma instância do **OAuth 2.0** do **Google**.
+
+- Acesse o **[Google Cloud Console](https://console.cloud.google.com)** e selecione ou crie um novo projeto.
+- Ative a **[Google People API](https://console.cloud.google.com/apis/library/people.googleapis.com)** para receber as informações dos usuários no sistema. Não é necessário criar credenciais para esta API.
+- Inicie a **[Configuração do projeto](https://console.cloud.google.com/auth/overview/create)**. Preencha conforme necessário e clique em "Continuar".
+- Em "Público", selecione conforme o desejo do usuário. É importante lembrar que, caso selecione "Externo", será necessário uma configuração extra para liberar o acesso ao sistema para outros usuários Caso selecionar "Interno", todos os usuários da organização poderão acessar.
+- Preencha "Dados de contato" conforme necessário.
+- Em "Concluir", aceite a política de dados do usuário dos serviços de API do Google e clique em "Criar".
+- Na página **[IDs do cliente OAuth 2.0](https://console.cloud.google.com/auth/clients)**, selecione "Criar cliente", preencha o "Tipo de aplicativo" com "Aplicativo da Web" e adicione um nome qualquer. No campo "Origens JavaScript autorizadas", adicione `http://localhost:2010`. No campo "URI de redirecionamento autorizado", adicione `http://localhost:2010/api/auth/google/callback`. Clique em criar.
+- Após a criação do cliente, acesse-o na página **[IDs do cliente OAuth 2.0](https://console.cloud.google.com/auth/clients)**. Note que, à direita dos campos, existem as informações "ID do cliente" e "Chave secreta do cliente".
+- Copie o "ID do cliente" e cole no arquivo **.env** na variável `FASTAPI_APP_OAUTH_GOOGLE_CLIENT_ID`.
+- Copie a "Chave secreta do cliente" e cole no arquivo **.env** na variável `FASTAPI_APP_OAUTH_GOOGLE_CLIENT_SECRET`.
+- É possível acessar o sistema com o e-mail usado para criar o projeto no Google Cloud Console. Caso tenha selecionado "Externo" na página "Público", você pode adicionar outros usuários na página **[Público](https://console.cloud.google.com/auth/audience)**.
 
 ---
 
-## 🛠️ **Executar Ambiente**
+## 🛠️ **Executando ambiente de desenvolvimento**
 
-### **Construir os contêineres:**
+### **Construindo os contêineres:**  
 
 ```bash
   docker compose -p projetochamada-dev -f compose.dev.yaml build
 ```
 
-### **Iniciar os contêineres:**
+### **Iniciando os contêineres:**  
 
 ```bash
   docker compose -p projetochamada-dev -f compose.dev.yaml up
 ```
 
-### **Parar os contêineres:**
+### **Parando os contêineres:**  
 
 ```bash
   docker compose -p projetochamada-dev -f compose.dev.yaml down
 ```
 
-### **Remover os contêineres:**
+### **Removendo os contêineres:**  
 
 ```bash
   docker compose -p projetochamada-dev -f compose.dev.yaml rm
@@ -101,7 +119,7 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 ---
 
-## 🌐 **Rotas (Ambiente de Desenvolvimento)**
+## 🌐 **Rotas (Ambiente de desenvolvimento)**
 
 Com os contêineres já em execução e utilizando as variáveis padrão definidas no arquivo `.env.example`, é possível acessar as seguintes rotas:
 
@@ -122,7 +140,7 @@ Com os contêineres já em execução e utilizando as variáveis padrão definid
 
 ---
 
-## 🛠️ **Tasks Configuradas no VSCode**
+## 🛠️ **Tasks Configuradas no VSCode (Ambiente de desenvolvimento)**
 
 No **VSCode**, é possível acessar as tasks configuradas:
 
@@ -140,7 +158,7 @@ No **VSCode**, é possível acessar as tasks configuradas:
 
 ---
 
-## 📚 **Como usar**
+## 📚 **Como usar nosso sistema**
 
 Este guia explica detalhadamente como o usuário pode interagir com as rotas do sistema:
 
@@ -148,7 +166,7 @@ Este guia explica detalhadamente como o usuário pode interagir com as rotas do 
 
 Ao acessar a página inicial, você encontrará dois botões principais:
 
-#### **1. 📷 Abrir câmera**
+#### **1. 📷 /camera**
 
 - Redireciona para a rota `/camera`.
 - Na página `/camera`, o sistema utiliza a câmera do dispositivo para:
@@ -157,7 +175,7 @@ Ao acessar a página inicial, você encontrará dois botões principais:
 
 #### **2. 🔐 Login com OAuth**
 
-- Permite que o usuário faça login utilizando seu e-mail institucional.
+- Permite que o usuário faça login utilizando o protocol **OAuth 2.0** com o provedor **Google**.
 - Após a autenticação, o usuário é redirecionado para a rota `/home`.
 
 ---
@@ -180,35 +198,27 @@ Na rota `/home`, você acessa um menu central com quatro botões principais:
 - Exibe a lista de estudantes cadastrados no sistema.
 - Permite importar um arquivo CSV para adicionar novos estudantes.
 
-#### **4. 🔓 Sair** (opcional)
+#### **4. 🔓 Sair**
 
 - Encerra a sessão ou retorna à página inicial.
 
 ---
 
-### **Rota 3: /camera** - 📸 Validação de presença com a câmera
-
-- O sistema utiliza a câmera para:
-  - Validar os estudantes presentes.
-  - Registrar automaticamente as presenças no sistema.
-
----
-
-### **Rota 4: /iniciar** - ⏯️ Controle de chamada
+### **Rota 3: /iniciar** - ⏯️ Controle de chamada
 
 - Permite iniciar ou parar uma chamada em andamento.
 - É necessário fornecer o **token** gerado na rota `/camera`.
 
 ---
 
-### **Rota 5: /exportar** - 📄 Relatórios de presença
+### **Rota 4: /exportar** - 📄 Relatórios de presença
 
 - Exporta a lista de chamadas realizadas.
 - Filtra os registros por uma data específica.
 
 ---
 
-### **Rota 6: /estudantes** - 🧑‍🎓 Gerenciamento de estudantes
+### **Rota 5: /estudantes** - 🧑‍🎓 Gerenciamento de estudantes
 
 - Exibe a lista de estudantes cadastrados no sistema.
 - Permite importar um arquivo CSV para adicionar novos estudantes.
