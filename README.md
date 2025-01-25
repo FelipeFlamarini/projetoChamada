@@ -1,64 +1,192 @@
-# Chamada Inteligente
+# 🌟 **Chamada Inteligente**
 
-Este projeto consiste em um sistema de chamada inteligente que utiliza inteligência artificial para automatizar o registro de presença em aulas na faculdade. A solução é baseada na análise de imagens capturadas em sala de aula, identificando e reconhecendo os participantes de forma precisa e eficiente.
-Entre os principais benefícios do projeto estão:
+Este projeto consiste em um sistema de chamada que utiliza **inteligência artificial** para automatizar o registro de presença em aulas na faculdade. A solução é baseada na análise de imagens capturadas em sala de aula, identificando e reconhecendo os participantes de forma **precisa** e **eficiente**.
 
-- Registro automatizado de presença a partir de fotos;
-- Integração com bancos de dados para geração de relatórios.
+> **Objetivo:** Modernizar e simplificar a rotina acadêmica, promovendo maior comodidade para professores e alunos.
 
-Este projeto busca modernizar e simplificar a rotina acadêmica, promovendo maior comodidade para professores e alunos.
+---
 
-Desenvolvido por [@FelipeFlamarini](https://github.com/FelipeFlamarini), [@kauan345developer](https://github.com/kauan345developer), [@LetEscobar](https://github.com/LetEscobar), [@nicholasss0](https://github.com/nicholasss0), [@patrick510](https://github.com/patrick510) e [@PsSave](https://github.com/PsSave).
+## 👥 **Autores**
 
-## Stack
+- [Felipe Flamarini](https://www.github.com/octokatherine)  
+- [Kauan Olival](https://www.github.com/octokatherine)  
+- [Leticia Escobar](https://www.github.com/octokatherine)  
+- [Nicholas Ricardo](https://www.github.com/octokatherine)  
+- [Patrick Dias](https://www.github.com/octokatherine)  
 
-- Docker Compose
-- Python
-- FastAPI
-- DeepFace
-- TensorFlow
-- MongoDB
-- TypeScript
-- Vite
-- React
+---
 
-## Dependências para instalação
+## 💻 **Stacks Utilizadas**
 
-- Docker Compose
+### **Frontend:**  
+- 🖥️ **React**  
+- 🛠️ **TypeScript**  
+- ⚡ **Vite**  
+- 🎨 **Shadcn/ui & TailwindCSS**  
+- ✅ **Zod**  
+- 📋 **Orval**
 
-## Instalando e executando (ambiente de desenvolvimento)
+### **Backend:**  
+- 🐍 **Python**  
+- 🚀 **FastAPI**  
+- 🤖 **TensorFlow & DeepFace**
 
-Inicialmente, crie uma cópia do arquivo [.env.example](.env.example) e renomeie-o para ".env". A documentação a seguir considera que as variáveis utilizadas são as padrões fornecidas pelo repositório.
+### **Banco de Dados:**  
+- 🗄️ **MongoDB**
 
-### Utilizando comandos
+### **Containerização:**  
+- 🐳 **Docker Compose**
 
-Iniciando os containers
+---
 
-```sh
-docker compose -f compose.dev.yaml up -d
+## 📋 **Pré-requisitos**
+
+- Docker e Docker Compose instalados  
+- **Versões testadas:** Docker (**v27.3.1**) & Docker Compose (**2.30.3**)
+
+---
+
+## 🚀 **Instalação**
+
+1. **Clone** o repositório:  
+```bash
+  git clone https://github.com/FelipeFlamarini/projetoChamada.git
+```
+2. Acesse o **diretório do projeto**:  
+```bash
+  cd projetoChamada
+```  
+3. Configure o arquivo **.env** conforme descrito na seção [Variáveis de Ambiente](#variaveis-de-ambiente).
+4. Configurar OAuth.
+
+---
+
+## 🛠️ **Executar Ambiente**
+
+### **Construir os contêineres:**  
+```bash
+  docker compose -p projetochamada-dev -f compose.dev.yaml build
 ```
 
-Parando os containers
-
-```sh
-docker compose -f compose.dev.yaml down
+### **Iniciar os contêineres:**  
+```bash
+  docker compose -p projetochamada-dev -f compose.dev.yaml up
 ```
 
-### Utilizando as tasks do Visual Studio Code
+### **Parar os contêineres:**  
+```bash
+  docker compose -p projetochamada-dev -f compose.dev.yaml down
+```
 
-#### Construindo e executando os containers
+### **Remover os contêineres:**  
+```bash
+  docker compose -p projetochamada-dev -f compose.dev.yaml rm
+```
 
-Dentro do Visual Studio Code, pressione F1 e digite o comando "Tasks: Run Task".
-Selecione "(dev) Build and start containers" e aguarde a construção e execução dos containers.
+---
 
-#### Parando os containers
+## 🌐 **Rotas (Ambiente de Desenvolvimento)**
 
-Dentro do Visual Studio Code, pressione F1 e digite o comando "Tasks: Run Task".
-Selecione "(dev) Stop and remove containers" e aguarde finalização dos containers.
+Com os contêineres já em execução e utilizando as variáveis padrão definidas no arquivo `.env.example`, é possível acessar as seguintes rotas:
 
-## Rotas (ambiente de desenvolvimento)
+### **Frontend (Vite e React)**  
+- 🌐 URL: [http://localhost:2009](http://localhost:2009)  
+- Interface do usuário desenvolvida com Vite e React.
 
-Com os containers já executando e usando as variáveis padrão do [.env.example](.env.example) é possível acessar as seguintes rotas:  
-<http://localhost:2009>: Front-end em Vite e React;  
-<http://localhost:2010/docs>: Documentação e execução do back-end FastAPI;  
-<http://localhost:2011>: Visualização do banco de dados com mongo-express.  
+### **Backend (FastAPI)**  
+- 📜 URL: [http://localhost:2010/docs](http://localhost:2010/docs)  
+- Documentação interativa da API (Swagger UI), permitindo a visualização e execução de endpoints.
+
+### **Banco de Dados (Mongo Express)**  
+- 🗄️ URL: [http://localhost:2011](http://localhost:2011)  
+- Interface gráfica para visualização e gerenciamento do banco de dados MongoDB utilizando o Mongo Express.
+
+---
+
+## 🛠️ **Tasks Configuradas no VSCode**
+
+No **VSCode**, é possível acessar as tasks configuradas:
+
+1. Abra o **Command Palette** (`F1` ou `Ctrl+Shift+P`).  
+2. Selecione a opção **Run Task**.  
+
+| **Task**                           | **Descrição**                                      |
+|------------------------------------|--------------------------------------------------|
+| 🏗️ **(dev) Build containers**         | Constrói os contêineres baseados no arquivo `compose.dev.yaml`.  |
+| ▶️ **(dev) Start containers**         | Inicia os contêineres já construídos.                     |
+| 🔄 **(dev) Build and start containers** | Constrói e inicia os contêineres em sequência.             |
+| ⏹️ **(dev) Stop containers**          | Para todos os contêineres.                           |
+| ❌ **(dev) Remove containers**       | Remove os contêineres parados.                        |
+| 🔥 **(dev) remove mongo_data**       | Remove o volume `projetochamada_mongo_data` após confirmação interativa. |
+
+---
+
+## 📚 **Como usar**
+
+Este guia explica detalhadamente como o usuário pode interagir com as rotas do sistema:
+
+### **Rota 1: /** - Página inicial
+
+Ao acessar a página inicial, você encontrará dois botões principais:
+
+#### **1. 📷 Abrir câmera**
+- Redireciona para a rota `/camera`.
+- Na página `/camera`, o sistema utiliza a câmera do dispositivo para:
+  - Validar a presença dos estudantes.
+  - Registrar automaticamente as presenças no sistema.
+
+#### **2. 🔐 Login com OAuth**
+- Permite que o usuário faça login utilizando seu e-mail institucional.
+- Após a autenticação, o usuário é redirecionado para a rota `/home`.
+
+---
+
+### **Rota 2: /home** - Menu principal
+
+Na rota `/home`, você acessa um menu central com quatro botões principais:
+
+#### **1. ▶ Iniciar**
+- Permite iniciar ou parar uma chamada.
+- Requer o **token** gerado na rota `/camera`.
+
+#### **2. 📤 Exportar**
+- Permite exportar a lista de chamadas realizadas com base em uma data específica.
+
+#### **3. 👥 Estudantes**
+- Exibe a lista de estudantes cadastrados no sistema.
+- Permite importar um arquivo CSV para adicionar novos estudantes.
+
+#### **4. 🔓 Sair** (opcional)
+- Encerra a sessão ou retorna à página inicial.
+
+---
+
+### **Rota 3: /camera** - 📸 Validação de presença com a câmera
+
+- O sistema utiliza a câmera para:
+  - Validar os estudantes presentes.
+  - Registrar automaticamente as presenças no sistema.
+
+---
+
+### **Rota 4: /iniciar** - ⏯️ Controle de chamada
+
+- Permite iniciar ou parar uma chamada em andamento.
+- É necessário fornecer o **token** gerado na rota `/camera`.
+
+---
+
+### **Rota 5: /exportar** - 📄 Relatórios de presença
+
+- Exporta a lista de chamadas realizadas.
+- Filtra os registros por uma data específica.
+
+---
+
+### **Rota 6: /estudantes** - 🧑‍🎓 Gerenciamento de estudantes
+
+- Exibe a lista de estudantes cadastrados no sistema.
+- Permite importar um arquivo CSV para adicionar novos estudantes.
+
+---
+
