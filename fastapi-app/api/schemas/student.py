@@ -30,7 +30,6 @@ class StudentNotCreated(BaseModel):
 
 class StudentsCreatingStream(BaseModel):
     progress: float
-    student_being_created: object
 
 
 class StudentsCreatedByCSV(BaseModel):

@@ -13,7 +13,11 @@ import {
   useCreateAttendanceApiAttendancesPost,
 } from "@/chamada";
 
-const FaceDetection = () => {
+interface IFaceDetection {
+  recognizeToken: string;
+}
+
+const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
   const recognizeMutation = useRecognizeApiFacialRecognitionRecognizePost();
   const confirmationMutation = useCreateAttendanceApiAttendancesPost();
 
@@ -28,7 +32,6 @@ const FaceDetection = () => {
     try {
       const MODEL_URL = "/models"; // Verifique o caminho correto
       await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
-      console.log("Modelos carregados com sucesso.");
     } catch (error) {
       console.error("Erro ao carregar os modelos:", error);
     }
@@ -68,7 +71,7 @@ const FaceDetection = () => {
       context?.clearRect(0, 0, canvas.width, canvas.height);
 
       console.log("Detecting face...");
-      console.log(video);
+      // console.log(video);
       const detections = await faceapi.detectSingleFace(
         video,
         new faceapi.TinyFaceDetectorOptions({
@@ -76,7 +79,7 @@ const FaceDetection = () => {
           scoreThreshold: 0.5,
         })
       );
-      console.log(detections);
+      // console.log(detections);
       if (detections) {
         // console.log(detections);
         const resizedDetections = faceapi.resizeResults(
@@ -92,10 +95,11 @@ const FaceDetection = () => {
               const data = await recognizeMutation.mutateAsync({
                 data: {
                   image_base64: imageSrc,
+                  recognize_token: recognizeToken,
                 },
               });
-
-              if (data.verified) {
+              console.log(data);
+              if (data.verified && data.students) {
                 confirmationToast({
                   students: data.students,
                   confirmationMutation: (token) => {
@@ -105,15 +109,19 @@ const FaceDetection = () => {
                       },
                       {
                         onSuccess: async (data) => {
-                          verifiedToast(data.times.pop().split(".")[0]);
+                          if (data.times && data.times.length > 0) {
+                            const time = data.times.pop();
+                            if (time) {
+                              verifiedToast(time.split(".")[0]);
+                            }
+                          }
                         },
                       }
                     );
                   },
                 });
                 await sleep(5000);
-              }
-              if (!data.verified) {
+              } else {
                 notVerifiedToast();
                 await sleep(2200);
               }
@@ -132,7 +140,7 @@ const FaceDetection = () => {
 
       await sleep(650);
     }
-  }, [recognizeMutation, confirmationMutation]);
+  }, [recognizeMutation, confirmationMutation, recognizeToken]);
 
   const stopWebcam = () => {
     const stream = videoRef.current?.video?.srcObject as MediaStream;
@@ -147,7 +155,6 @@ const FaceDetection = () => {
 
     if (video) {
       video.addEventListener("loadeddata", () => {
-        console.log("Vídeo carregado com sucesso.");
         handleVideoPlay();
       });
     }

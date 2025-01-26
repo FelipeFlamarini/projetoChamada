@@ -1,19 +1,18 @@
 import { toast } from "sonner";
-import { CircleCheck,Binoculars } from "lucide-react";
+import { Binoculars } from "lucide-react";
 
 interface DetectingToastProps {
-
   isDetecting: boolean;
 }
 
-const detectingToast = ({isDetecting }: DetectingToastProps): void => {
+const detectingToast = ({ isDetecting }: DetectingToastProps): void => {
   toast.custom(
-    (t) => (
+    () => (
       <div className="flex border border-gray-400 bg-gray-200 w-full rounded-lg p-4 gap-2 justify-between sm:w-[354px]">
         <div className="flex gap-4">
           <div>
             {/* <CircleCheck  */}
-            <Binoculars  className="text-gray-600" />
+            <Binoculars className="text-gray-600" />
           </div>
           <div>
             <p className="text-gray-800 font-semibold text-sm">

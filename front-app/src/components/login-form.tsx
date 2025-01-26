@@ -16,10 +16,8 @@ import { Link } from "react-router";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 
@@ -84,7 +82,7 @@ export function LoginForm() {
                       type="password"
                       placeholder="Senha"
                       required
-                      {...field}	
+                      {...field}
                     />
                   </FormControl>
                   <FormMessage />

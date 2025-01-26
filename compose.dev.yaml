@@ -35,6 +35,7 @@ services:
       - ${FRONT_APP_PORT}:5173
     environment:
       VITE_FASTAPI_APP_URL: ${FASTAPI_APP_URL}
+      VITE_FASTAPI_APP_URL_WS: ${FASTAPI_APP_URL_WS}
     volumes:
       - ./front-app/imgs:/app/imgs
       - ./front-app/public:/app/public
@@ -59,7 +60,7 @@ services:
       - students_images:/public/students_images
 
   mongo:
-    image: mongo
+    image: mongo:8.0.4
     restart: always
     volumes:
       - mongo_data:/data/db
@@ -68,7 +69,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
 
   mongo-express:
-    image: mongo-express
+    image: mongo-express:1.0.2-20
     restart: always
     ports:
       - ${MONGO_EXPRESS_PORT}:8081

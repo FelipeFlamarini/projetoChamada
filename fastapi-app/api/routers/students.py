@@ -64,12 +64,12 @@ async def create_students_by_csv(
                     student["name"], student["ra"], student["image_base64"]
                 )
                 students_created.append(student_created)
+
                 yield json.dumps(
                     jsonable_encoder(
                         StudentsCreatingStream(
                             progress=(len(students_created) + len(students_not_created))
                             / len(students),
-                            student_created=student_created,
                         )
                     )
                 )
@@ -85,7 +85,6 @@ async def create_students_by_csv(
                         StudentsCreatingStream(
                             progress=(len(students_created) + len(students_not_created))
                             / len(students),
-                            student_being_created=student,
                         )
                     )
                 )

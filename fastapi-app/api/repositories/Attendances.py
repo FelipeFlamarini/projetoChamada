@@ -5,6 +5,10 @@ import datetime
 from api.models.Attendance import Attendance, AttendanceRecord
 from api.schemas.attendance import AttendanceStudentReturn, AttendanceDateReturn
 from api.repositories.Students import StudentsRepository
+import csv
+from io import StringIO
+from fastapi.responses import StreamingResponse
+from utils.exceptions import DocumentNotFound, DateAttendanceNotFound
 
 TIMEZONE_GMT_MINUS_3 = datetime.timezone(datetime.timedelta(hours=-3))
 
@@ -19,6 +23,13 @@ def _get_current_time():
 
 class AttendancesRepository:
     @staticmethod
+    async def get_attendances_dates() :
+        attendances = await Attendance.find().to_list()
+        return [
+            attendance.date for attendance in attendances
+        ]
+
+    @staticmethod
     async def get_attendances_by_student_ra(
         student_ra: int,
     ) -> list[AttendanceStudentReturn]:
@@ -32,11 +43,12 @@ class AttendancesRepository:
             for attendance in attendances
         ]
 
-    # TODO: typing
     @staticmethod
     async def get_attendances_by_date(date: datetime.date):
-        return await Attendance.find_one(Attendance.date == date)
-
+        attendances = await Attendance.find({"date": date}).to_list()
+        if attendances:
+            return attendances[0]
+    
     @staticmethod
     async def create_attendance(student_ra: int) -> AttendanceStudentReturn:
         if not await StudentsRepository._get_if_student_exists_by_ra(student_ra):
@@ -76,6 +88,33 @@ class AttendancesRepository:
                 ra=student_ra,
                 **new_attendance.attendance[0].model_dump(),
             )
+
+    @staticmethod
+    async def create_attendance_csv(date: datetime.date):
+        attendance_record = await AttendancesRepository.get_attendances_by_date(date)
+
+        if not attendance_record:
+            raise DateAttendanceNotFound()
+
+        output = StringIO()
+        writer = csv.writer(output)
+        writer.writerow(["Student", "RA", "Times"])
+
+        for record in attendance_record.attendance:
+            try:
+                student = await StudentsRepository.get_student_by_ra(record.student_ra)
+                writer.writerow([student.name, record.student_ra, ", ".join(record.times)])
+            except DocumentNotFound:
+                try:
+                    student = await StudentsRepository.get_student_by_ra(record.student_ra, active=False)
+                    writer.writerow([student.name, record.student_ra, ", ".join(record.times)])
+                except DocumentNotFound:
+                    pass
+
+        output.seek(0)
+        return StreamingResponse(output, media_type="text/csv", headers={
+            "Content-Disposition": f"attachment; filename=attendance_{date}.csv"
+        })
 
     @staticmethod
     async def delete_attendance(student_ra: int, date: datetime.date, time: str):

@@ -29,3 +29,16 @@ class ImagesRepository:
             raise InvalidBase64("image_base64 is not a valid base64 string")
 
         return path
+
+    @staticmethod
+    def base64_str_to_uri(base64_str: str) -> str:
+        if base64_str.startswith("data:image/"):
+            return base64_str
+        return f"data:image/jpeg;base64,{base64_str}"
+
+    @staticmethod
+    def uri_to_base64_str(uri: str) -> str:
+        if "," in uri:
+            return uri.split(",")[1]
+        else:
+            return uri

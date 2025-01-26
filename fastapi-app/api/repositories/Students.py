@@ -36,7 +36,7 @@ class StudentsRepository:
     @staticmethod
     async def get_student_by_ra(student_ra: int, active: bool = True) -> Student:
         student = await Student.find_one(
-            Student.ra == student_ra, Student.active == True
+            Student.ra == student_ra, Student.active == active
         )
         if not student:
             raise DocumentNotFound(f"Student with ra {student_ra} not found")
@@ -57,12 +57,13 @@ class StudentsRepository:
 
     @staticmethod
     async def create_student(name: str, ra: int, image_base64: str) -> Student:
+
         if await StudentsRepository._get_if_student_exists_by_ra(ra):
             raise DuplicateDocument(
                 f"RA {ra} already exists"
             )  # for now, only "ra" field is unique
-
         try:
+            image_base64 = ImagesRepository.uri_to_base64_str(image_base64)
             image_path = ImagesRepository.save_base64_image_for_student(
                 ra, image_base64
             )
@@ -91,9 +92,14 @@ class StudentsRepository:
         if ra and ra != student.ra:
             if await StudentsRepository._get_if_student_exists_by_ra(ra):
                 raise DuplicateDocument(f"RA {ra} already exists")
+
+        if active == False:
+            StudentsVectorSearcherRepository.remove_item(student.ra)
+
         try:
             image_path = None
             if image_base64:
+                image_base64 = ImagesRepository.uri_to_base64_str(image_base64)
                 image_path = ImagesRepository.save_base64_image_for_student(
                     ra if ra else student.ra, image_base64
                 )

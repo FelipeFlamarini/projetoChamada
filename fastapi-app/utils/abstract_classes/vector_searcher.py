@@ -38,3 +38,7 @@ class VectorSeacher(ABC):
     @abstractmethod
     def add_item(self, id: int, vector: List[float]) -> int:
         pass
+
+    @abstractmethod
+    def remove_item(self, id: int) -> None:
+        pass

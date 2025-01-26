@@ -1,0 +1,58 @@
+services:
+  fastapi-app:
+    build:
+      context: fastapi-app
+      dockerfile: prod.Dockerfile
+    ports:
+      - ${FASTAPI_APP_PORT}:8000
+    init: true
+    stop_grace_period: 60s
+    volumes:
+      - students_images:/app/students_images
+      - vectors:/app/vectors
+    environment:
+      MONGO_URL: ${MONGODB_URL}
+      USER_TOKEN_SECRET_KEY: ${FASTAPI_APP_USER_TOKEN_SECRET_KEY}
+      JWT_RECOGNIZE_SECRET_KEY: ${FASTAPI_APP_JWT_RECOGNIZE_SECRET_KEY}
+      JWT_ALGORITHM: ${FASTAPI_APP_JWT_ALGORITHM}
+      OAUTH_GOOGLE_CLIENT_ID: ${FASTAPI_APP_OAUTH_GOOGLE_CLIENT_ID}
+      OAUTH_GOOGLE_CLIENT_SECRET: ${FASTAPI_APP_OAUTH_GOOGLE_CLIENT_SECRET}
+      OAUTH_GOOGLE_STATE_SECRET: ${FASTAPI_APP_OAUTH_GOOGLE_STATE_SECRET}
+      OAUTH_URL_REDIRECT_AFTER_LOGIN: ${FASTAPI_APP_OAUTH_URL_REDIRECT_AFTER_LOGIN}
+    depends_on:
+      - mongo
+      - deepface
+
+  front-app:
+    build:
+      context: front-app
+      dockerfile: prod.Dockerfile
+      args:
+        VITE_FASTAPI_APP_URL: ${FASTAPI_APP_URL}
+        VITE_FASTAPI_APP_URL_WS: ${FASTAPI_APP_URL_WS}
+
+    ports:
+      - ${FRONT_APP_PORT}:8080
+    depends_on:
+      - fastapi-app
+
+  deepface:
+    image: serengil/deepface
+    volumes:
+      - students_images:/public/students_images
+
+  mongo:
+    image: mongo:8.0.4
+    restart: always
+    volumes:
+      - mongo_data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_PASSWORD}
+
+volumes:
+  mongo_data:
+
+  students_images:
+
+  vectors:

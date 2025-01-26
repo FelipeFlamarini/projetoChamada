@@ -9,6 +9,11 @@ import {
 } from 'zod'
 
 /**
+ * @summary Get Attendances Dates
+ */
+export const getAttendancesDatesApiAttendancesAttendanceDatesGetResponse = zod.any()
+
+/**
  * @summary Create Attendance
  */
 export const createAttendanceApiAttendancesPostResponse = zod.object({
@@ -16,4 +21,9 @@ export const createAttendanceApiAttendancesPostResponse = zod.object({
   "times": zod.array(zod.string()),
   "ra": zod.number()
 })
+
+/**
+ * @summary Create Attendance Csv By Date
+ */
+export const createAttendanceCsvByDateApiAttendancesCsvPostResponse = zod.any()
 

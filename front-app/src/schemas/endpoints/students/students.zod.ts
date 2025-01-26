@@ -9,16 +9,32 @@ import {
 } from 'zod'
 
 /**
- * @summary Get All Students
+ * @summary Get Students
  */
-export const getAllStudentsApiStudentsGetResponseItem = zod.object({
+export const getStudentsApiStudentsGetQueryParams = zod.object({
+  "active": zod.boolean().optional()
+})
+
+export const getStudentsApiStudentsGetResponseItem = zod.object({
   "_id": zod.string().or(zod.null()).optional(),
   "name": zod.string(),
   "ra": zod.number(),
   "active": zod.boolean().optional(),
   "image_path": zod.string().or(zod.null())
 })
-export const getAllStudentsApiStudentsGetResponse = zod.array(getAllStudentsApiStudentsGetResponseItem)
+export const getStudentsApiStudentsGetResponse = zod.array(getStudentsApiStudentsGetResponseItem)
+
+/**
+ * @summary Get All Students
+ */
+export const getAllStudentsApiStudentsAllGetResponseItem = zod.object({
+  "_id": zod.string().or(zod.null()).optional(),
+  "name": zod.string(),
+  "ra": zod.number(),
+  "active": zod.boolean().optional(),
+  "image_path": zod.string().or(zod.null())
+})
+export const getAllStudentsApiStudentsAllGetResponse = zod.array(getAllStudentsApiStudentsAllGetResponseItem)
 
 /**
  * @summary Get Student By Ra
@@ -49,4 +65,34 @@ export const updateStudentByRaApiStudentsStudentRaPatchResponse = zod.object({
   "active": zod.boolean().optional(),
   "image_path": zod.string().or(zod.null())
 })
+
+/**
+ * @summary Activate Student Bulk By Ra
+ */
+export const activateStudentBulkByRaApiStudentsBulkActivatePatchBodyItem = zod.number()
+export const activateStudentBulkByRaApiStudentsBulkActivatePatchBody = zod.array(activateStudentBulkByRaApiStudentsBulkActivatePatchBodyItem)
+
+export const activateStudentBulkByRaApiStudentsBulkActivatePatchResponseItem = zod.object({
+  "_id": zod.string().or(zod.null()).optional(),
+  "name": zod.string(),
+  "ra": zod.number(),
+  "active": zod.boolean().optional(),
+  "image_path": zod.string().or(zod.null())
+})
+export const activateStudentBulkByRaApiStudentsBulkActivatePatchResponse = zod.array(activateStudentBulkByRaApiStudentsBulkActivatePatchResponseItem)
+
+/**
+ * @summary Deactivate Student Bulk By Ra
+ */
+export const deactivateStudentBulkByRaApiStudentsBulkDeactivatePatchBodyItem = zod.number()
+export const deactivateStudentBulkByRaApiStudentsBulkDeactivatePatchBody = zod.array(deactivateStudentBulkByRaApiStudentsBulkDeactivatePatchBodyItem)
+
+export const deactivateStudentBulkByRaApiStudentsBulkDeactivatePatchResponseItem = zod.object({
+  "_id": zod.string().or(zod.null()).optional(),
+  "name": zod.string(),
+  "ra": zod.number(),
+  "active": zod.boolean().optional(),
+  "image_path": zod.string().or(zod.null())
+})
+export const deactivateStudentBulkByRaApiStudentsBulkDeactivatePatchResponse = zod.array(deactivateStudentBulkByRaApiStudentsBulkDeactivatePatchResponseItem)
 

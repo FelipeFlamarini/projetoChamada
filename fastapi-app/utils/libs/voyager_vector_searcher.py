@@ -43,3 +43,6 @@ class VoyagerVectorSearcher(VectorSeacher):
 
     def add_item(self, vectors: List[float], student_ra: int) -> int:
         return self._index.add_item(np.array(vectors), student_ra)
+
+    def remove_item(self, student_ra: int):
+        self._index.mark_deleted(student_ra)

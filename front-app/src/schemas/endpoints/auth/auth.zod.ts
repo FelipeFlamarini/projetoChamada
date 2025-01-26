@@ -9,62 +9,36 @@ import {
 } from 'zod'
 
 /**
+ * @summary Oauth:Google.Jwt.Authorize
+ */
+export const oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetQueryParams = zod.object({
+  "scopes": zod.array(zod.string()).optional()
+})
+
+export const oauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetResponse = zod.object({
+  "authorization_url": zod.string()
+})
+
+/**
+ * The response varies based on the authentication backend used.
+ * @summary Oauth:Google.Jwt.Callback
+ */
+export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryParams = zod.object({
+  "code": zod.string().or(zod.null()).optional(),
+  "code_verifier": zod.string().or(zod.null()).optional(),
+  "state": zod.string().or(zod.null()).optional(),
+  "error": zod.string().or(zod.null()).optional()
+})
+
+export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGetResponse = zod.any()
+
+/**
  * @summary Auth:Jwt.Login
  */
-export const authJwtLoginAuthLoginPostResponse = zod.any()
+export const authJwtLoginApiAuthLoginPostResponse = zod.any()
 
 /**
  * @summary Auth:Jwt.Logout
  */
-export const authJwtLogoutAuthLogoutPostResponse = zod.any()
-
-/**
- * @summary Register:Register
- */
-export const registerRegisterAuthRegisterPostBody = zod.object({
-  "email": zod.string().email(),
-  "password": zod.string(),
-  "is_active": zod.boolean().or(zod.null()).optional(),
-  "is_superuser": zod.boolean().or(zod.null()).optional(),
-  "is_verified": zod.boolean().or(zod.null()).optional()
-})
-
-/**
- * @summary Reset:Forgot Password
- */
-export const resetForgotPasswordAuthForgotPasswordPostBody = zod.object({
-  "email": zod.string().email()
-})
-
-/**
- * @summary Reset:Reset Password
- */
-export const resetResetPasswordAuthResetPasswordPostBody = zod.object({
-  "token": zod.string(),
-  "password": zod.string()
-})
-
-export const resetResetPasswordAuthResetPasswordPostResponse = zod.any()
-
-/**
- * @summary Verify:Request-Token
- */
-export const verifyRequestTokenAuthRequestVerifyTokenPostBody = zod.object({
-  "email": zod.string().email()
-})
-
-/**
- * @summary Verify:Verify
- */
-export const verifyVerifyAuthVerifyPostBody = zod.object({
-  "token": zod.string()
-})
-
-export const verifyVerifyAuthVerifyPostResponse = zod.object({
-  "id": zod.string(),
-  "email": zod.string().email(),
-  "is_active": zod.boolean().optional(),
-  "is_superuser": zod.boolean().optional(),
-  "is_verified": zod.boolean().optional()
-})
+export const authJwtLogoutApiAuthLogoutPostResponse = zod.any()
 
