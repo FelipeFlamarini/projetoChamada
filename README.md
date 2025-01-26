@@ -227,6 +227,7 @@ Ao acessar a página inicial, você encontrará dois botões principais:
   - Registrar automaticamente as presenças no sistema.
 - Inicialmente, a página mostra apenas um token de 4 dígitos. É necessário que um usuário logado no sistema acesse a página rota **"/iniciar"** para iniciar o processo de chamada utilizando o token na página.
 - O token só é válido enquanto esta página está aberta e conectada ao servidor. Ou seja, é necessário usar 2 dispositivos ou 2 páginas do navegador para iniciar o processo de chamada. Isso é proposital, permitindo que o processo de chamada possa ser iniciado sem a necessidade de login, mas ao comando de um usuário no sistema, e possivelmente de aparelhos diferentes.
+- O processo de chamada precisa de pelo menos 2 estudantes cadastrados.
 - Após o processo de chamada ser iniciado, a página mostrará a câmera do aparelho. Quando um rosto aparece e é identificado na câmera, haverá um feedback da página. Esse feedback pode indicar que:
   - O rosto não foi reconhecido;
   - O rosto foi reconhecido. Neste caso, uma janela aparecerá mostrando os dados da pessoa que o sistema reconheceu. O usuário irá verificar os dados e responder se ele é ou não é a pessoa indicada. Caso a resposta seja sim, sua presença será gravada no banco de dados e o processo de chamada continuará. Caso seja não, o sistema ainda pode perguntar se ele é outra pessoa que possui um nível grande de semelhança. Caso a resposta ainda seja não, o processo de chamada continuará normalmente.
