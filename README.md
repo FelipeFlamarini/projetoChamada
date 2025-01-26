@@ -79,7 +79,7 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 4. Crie uma instância do **OAuth 2.0** do **Google**.
 
-- Acesse o **[Google Cloud Cons- Permite importar um arquivo CSV para adicionar novos estudantes. Há um [arquivo CSV](fastapi-app/tests/generate_dataset/students.csv) no repositório que utiliza o padrão esperado pelo sistema. Utilize-o para testes ou para seguir o padrão esperado.ole](https://console.cloud.google.com)** e selecione ou crie um novo projeto.
+- Acesse o **[Google Cloud Console](https://console.cloud.google.com)** e selecione ou crie um novo projeto.
 - Ative a **[Google People API](https://console.cloud.google.com/apis/library/people.googleapis.com)** para receber as informações dos usuários no sistema. Não é necessário criar credenciais para esta API.
 - Inicie a **[Configuração do projeto](https://console.cloud.google.com/auth/overview/create)**. Preencha conforme necessário e clique em "Continuar".
 - Em "Público", selecione conforme o desejo do usuário. É importante lembrar que, caso selecione "Externo", será necessário uma configuração extra para liberar o acesso ao sistema para outros usuários Caso selecionar "Interno", todos os usuários da organização poderão acessar.
