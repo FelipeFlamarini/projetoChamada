@@ -53,6 +53,7 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 
 - Docker e Docker Compose instalados
 - **Versões testadas:** Docker (**v27.3.1**) & Docker Compose (**2.30.3**)
+- No Windows, recomendamos que todo o processo seja executado dentro de uma instância do WSL 2.
 
 ---
 
@@ -85,9 +86,9 @@ Este projeto consiste em um sistema de chamada que utiliza **inteligência artif
 - Preencha "Dados de contato" conforme necessário.
 - Em "Concluir", aceite a política de dados do usuário dos serviços de API do Google e clique em "Criar".
 - Na página **[IDs do cliente OAuth 2.0](https://console.cloud.google.com/auth/clients)**, selecione "Criar cliente", preencha o "Tipo de aplicativo" com "Aplicativo da Web" e adicione um nome qualquer. No campo "Origens JavaScript autorizadas", adicione `http://localhost:2010`. No campo "URI de redirecionamento autorizado", adicione `http://localhost:2010/api/auth/google/callback`. Clique em criar.
-- Após a criação do cliente, acesse-o na página **[IDs do cliente OAuth 2.0](https://console.cloud.google.com/auth/clients)**. Note que, à direita dos campos, existem as informações "ID do cliente" e "Chave secreta do cliente".
-- Copie o "ID do cliente" e cole no arquivo **.env** na variável `FASTAPI_APP_OAUTH_GOOGLE_CLIENT_ID`.
-- Copie a "Chave secreta do cliente" e cole no arquivo **.env** na variável `FASTAPI_APP_OAUTH_GOOGLE_CLIENT_SECRET`.
+- Após a criação do cliente, acesse novamente página **[IDs do cliente OAuth 2.0](https://console.cloud.google.com/auth/clients)** e clique no cliente criado. Note que, à direita dos campos, existem as informações "ID do cliente" e "Chave secreta do cliente".
+- Copie o "ID do cliente" e cole no arquivo **.env** na variável `FASTAPI_APP_OAUTH_GOOGLE_CLIENT_ID`, de forma que fique `FASTAPI_APP_OAUTH_GOOGLE_CLIENT_ID=seu_id_aqui`.
+- Copie a "Chave secreta do cliente" e cole no arquivo **.env** na variável `FASTAPI_APP_OAUTH_GOOGLE_CLIENT_SECRET`, de forma que fique `FASTAPI_APP_OAUTH_GOOGLE_CLIENT_SECRET=sua_chave_secreta_aqui`.
 - É possível acessar o sistema com o e-mail usado para criar o projeto no Google Cloud Console. Caso tenha selecionado "Externo" na página "Público", você pode adicionar outros usuários na página **[Público](https://console.cloud.google.com/auth/audience)**.
 
 ---
@@ -222,8 +223,13 @@ Ao acessar a página inicial, você encontrará dois botões principais:
 
 - Redireciona para a rota `/camera`.
 - Na página `/camera`, o sistema utiliza a câmera do dispositivo para:
-  - Validar a presença dos estudantes.
+  - Validar a presença dos estudantes;
   - Registrar automaticamente as presenças no sistema.
+- Inicialmente, a página mostra apenas um token de 4 dígitos. É necessário que um usuário logado no sistema acesse a página rota **"/iniciar"** para iniciar o processo de chamada utilizando o token na página.
+- O token só é válido enquanto esta página está aberta e conectada ao servidor. Ou seja, é necessário usar 2 dispositivos ou 2 páginas do navegador para iniciar o processo de chamada. Isso é proposital, permitindo que o processo de chamada possa ser iniciado sem a necessidade de login, mas ao comando de um usuário no sistema, e possivelmente de aparelhos diferentes.
+- Após o processo de chamada ser iniciado, a página mostrará a câmera do aparelho. Quando um rosto aparece e é identificado na câmera, haverá um feedback da página. Esse feedback pode indicar que:
+  - O rosto não foi reconhecido;
+  - O rosto foi reconhecido. Neste caso, uma janela aparecerá mostrando os dados da pessoa que o sistema reconheceu. O usuário irá verificar os dados e responder se ele é ou não é a pessoa indicada. Caso a resposta seja sim, sua presença será gravada no banco de dados e o processo de chamada continuará. Caso seja não, o sistema ainda pode perguntar se ele é outra pessoa que possui um nível grande de semelhança. Caso a resposta ainda seja não, o processo de chamada continuará normalmente.
 
 #### **2. 🔐 Login com OAuth**
 
