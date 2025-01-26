@@ -15,5 +15,5 @@ export const getStudentImageApiStaticStudentsImagesStudentRaGetParams = zod.obje
   "student_ra": zod.number()
 })
 
-export const getStudentImageApiStaticStudentsImagesStudentRaGetResponse = zod.any()
+export const getStudentImageApiStaticStudentsImagesStudentRaGetResponse = zod.string()
 

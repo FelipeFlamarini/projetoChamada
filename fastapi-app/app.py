@@ -16,6 +16,7 @@ from api.routers.students import students_router
 from api.routers.attendances import attendances_router
 from api.routers.user import users_router
 from api.routers.static import static_router
+from api.routers.rollcall import rollcall_router
 
 from api.repositories.user_manager import (
     fastapi_users,
@@ -72,6 +73,11 @@ app.include_router(
     prefix="/api/auth/google",
     tags=["auth"],
 )
+app.include_router(
+    fastapi_users.get_auth_router(auth_backend),
+    prefix="/api/auth",
+    tags=["auth"],
+)
 app.include_router(users_router, prefix="/api/users", tags=["users"])
 app.include_router(students_router, prefix="/api/students", tags=["students"])
 app.include_router(
@@ -85,3 +91,4 @@ app.include_router(
     tags=["attendances"],
 )
 app.include_router(static_router, prefix="/api/static", tags=["static"])
+app.include_router(rollcall_router, prefix="/api/rollcall", tags=["rollcall"])

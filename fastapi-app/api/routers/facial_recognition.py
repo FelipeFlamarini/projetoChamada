@@ -1,19 +1,46 @@
 from typing import Annotated
+import os
+
 from fastapi import APIRouter, Form
+import jwt
 
 from api.repositories.facial_recognition import FacialRecognitionRepository
 from api.repositories.Students import StudentsRepository
 
 from api.schemas.recognize import DeepFaceRecognizeReturn, DeepFaceStudentReturn
 
+from api.routers.rollcall import rollcall_websockets_connection_manager
+
+from utils.exceptions import JWTExpired, JWTInvalidSignature, WebsocketNotConnected
+
+__JWT_RECOGNIZE_SECRET_KEY__ = os.getenv("JWT_RECOGNIZE_SECRET_KEY")
+__JWT_ALGORITHM__ = os.getenv("JWT_ALGORITHM")
 
 facial_recognition_router = APIRouter()
 
 
 @facial_recognition_router.post("/recognize")
-async def recognize(image_base64: Annotated[str, Form(...)]) -> DeepFaceRecognizeReturn:
+async def recognize(
+    image_base64: Annotated[str, Form(...)], recognize_token: Annotated[str, Form(...)]
+) -> DeepFaceRecognizeReturn:
+    try:
+        rollcall_token: str = jwt.decode(
+            recognize_token,
+            __JWT_RECOGNIZE_SECRET_KEY__,
+            algorithms=[__JWT_ALGORITHM__],
+        )["token"]
+    except jwt.ExpiredSignatureError:
+        raise JWTExpired()
+    except jwt.InvalidSignatureError:
+        raise JWTInvalidSignature()
+
+    if (
+        rollcall_token.upper()
+        not in rollcall_websockets_connection_manager.get_active_tokens()
+    ):
+        raise WebsocketNotConnected()
+
     ras, distances = FacialRecognitionRepository.recognize(image_base64)
-    print(ras, distances)
     ras_to_return = []
     for index, distance in enumerate(distances):
         if distance <= 0.3:  # depends on DeepFace model

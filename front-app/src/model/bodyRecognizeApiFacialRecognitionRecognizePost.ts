@@ -7,4 +7,5 @@
 
 export interface BodyRecognizeApiFacialRecognitionRecognizePost {
   image_base64: string;
+  recognize_token: string;
 }

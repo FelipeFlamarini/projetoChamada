@@ -23,11 +23,14 @@ import type {
 } from '@tanstack/react-query'
 import type {
   AttendanceStudentReturn,
+  BodyAuthJwtLoginApiAuthLoginPost,
   BodyCreateAttendanceApiAttendancesPost,
   BodyCreateAttendanceCsvByDateApiAttendancesCsvPost,
   BodyCreateStudentApiStudentsPost,
   BodyCreateStudentsByCsvApiStudentsCsvPost,
   BodyRecognizeApiFacialRecognitionRecognizePost,
+  BodyStartRollcallApiRollcallStartPost,
+  BodyStopRollcallApiRollcallStopPost,
   BodyUpdateStudentByRaApiStudentsStudentRaPatch,
   DeepFaceRecognizeReturn,
   ErrorModel,
@@ -225,6 +228,137 @@ export function useOauthGoogleJwtCallbackApiAuthGoogleCallbackGet<TData = Awaite
 
 
 
+/**
+ * @summary Auth:Jwt.Login
+ */
+export const authJwtLoginApiAuthLoginPost = (
+    bodyAuthJwtLoginApiAuthLoginPost: BodyType<BodyAuthJwtLoginApiAuthLoginPost>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      const formUrlEncoded = new URLSearchParams();
+if(bodyAuthJwtLoginApiAuthLoginPost.grant_type !== undefined && bodyAuthJwtLoginApiAuthLoginPost.grant_type !== null) {
+ formUrlEncoded.append('grant_type', bodyAuthJwtLoginApiAuthLoginPost.grant_type)
+ }
+formUrlEncoded.append('username', bodyAuthJwtLoginApiAuthLoginPost.username)
+formUrlEncoded.append('password', bodyAuthJwtLoginApiAuthLoginPost.password)
+if(bodyAuthJwtLoginApiAuthLoginPost.scope !== undefined) {
+ formUrlEncoded.append('scope', bodyAuthJwtLoginApiAuthLoginPost.scope)
+ }
+if(bodyAuthJwtLoginApiAuthLoginPost.client_id !== undefined && bodyAuthJwtLoginApiAuthLoginPost.client_id !== null) {
+ formUrlEncoded.append('client_id', bodyAuthJwtLoginApiAuthLoginPost.client_id)
+ }
+if(bodyAuthJwtLoginApiAuthLoginPost.client_secret !== undefined && bodyAuthJwtLoginApiAuthLoginPost.client_secret !== null) {
+ formUrlEncoded.append('client_secret', bodyAuthJwtLoginApiAuthLoginPost.client_secret)
+ }
+
+      return customInstance<unknown | void>(
+      {url: `/api/auth/login`, method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
+    },
+      options);
+    }
+  
+
+
+export const getAuthJwtLoginApiAuthLoginPostMutationOptions = <TError = ErrorType<ErrorModel | HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>, {data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  authJwtLoginApiAuthLoginPost(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AuthJwtLoginApiAuthLoginPostMutationResult = NonNullable<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>>
+    export type AuthJwtLoginApiAuthLoginPostMutationBody = BodyType<BodyAuthJwtLoginApiAuthLoginPost>
+    export type AuthJwtLoginApiAuthLoginPostMutationError = ErrorType<ErrorModel | HTTPValidationError>
+
+    /**
+ * @summary Auth:Jwt.Login
+ */
+export const useAuthJwtLoginApiAuthLoginPost = <TError = ErrorType<ErrorModel | HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>, TError,{data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof authJwtLoginApiAuthLoginPost>>,
+        TError,
+        {data: BodyType<BodyAuthJwtLoginApiAuthLoginPost>},
+        TContext
+      > => {
+
+      const mutationOptions = getAuthJwtLoginApiAuthLoginPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Auth:Jwt.Logout
+ */
+export const authJwtLogoutApiAuthLogoutPost = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<unknown | void>(
+      {url: `/api/auth/logout`, method: 'POST', signal
+    },
+      options);
+    }
+  
+
+
+export const getAuthJwtLogoutApiAuthLogoutPostMutationOptions = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>, TError,void, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>, void> = () => {
+          
+
+          return  authJwtLogoutApiAuthLogoutPost(requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type AuthJwtLogoutApiAuthLogoutPostMutationResult = NonNullable<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>>
+    
+    export type AuthJwtLogoutApiAuthLogoutPostMutationError = ErrorType<void>
+
+    /**
+ * @summary Auth:Jwt.Logout
+ */
+export const useAuthJwtLogoutApiAuthLogoutPost = <TError = ErrorType<void>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>, TError,void, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof authJwtLogoutApiAuthLogoutPost>>,
+        TError,
+        void,
+        TContext
+      > => {
+
+      const mutationOptions = getAuthJwtLogoutApiAuthLogoutPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
 /**
  * @summary Get Current User
  */
@@ -900,6 +1034,7 @@ export const recognizeApiFacialRecognitionRecognizePost = (
       
       const formUrlEncoded = new URLSearchParams();
 formUrlEncoded.append('image_base64', bodyRecognizeApiFacialRecognitionRecognizePost.image_base64)
+formUrlEncoded.append('recognize_token', bodyRecognizeApiFacialRecognitionRecognizePost.recognize_token)
 
       return customInstance<DeepFaceRecognizeReturn>(
       {url: `/api/facial_recognition/recognize`, method: 'POST',
@@ -1170,7 +1305,7 @@ export const getStudentImageApiStaticStudentsImagesStudentRaGet = (
 ) => {
       
       
-      return customInstance<unknown>(
+      return customInstance<string>(
       {url: `/api/static/students/images/${studentRa}`, method: 'GET', signal
     },
       options);
@@ -1249,3 +1384,213 @@ export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Aw
 
 
 
+/**
+ * @summary Get Active Tokens
+ */
+export const getActiveTokensApiRollcallActiveTokensGet = (
+    
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      
+      return customInstance<string[]>(
+      {url: `/api/rollcall/active_tokens`, method: 'GET', signal
+    },
+      options);
+    }
+  
+
+export const getGetActiveTokensApiRollcallActiveTokensGetQueryKey = () => {
+    return [`/api/rollcall/active_tokens`] as const;
+    }
+
+    
+export const getGetActiveTokensApiRollcallActiveTokensGetQueryOptions = <TData = Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+) => {
+
+const {query: queryOptions, request: requestOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetActiveTokensApiRollcallActiveTokensGetQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>> = ({ signal }) => getActiveTokensApiRollcallActiveTokensGet(requestOptions, signal);
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError, TData> & { queryKey: DataTag<QueryKey, TData> }
+}
+
+export type GetActiveTokensApiRollcallActiveTokensGetQueryResult = NonNullable<Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>>
+export type GetActiveTokensApiRollcallActiveTokensGetQueryError = ErrorType<unknown>
+
+
+export function useGetActiveTokensApiRollcallActiveTokensGet<TData = Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError = ErrorType<unknown>>(
+  options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError, TData>> & Pick<
+        DefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetActiveTokensApiRollcallActiveTokensGet<TData = Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError, TData>> & Pick<
+        UndefinedInitialDataOptions<
+          Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>,
+          TError,
+          TData
+        > , 'initialData'
+      >, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+export function useGetActiveTokensApiRollcallActiveTokensGet<TData = Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
+/**
+ * @summary Get Active Tokens
+ */
+
+export function useGetActiveTokensApiRollcallActiveTokensGet<TData = Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError = ErrorType<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getActiveTokensApiRollcallActiveTokensGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
+
+  const queryOptions = getGetActiveTokensApiRollcallActiveTokensGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Start Rollcall
+ */
+export const startRollcallApiRollcallStartPost = (
+    bodyStartRollcallApiRollcallStartPost: BodyType<BodyStartRollcallApiRollcallStartPost>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      const formUrlEncoded = new URLSearchParams();
+formUrlEncoded.append('rollcall_token', bodyStartRollcallApiRollcallStartPost.rollcall_token)
+
+      return customInstance<unknown>(
+      {url: `/api/rollcall/start`, method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
+    },
+      options);
+    }
+  
+
+
+export const getStartRollcallApiRollcallStartPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>, TError,{data: BodyType<BodyStartRollcallApiRollcallStartPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>, TError,{data: BodyType<BodyStartRollcallApiRollcallStartPost>}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>, {data: BodyType<BodyStartRollcallApiRollcallStartPost>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  startRollcallApiRollcallStartPost(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StartRollcallApiRollcallStartPostMutationResult = NonNullable<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>>
+    export type StartRollcallApiRollcallStartPostMutationBody = BodyType<BodyStartRollcallApiRollcallStartPost>
+    export type StartRollcallApiRollcallStartPostMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Start Rollcall
+ */
+export const useStartRollcallApiRollcallStartPost = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>, TError,{data: BodyType<BodyStartRollcallApiRollcallStartPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>,
+        TError,
+        {data: BodyType<BodyStartRollcallApiRollcallStartPost>},
+        TContext
+      > => {
+
+      const mutationOptions = getStartRollcallApiRollcallStartPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    
+/**
+ * @summary Stop Rollcall
+ */
+export const stopRollcallApiRollcallStopPost = (
+    bodyStopRollcallApiRollcallStopPost: BodyType<BodyStopRollcallApiRollcallStopPost>,
+ options?: SecondParameter<typeof customInstance>,signal?: AbortSignal
+) => {
+      
+      const formUrlEncoded = new URLSearchParams();
+formUrlEncoded.append('rollcall_token', bodyStopRollcallApiRollcallStopPost.rollcall_token)
+
+      return customInstance<unknown>(
+      {url: `/api/rollcall/stop`, method: 'POST',
+      headers: {'Content-Type': 'application/x-www-form-urlencoded', },
+       data: formUrlEncoded, signal
+    },
+      options);
+    }
+  
+
+
+export const getStopRollcallApiRollcallStopPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>, TError,{data: BodyType<BodyStopRollcallApiRollcallStopPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationOptions<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>, TError,{data: BodyType<BodyStopRollcallApiRollcallStopPost>}, TContext> => {
+const {mutation: mutationOptions, request: requestOptions} = options ?? {};
+
+      
+
+
+      const mutationFn: MutationFunction<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>, {data: BodyType<BodyStopRollcallApiRollcallStopPost>}> = (props) => {
+          const {data} = props ?? {};
+
+          return  stopRollcallApiRollcallStopPost(data,requestOptions)
+        }
+
+        
+
+
+  return  { mutationFn, ...mutationOptions }}
+
+    export type StopRollcallApiRollcallStopPostMutationResult = NonNullable<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>>
+    export type StopRollcallApiRollcallStopPostMutationBody = BodyType<BodyStopRollcallApiRollcallStopPost>
+    export type StopRollcallApiRollcallStopPostMutationError = ErrorType<HTTPValidationError>
+
+    /**
+ * @summary Stop Rollcall
+ */
+export const useStopRollcallApiRollcallStopPost = <TError = ErrorType<HTTPValidationError>,
+    TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>, TError,{data: BodyType<BodyStopRollcallApiRollcallStopPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
+): UseMutationResult<
+        Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>,
+        TError,
+        {data: BodyType<BodyStopRollcallApiRollcallStopPost>},
+        TContext
+      > => {
+
+      const mutationOptions = getStopRollcallApiRollcallStopPostMutationOptions(options);
+
+      return useMutation(mutationOptions);
+    }
+    

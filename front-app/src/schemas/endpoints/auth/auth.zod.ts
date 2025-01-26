@@ -32,3 +32,13 @@ export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGetQueryParams = zod.obj
 
 export const oauthGoogleJwtCallbackApiAuthGoogleCallbackGetResponse = zod.any()
 
+/**
+ * @summary Auth:Jwt.Login
+ */
+export const authJwtLoginApiAuthLoginPostResponse = zod.any()
+
+/**
+ * @summary Auth:Jwt.Logout
+ */
+export const authJwtLogoutApiAuthLogoutPostResponse = zod.any()
+

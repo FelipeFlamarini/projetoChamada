@@ -38,3 +38,7 @@ class StudentsVectorSearcherRepository:
     @classmethod
     def add_item(cls, vectors: List[float], student_ra: int) -> bool:
         return cls._get_index().add_item(vectors, student_ra)
+
+    @classmethod
+    def remove_item(cls, student_ra: int) -> bool:
+        return cls._get_index().remove_item(student_ra)
