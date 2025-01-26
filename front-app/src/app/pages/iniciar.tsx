@@ -93,7 +93,7 @@ export function Iniciar() {
                     type="text"
                     placeholder="Token da chamada"
                     required
-                    className="w-full text-center uppercase"
+                    className="w-full text-center uppercase placeholder:lowercase"
                     {...field}
                   />
                 </FormControl>
