@@ -131,7 +131,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
           });
         },
         onError: (error) => {
-          console.error("Erro ao excluir estudantes", error);
+          console.error("Erro ao desativar estudantes", error);
         },
       }
     );

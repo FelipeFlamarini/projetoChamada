@@ -48,6 +48,15 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
     });
   };
 
+  const handleDialog = (e:boolean)=>{
+    setDialogOpen(e);
+    if (e === false) {
+      if (childCallback) {
+        childCallback();
+      }
+    }
+  }
+
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -181,9 +190,9 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
         render ? "justify-center" : "justify-between"
       }`}
     >
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] [&>button]:hidden">
-          <DialogHeader>
+      <Dialog open={dialogOpen} onOpenChange={handleDialog}>
+        <DialogContent className="sm:max-w-[425px] [&>button]:hidden" aria-describedby="dialog de confirmação de presença">
+          <DialogHeader className="sr-only">
             <DialogTitle>Chamada Inteligente</DialogTitle>
           </DialogHeader>
 
