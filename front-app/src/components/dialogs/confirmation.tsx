@@ -38,7 +38,7 @@ export function ConfirmationDialog({
         <br />{" "}
         <span className="font-bold">RA: {students[currentIndex].ra}</span>
       </DialogDescription>
-      <DialogFooter className="sm:justify-center sm: gap-6">
+      <DialogFooter className="mt-1 sm:justify-center sm: gap-6">
         <Button
           variant={"go"}
           onClick={() => handleConfirm(students[currentIndex])}

@@ -182,8 +182,8 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
       }`}
     >
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="sm:max-w-[425px] [&>button]:hidden">
-          <DialogHeader>
+        <DialogContent className="sm:max-w-[425px] [&>button]:hidden" aria-describedby="dialog de confirmação de presença">
+          <DialogHeader className="sr-only">
             <DialogTitle>Chamada Inteligente</DialogTitle>
           </DialogHeader>
 
