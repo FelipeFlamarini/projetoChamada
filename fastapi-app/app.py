@@ -29,6 +29,7 @@ from api.repositories.facial_recognition import FacialRecognitionRepository
 from utils.db import db
 
 __OAUTH_GOOGLE_STATE_SECRET__ = os.getenv("OAUTH_GOOGLE_STATE_SECRET")
+__FRONT_APP_EXTERNAL_URL__ = os.getenv("FRONT_APP_EXTERNAL_URL")
 
 
 @asynccontextmanager
@@ -54,10 +55,11 @@ app = FastAPI(lifespan=lifespan)
 
 MultiPartParser.max_part_size = 10 * 1024 * 1024  # max formdata size: 10MB
 
-origins = ["http://localhost:5173/"]
+origins = [__FRONT_APP_EXTERNAL_URL__]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
