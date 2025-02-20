@@ -1,6 +1,6 @@
 import os
 from typing import List, Tuple, Annotated
-from datetime import timezone, timedelta, datetime
+from datetime import timedelta, datetime
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Form, Depends
 import jwt
@@ -10,11 +10,11 @@ from api.repositories.user_manager import current_active_verified_user
 from api.schemas.rollcall import RollcallMessage, RollcallAction
 
 from utils.exceptions import RollcallTokenNotFound
+from utils.settings import GMT_TIMEZONE
 
 
 __JWT_RECOGNIZE_SECRET_KEY__ = os.getenv("JWT_RECOGNIZE_SECRET_KEY")
 __JWT_ALGORITHM__ = os.getenv("JWT_ALGORITHM")
-TIMEZONE_GMT_MINUS_3 = timezone(timedelta(hours=-3))
 
 rollcall_router = APIRouter()
 
@@ -55,7 +55,7 @@ class ConnectionManager:
                         recognize_token=jwt.encode(
                             {
                                 "token": token,
-                                "exp": datetime.now(TIMEZONE_GMT_MINUS_3)
+                                "exp": datetime.now(GMT_TIMEZONE)
                                 + timedelta(minutes=20),
                             },
                             __JWT_RECOGNIZE_SECRET_KEY__,
