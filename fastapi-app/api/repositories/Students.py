@@ -1,6 +1,6 @@
 from typing import Optional, List
 import os
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 
 import pymongo
 import pymongo.errors
@@ -17,8 +17,8 @@ from api.repositories.students_vector_searcher import StudentsVectorSearcherRepo
 from api.schemas.student import StudentUpdate
 
 from utils.exceptions import *
+from utils.settings import GMT_TIMEZONE
 
-TIMEZONE_GMT_MINUS_3 = timezone(timedelta(hours=-3))
 __JWT_SECRET_KEY__: str = os.getenv("JWT_RECOGNIZE_SECRET_KEY")
 __JWT_ALGORITHM__: str = os.getenv("JWT_ALGORITHM")
 
@@ -186,7 +186,7 @@ class StudentsRepository:
             {
                 "ra": student.ra,
                 "name": student.name,
-                "exp": datetime.now(TIMEZONE_GMT_MINUS_3) + timedelta(seconds=20),
+                "exp": datetime.now(GMT_TIMEZONE) + timedelta(seconds=20),
             },
             __JWT_SECRET_KEY__,
             algorithm=__JWT_ALGORITHM__,
