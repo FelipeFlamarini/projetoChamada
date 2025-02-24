@@ -9,6 +9,7 @@ from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Form, Depends
 from api.repositories.user_manager import current_active_verified_user
 
 from api.schemas.rollcall import RollcallMessage, RollcallAction
+from api.schemas.exception import HTTPExceptionSchema
 
 from utils.exceptions import RollcallTokenNotFound
 from utils.settings import GMT_TIMEZONE
@@ -100,7 +101,7 @@ async def get_active_tokens(
 
 
 @rollcall_router.post(
-    "/start", responses={HTTPStatus.NOT_FOUND: {"model": RollcallTokenNotFound}}
+    "/start", responses={HTTPStatus.NOT_FOUND: {"model": HTTPExceptionSchema}}
 )
 async def start_rollcall(
     rollcall_token: Annotated[str, Form(...)],
@@ -114,7 +115,7 @@ async def start_rollcall(
 
 
 @rollcall_router.post(
-    "/stop", responses={HTTPStatus.NOT_FOUND: {"model": RollcallTokenNotFound}}
+    "/stop", responses={HTTPStatus.NOT_FOUND: {"model": HTTPExceptionSchema}}
 )
 async def stop_rollcall(
     rollcall_token: Annotated[str, Form(...)],
