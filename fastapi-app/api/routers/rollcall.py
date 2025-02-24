@@ -1,9 +1,10 @@
 import os
 from typing import List, Tuple, Annotated
 from datetime import timedelta, datetime
+import jwt
+from http import HTTPStatus
 
 from fastapi import APIRouter, WebSocket, WebSocketDisconnect, Form, Depends
-import jwt
 
 from api.repositories.user_manager import current_active_verified_user
 
@@ -98,7 +99,9 @@ async def get_active_tokens(
     return rollcall_websockets_connection_manager.get_active_tokens()
 
 
-@rollcall_router.post("/start")
+@rollcall_router.post(
+    "/start", responses={HTTPStatus.NOT_FOUND: {"model": RollcallTokenNotFound}}
+)
 async def start_rollcall(
     rollcall_token: Annotated[str, Form(...)],
     current_user=Depends(current_active_verified_user),
@@ -110,7 +113,9 @@ async def start_rollcall(
     raise RollcallTokenNotFound
 
 
-@rollcall_router.post("/stop")
+@rollcall_router.post(
+    "/stop", responses={HTTPStatus.NOT_FOUND: {"model": RollcallTokenNotFound}}
+)
 async def stop_rollcall(
     rollcall_token: Annotated[str, Form(...)],
     current_user=Depends(current_active_verified_user),

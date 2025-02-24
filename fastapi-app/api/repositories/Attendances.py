@@ -1,9 +1,7 @@
 import csv
 from io import StringIO
-from http import HTTPStatus
 import datetime
 
-from fastapi import HTTPException
 from fastapi.responses import StreamingResponse
 
 from api.models.Attendance import Attendance, AttendanceRecord
@@ -50,9 +48,7 @@ class AttendancesRepository:
     @staticmethod
     async def create_attendance(student_ra: int) -> AttendanceStudentReturn:
         if not await StudentsRepository._get_if_student_exists_by_ra(student_ra):
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND, detail="Student not found"
-            )
+            raise DocumentNotFound(detail="Student not found")
 
         current_date = _get_current_date()
         current_time = _get_current_time().isoformat()
@@ -130,11 +126,9 @@ class AttendancesRepository:
             Attendance.date == date, Attendance.attendance.student_ra == student_ra
         )
         if not attendance:
-            raise HTTPException(
-                status_code=HTTPStatus.NOT_FOUND, detail="Attendance not found"
-            )
+            raise DocumentNotFound(detail="Attendance not found")
         try:
             attendance.attendance[0].times.remove(time)
             return await attendance.save()
         except ValueError:
-            raise HTTPException(HTTPStatus.NOT_FOUND, detail="Time not found")
+            raise DocumentNotFound(detail="Time not found")

@@ -108,7 +108,7 @@ class WebsocketNotConnected(HTTPException):
     """
 
     def __init__(self, detail: str = "Websocket not connected"):
-        super().__init__(status_code=HTTPStatus.BAD_REQUEST, detail=detail)
+        super().__init__(status_code=HTTPStatus.NOT_FOUND, detail=detail)
 
 
 class DateAttendanceNotFound(HTTPException):
