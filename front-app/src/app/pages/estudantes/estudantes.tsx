@@ -48,6 +48,7 @@ import { checkToast } from "@/components/toasts/checkToast";
 import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
 import { FileUploadDialog } from "@/components/uploadCsv";
 import { useDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatch as useDeactivateStudents } from "@/chamada";
+import { FormError } from "@/components/form/error";
 
 interface Student {
   ra: number;
@@ -65,8 +66,10 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
   const [inputValue, setInputValue] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [open, setOpen] = useState(false);
+  const [formError, setFormError] = useState<null | string>(null)
   const [rowSelection, setRowSelection] = useState({});
 
+  console.log(formError)
   const table = useReactTable<Student>({
     columns: columnsStudents,
     data: dataE,
@@ -111,7 +114,12 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
         },
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);
-        },
+          const detailData = error.response?.data.detail
+          console.log(JSON.stringify(detailData))
+          if (detailData) {
+            setFormError(detailData)
+          }
+        }
       }
     );
   }
@@ -243,6 +251,11 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
                     Enviando...
                   </Button>
                 )}
+
+                {formError &&
+                  <FormError>
+                    {formError}
+                  </FormError>}
               </DialogContent>
             </Dialog>
             <InputWithEndIcon
@@ -289,9 +302,9 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                              header.column.columnDef.header,
-                              header.getContext()
-                            )}
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
                       </TableHead>
                     );
                   })}
