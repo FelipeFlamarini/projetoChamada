@@ -100,11 +100,13 @@ class StudentsRepository:
             image_path = None
             if image_base64:
                 image_base64 = ImagesRepository.uri_to_base64_str(image_base64)
+                StudentsVectorSearcherRepository.add_item(
+                    FacialRecognitionRepository.represent(image_base64).embedding,
+                    ra if ra else student.ra,
+                )
+
                 image_path = ImagesRepository.save_base64_image_for_student(
                     ra if ra else student.ra, image_base64
-                )
-                StudentsVectorSearcherRepository.add_item(
-                    FacialRecognitionRepository.represent(image_base64).embedding, ra
                 )
             updated_student = StudentUpdate(
                 name=name, ra=ra, active=active, image_path=image_path
