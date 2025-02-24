@@ -14,6 +14,9 @@ from api.repositories.user_manager import current_active_verified_user
 
 from api.schemas.student import StudentsCreatedByCSV, StudentsCreatingStream
 
+from api.schemas.exception import HTTPExceptionSchema
+
+
 students_router = APIRouter()
 
 
@@ -31,14 +34,27 @@ async def get_all_students(
     return await StudentsRepository.get_all_students()
 
 
-@students_router.get("/{student_ra}")
+@students_router.get(
+    "/{student_ra}", responses={HTTPStatus.NOT_FOUND: {"model": HTTPExceptionSchema}}
+)
 async def get_student_by_ra(
     student_ra: int, active_user=Depends(current_active_verified_user)
 ) -> Student:
     return await StudentsRepository.get_student_by_ra(student_ra)
 
 
-@students_router.post("", status_code=HTTPStatus.CREATED)
+@students_router.post(
+    "",
+    status_code=HTTPStatus.CREATED,
+    responses={
+        HTTPStatus.BAD_REQUEST: {
+            "model": HTTPExceptionSchema,
+        },
+        HTTPStatus.CONFLICT: {
+            "model": HTTPExceptionSchema,
+        },
+    },
+)
 async def create_student(
     name: Annotated[str, Form()],
     ra: Annotated[int, Form()],
@@ -103,21 +119,48 @@ async def create_students_by_csv(
     )
 
 
-@students_router.patch("/bulk_activate")
+@students_router.patch(
+    "/bulk_activate",
+    responses={
+        HTTPStatus.NOT_FOUND: {
+            "model": HTTPExceptionSchema,
+        },
+    },
+)
 async def activate_student_bulk_by_ra(
     ra_list: List[int], active_user=Depends(current_active_verified_user)
 ) -> List[Student]:
     return await StudentsRepository.activate_student_bulk_by_ra(ra_list)
 
 
-@students_router.patch("/bulk_deactivate")
+@students_router.patch(
+    "/bulk_deactivate",
+    responses={
+        HTTPStatus.NOT_FOUND: {
+            "model": HTTPExceptionSchema,
+        }
+    },
+)
 async def deactivate_student_bulk_by_ra(
     ra_list: List[int], active_user=Depends(current_active_verified_user)
 ) -> List[Student]:
     return await StudentsRepository.deactivate_student_bulk_by_ra(ra_list)
 
 
-@students_router.patch("/{student_ra}")
+@students_router.patch(
+    "/{student_ra}",
+    responses={
+        HTTPStatus.BAD_REQUEST: {
+            "model": HTTPExceptionSchema,
+        },
+        HTTPStatus.CONFLICT: {
+            "model": HTTPExceptionSchema,
+        },
+        HTTPStatus.NOT_FOUND: {
+            "model": HTTPExceptionSchema,
+        },
+    },
+)
 async def update_student_by_ra(
     student_ra: int,
     name: Annotated[str | None, Form()] = None,
