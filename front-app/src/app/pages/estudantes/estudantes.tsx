@@ -49,6 +49,7 @@ import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/cha
 import { FileUploadDialog } from "@/components/uploadCsv";
 import { useDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatch as useDeactivateStudents } from "@/chamada";
 import { FormError } from "@/components/form/error";
+import { translateError } from "@/utils/error";
 
 interface Student {
   ra: number;
@@ -115,9 +116,8 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);
           const detailData = error.response?.data.detail
-          console.log(JSON.stringify(detailData))
           if (detailData) {
-            setFormError(detailData)
+            setFormError(translateError(String(detailData)))
           }
         }
       }
