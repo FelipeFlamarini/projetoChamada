@@ -112,6 +112,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
             descricao: "O estudante foi adicionado a lista de chamada",
           });
           form.reset();
+          setFormError(null)
         },
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);
@@ -158,6 +159,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
     table.getColumn("name")?.setFilterValue("");
   }
 
+  console.log(form.formState.errors);
   return (
     <>
       <div className="flex flex-col pt-2 px-4 gap-2 max-w-sm mx-auto">

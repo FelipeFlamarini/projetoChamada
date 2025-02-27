@@ -47,7 +47,7 @@ export const Actions = ({ ra }: ActionsProps) => {
     resolver: zodResolver(editStudent),
     defaultValues: {
       name: "",
-      ra: 0,
+      ra: undefined,
       image_base64: "",
     },
     resetOptions: {
@@ -67,9 +67,6 @@ export const Actions = ({ ra }: ActionsProps) => {
   }, [getStudentByRaQuery.data, form]);
 
   const onSubmit = (data: z.infer<typeof editStudent>) => {
-    if (!data.image_base64) {
-      data = { name: data.name, ra: data.ra };
-    }
 
     updateStudentByRaMutation.mutate(
       {
@@ -181,6 +178,7 @@ export const Actions = ({ ra }: ActionsProps) => {
                   title="Trocar foto"
                   form={form}
                   name="image_base64"
+                  ra={ra}
                 />
                 <Button
                   variant={"go"}
