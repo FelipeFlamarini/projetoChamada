@@ -33,6 +33,7 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
   const videoRef = useRef<Webcam>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [render, setRender] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const [childCallback, setChildCallback] = useState<(() => void) | null>(null);
 
@@ -48,14 +49,14 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
     });
   };
 
-  const handleDialog = (e:boolean)=>{
+  const handleDialog = (e: boolean) => {
     setDialogOpen(e);
     if (e === false) {
       if (childCallback) {
         childCallback();
       }
     }
-  }
+  };
 
   const sleep = (ms: number) =>
     new Promise((resolve) => setTimeout(resolve, ms));
@@ -109,7 +110,8 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
           scoreThreshold: 0.5,
         })
       );
-      if (detections) {
+
+      if (detections && !isProcessing) {
         const resizedDetections = faceapi.resizeResults(
           detections,
           displaySize
@@ -119,35 +121,42 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
           const imageSrc = videoRef.current.getScreenshot();
           if (imageSrc) {
             try {
+              setIsProcessing(true);
               setDialogOpen(true);
               setStage("sending");
-              const data = await recognizeMutation.mutateAsync({
-                data: {
-                  image_base64: imageSrc,
-                  recognize_token: recognizeToken,
-                },
-              });
-              if (data.verified && data.students) {
-                setDataStudent(data.students);
-                setStage("confirmation");
-                await handleAction();
-                await sleep(3000);
-                setDialogOpen(false);
-                setStage("idle");
-              } else {
+
+              try {
+                const data = await recognizeMutation.mutateAsync({
+                  data: {
+                    image_base64: imageSrc,
+                    recognize_token: recognizeToken,
+                  },
+                });
+
+                if (data.verified && data.students) {
+                  setDataStudent(data.students);
+                  setStage("confirmation");
+                  await handleAction();
+                  await sleep(3000);
+                  setDialogOpen(false);
+                  setStage("idle");
+                }
+              } catch (error) {
+                console.log(error);
                 setStage("notRecognized");
                 await sleep(3000);
                 setDialogOpen(false);
                 setStage("idle");
-                if (childCallback) {
-                  childCallback();
-                }
+              } finally {
+                setIsProcessing(false);
               }
             } catch (e) {
               console.log(e);
+              setIsProcessing(false);
             }
           }
         }
+
         if (canvas) {
           if (context && canvas.width != 0 && canvas.height != 0) {
             context.clearRect(0, 0, canvas.width, canvas.height);
@@ -158,7 +167,7 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
 
       await sleep(650);
     }
-  }, [recognizeMutation, childCallback, recognizeToken]);
+  }, [recognizeMutation, recognizeToken, isProcessing]);
 
   const stopWebcam = () => {
     const stream = videoRef.current?.video?.srcObject as MediaStream;
@@ -191,7 +200,10 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
       }`}
     >
       <Dialog open={dialogOpen} onOpenChange={handleDialog}>
-        <DialogContent className="sm:max-w-[425px] [&>button]:hidden" aria-describedby="dialog de confirmação de presença">
+        <DialogContent
+          className="sm:max-w-[425px] [&>button]:hidden"
+          aria-describedby="dialog de confirmação de presença"
+        >
           <DialogHeader className="sr-only">
             <DialogTitle>Chamada Inteligente</DialogTitle>
           </DialogHeader>

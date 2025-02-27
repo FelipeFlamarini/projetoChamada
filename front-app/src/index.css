@@ -61,26 +61,32 @@
     --sub-text: 13 8% 46%;
 
     --input-login: 10 33% 93%;
-    
+
     --btn-go: 11 100% 60%;
-    
+
     --btn-2: 14 35% 93%;
 
-    --btn-home:17 16% 91%;
-    
+    --btn-home: 17 16% 91%;
+
     --tst-text: 0 0% 9%;
-    
+
     --tst-error: 347 100% 98%;
-    
+
     --tst-error-foreground: 4 90% 58%;
-    
+
     --tst-warning: 47 100% 96%;
-    
+
     --tst-warning-foreground: 38 98% 50%;
-    
+
     --tst-success: 138 100% 97%;
-    
+
     --tst-success-foreground: 137 64% 38%;
+    /* remove arrows from input type number */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -137,10 +143,10 @@ body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  font-family: 'Public Sans', sans-serif;
+  font-family: "Public Sans", sans-serif;
 }
 
-#root{
+#root {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
