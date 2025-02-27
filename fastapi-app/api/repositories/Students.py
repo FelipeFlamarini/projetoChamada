@@ -51,13 +51,10 @@ class StudentsRepository:
 
     @staticmethod
     async def _get_if_student_exists_by_ra(student_ra: int) -> bool:
-        if not await Student.find_one(Student.ra == student_ra):
-            return False
-        return True
+        return await Student.find_one(Student.ra == int(student_ra)).exists()
 
     @staticmethod
     async def create_student(name: str, ra: int, image_base64: str) -> Student:
-
         if await StudentsRepository._get_if_student_exists_by_ra(ra):
             raise DuplicateDocument(
                 f"RA {ra} already exists"

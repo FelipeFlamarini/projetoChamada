@@ -1545,6 +1545,7 @@
           },
           "ra": {
             "type": "integer",
+            "exclusiveMinimum": 0,
             "title": "Ra"
           },
           "active": {

@@ -57,7 +57,7 @@ async def get_student_by_ra(
 )
 async def create_student(
     name: Annotated[str, Form()],
-    ra: Annotated[int, Form()],
+    ra: Annotated[int, Form(gt=0)],
     image_base64: Annotated[str, Form()],
     active_user=Depends(current_active_verified_user),
 ) -> Student:

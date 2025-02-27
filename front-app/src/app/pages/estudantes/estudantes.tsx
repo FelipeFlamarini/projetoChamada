@@ -67,10 +67,10 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
   const [inputValue, setInputValue] = useState("");
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [open, setOpen] = useState(false);
-  const [formError, setFormError] = useState<null | string>(null)
+  const [formError, setFormError] = useState<null | string>(null);
   const [rowSelection, setRowSelection] = useState({});
 
-  console.log(formError)
+  console.log(formError);
   const table = useReactTable<Student>({
     columns: columnsStudents,
     data: dataE,
@@ -116,11 +116,11 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
         },
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);
-          const detailData = error.response?.data.detail
+          const detailData = error.response?.data.detail;
           if (detailData) {
-            setFormError(translateError(String(detailData)))
+            setFormError(translateError(String(detailData)));
           }
-        }
+        },
       }
     );
   }
@@ -207,6 +207,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
                             <InputLogin
                               placeholder="RA do Estudante"
                               className="rounded-3xl border border-black"
+                              type="number"
                               {...field}
                               disabled={createStudentMutation.isPending}
                             />
@@ -254,10 +255,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
                   </Button>
                 )}
 
-                {formError &&
-                  <FormError>
-                    {formError}
-                  </FormError>}
+                {formError && <FormError>{formError}</FormError>}
               </DialogContent>
             </Dialog>
             <InputWithEndIcon
@@ -304,9 +302,9 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
                         {header.isPlaceholder
                           ? null
                           : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
+                              header.column.columnDef.header,
+                              header.getContext()
+                            )}
                       </TableHead>
                     );
                   })}
