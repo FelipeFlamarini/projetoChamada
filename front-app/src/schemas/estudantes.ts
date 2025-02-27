@@ -10,14 +10,19 @@ const createStudent = zod.object({
     .string()
     .min(1, { message: "Nome deve ter pelo menos 1 caractere" }),
   ra: zod.coerce
-    .bigint({ message: "RA deve ser um número inteiro" })
+    .number({ message: "RA deve ser um número" })
+    .int({ message: "RA deve ser um número inteiro" })
     .positive({ message: "RA deve ser um número positivo" }),
   image_base64: zod.string().regex(base64ImageRegex, "Não é uma imagem valida"),
 });
 
 const editStudent = zod.object({
   name: zod.string().optional(),
-  ra: zod.coerce.number().optional(),
+  ra: zod.coerce
+    .number()
+    .int({ message: "RA deve ser um número inteiro" })
+    .positive("RA deve ser um número positivo")
+    .optional(),
   image_base64: zod.string().optional(),
 });
 
