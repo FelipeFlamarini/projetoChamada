@@ -51,13 +51,10 @@ class StudentsRepository:
 
     @staticmethod
     async def _get_if_student_exists_by_ra(student_ra: int) -> bool:
-        if not await Student.find_one(Student.ra == student_ra):
-            return False
-        return True
+        return await Student.find_one(Student.ra == int(student_ra)).exists()
 
     @staticmethod
     async def create_student(name: str, ra: int, image_base64: str) -> Student:
-
         if await StudentsRepository._get_if_student_exists_by_ra(ra):
             raise DuplicateDocument(
                 f"RA {ra} already exists"
@@ -100,11 +97,13 @@ class StudentsRepository:
             image_path = None
             if image_base64:
                 image_base64 = ImagesRepository.uri_to_base64_str(image_base64)
+                StudentsVectorSearcherRepository.add_item(
+                    FacialRecognitionRepository.represent(image_base64).embedding,
+                    ra if ra else student.ra,
+                )
+
                 image_path = ImagesRepository.save_base64_image_for_student(
                     ra if ra else student.ra, image_base64
-                )
-                StudentsVectorSearcherRepository.add_item(
-                    FacialRecognitionRepository.represent(image_base64).embedding, ra
                 )
             updated_student = StudentUpdate(
                 name=name, ra=ra, active=active, image_path=image_path

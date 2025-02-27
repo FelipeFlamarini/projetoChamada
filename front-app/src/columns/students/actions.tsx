@@ -26,6 +26,8 @@ import { checkToast } from "@/components/toasts/checkToast";
 import { useQueryClient } from "@tanstack/react-query";
 import { getGetStudentsApiStudentsGetQueryKey as activeStudentsKey } from "@/chamada";
 import { useGetStudentByRaApiStudentsStudentRaGet as useGetStudentByRa } from "@/chamada";
+import { translateError } from "@/utils/error";
+import { FormError } from "@/components/form/error";
 
 interface ActionsProps {
   ra: number;
@@ -34,6 +36,8 @@ interface ActionsProps {
 export const Actions = ({ ra }: ActionsProps) => {
   const [open, setOpen] = useState(false);
   const [openDelete, setOpenDelete] = useState(false);
+  const [editStudentFormError, setEditStudentFormError] = useState<string | null>(null);
+  const [deactivateStudentFormError, setDeactivateStudentFormError] = useState<string | null>(null);
   const getStudentByRaQuery = useGetStudentByRa(ra);
 
   const updateStudentByRaMutation = useUpdateStudentByRa();
@@ -86,7 +90,11 @@ export const Actions = ({ ra }: ActionsProps) => {
           });
         },
         onError: (error) => {
-          console.error("onSubmit onError", error);
+          const detailData = error.response?.data.detail
+          if (detailData) {
+            setEditStudentFormError(translateError(String(detailData)))
+          }
+          console.error("Error", error);
         },
       }
     );
@@ -110,7 +118,11 @@ export const Actions = ({ ra }: ActionsProps) => {
           });
         },
         onError: (error) => {
-          console.error("deactivateStudent onError", error);
+          const detailData = error.response?.data.detail
+          if (detailData) {
+            setDeactivateStudentFormError(translateError(String(detailData)))
+          }
+          console.error("deactivate Student onError", error);
         },
       }
     );
@@ -177,6 +189,10 @@ export const Actions = ({ ra }: ActionsProps) => {
                 >
                   Salvar
                 </Button>
+                {editStudentFormError &&
+                  <FormError>
+                    {editStudentFormError}
+                  </FormError>}
               </form>
             </Form>
           </DialogContent>
@@ -208,6 +224,10 @@ export const Actions = ({ ra }: ActionsProps) => {
               >
                 Desativar
               </Button>
+              {deactivateStudentFormError &&
+                  <FormError>
+                    {deactivateStudentFormError}
+                  </FormError>}
             </div>
           </DialogContent>
         </Dialog>

@@ -1,5 +1,6 @@
 from typing import Annotated
 import os
+from http import HTTPStatus
 
 from fastapi import APIRouter, Form
 import jwt
@@ -8,6 +9,7 @@ from api.repositories.facial_recognition import FacialRecognitionRepository
 from api.repositories.Students import StudentsRepository
 
 from api.schemas.recognize import DeepFaceRecognizeReturn, DeepFaceStudentReturn
+from api.schemas.exception import HTTPExceptionSchema
 
 from api.routers.rollcall import rollcall_websockets_connection_manager
 
@@ -19,7 +21,21 @@ __JWT_ALGORITHM__ = os.getenv("JWT_ALGORITHM")
 facial_recognition_router = APIRouter()
 
 
-@facial_recognition_router.post("/recognize")
+@facial_recognition_router.post(
+    "/recognize",
+    responses={
+        HTTPStatus.UNAUTHORIZED: {
+            "model": HTTPExceptionSchema,
+        },
+        HTTPStatus.NOT_FOUND: {
+            "model": HTTPExceptionSchema,
+        },
+        HTTPStatus.BAD_REQUEST: {
+            "model": HTTPExceptionSchema,
+        },
+    },
+    response_model=DeepFaceRecognizeReturn,
+)
 async def recognize(
     image_base64: Annotated[str, Form(...)], recognize_token: Annotated[str, Form(...)]
 ) -> DeepFaceRecognizeReturn:

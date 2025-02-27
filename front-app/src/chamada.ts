@@ -35,6 +35,7 @@ import type {
   DeepFaceRecognizeReturn,
   ErrorModel,
   GetStudentsApiStudentsGetParams,
+  HTTPExceptionSchema,
   HTTPValidationError,
   OAuth2AuthorizeResponse,
   OauthGoogleJwtAuthorizeApiAuthGoogleAuthorizeGetParams,
@@ -559,7 +560,7 @@ formUrlEncoded.append('image_base64', bodyCreateStudentApiStudentsPost.image_bas
   
 
 
-export const getCreateStudentApiStudentsPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getCreateStudentApiStudentsPostMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createStudentApiStudentsPost>>, TError,{data: BodyType<BodyCreateStudentApiStudentsPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createStudentApiStudentsPost>>, TError,{data: BodyType<BodyCreateStudentApiStudentsPost>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -580,12 +581,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type CreateStudentApiStudentsPostMutationResult = NonNullable<Awaited<ReturnType<typeof createStudentApiStudentsPost>>>
     export type CreateStudentApiStudentsPostMutationBody = BodyType<BodyCreateStudentApiStudentsPost>
-    export type CreateStudentApiStudentsPostMutationError = ErrorType<HTTPValidationError>
+    export type CreateStudentApiStudentsPostMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Create Student
  */
-export const useCreateStudentApiStudentsPost = <TError = ErrorType<HTTPValidationError>,
+export const useCreateStudentApiStudentsPost = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createStudentApiStudentsPost>>, TError,{data: BodyType<BodyCreateStudentApiStudentsPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof createStudentApiStudentsPost>>,
@@ -708,7 +709,7 @@ export const getGetStudentByRaApiStudentsStudentRaGetQueryKey = (studentRa: numb
     }
 
     
-export const getGetStudentByRaApiStudentsStudentRaGetQueryOptions = <TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetStudentByRaApiStudentsStudentRaGetQueryOptions = <TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -727,10 +728,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetStudentByRaApiStudentsStudentRaGetQueryResult = NonNullable<Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>>
-export type GetStudentByRaApiStudentsStudentRaGetQueryError = ErrorType<HTTPValidationError>
+export type GetStudentByRaApiStudentsStudentRaGetQueryError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
 
-export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(
  studentRa: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>,
@@ -740,7 +741,7 @@ export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnT
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(
  studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>,
@@ -750,7 +751,7 @@ export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnT
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(
  studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -758,7 +759,7 @@ export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnT
  * @summary Get Student By Ra
  */
 
-export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useGetStudentByRaApiStudentsStudentRaGet<TData = Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(
  studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentByRaApiStudentsStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
@@ -807,7 +808,7 @@ if(bodyUpdateStudentByRaApiStudentsStudentRaPatch.active !== undefined && bodyUp
   
 
 
-export const getUpdateStudentByRaApiStudentsStudentRaPatchMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getUpdateStudentByRaApiStudentsStudentRaPatchMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateStudentByRaApiStudentsStudentRaPatch>>, TError,{studentRa: number;data: BodyType<BodyUpdateStudentByRaApiStudentsStudentRaPatch>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof updateStudentByRaApiStudentsStudentRaPatch>>, TError,{studentRa: number;data: BodyType<BodyUpdateStudentByRaApiStudentsStudentRaPatch>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -828,12 +829,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type UpdateStudentByRaApiStudentsStudentRaPatchMutationResult = NonNullable<Awaited<ReturnType<typeof updateStudentByRaApiStudentsStudentRaPatch>>>
     export type UpdateStudentByRaApiStudentsStudentRaPatchMutationBody = BodyType<BodyUpdateStudentByRaApiStudentsStudentRaPatch>
-    export type UpdateStudentByRaApiStudentsStudentRaPatchMutationError = ErrorType<HTTPValidationError>
+    export type UpdateStudentByRaApiStudentsStudentRaPatchMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Update Student By Ra
  */
-export const useUpdateStudentByRaApiStudentsStudentRaPatch = <TError = ErrorType<HTTPValidationError>,
+export const useUpdateStudentByRaApiStudentsStudentRaPatch = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof updateStudentByRaApiStudentsStudentRaPatch>>, TError,{studentRa: number;data: BodyType<BodyUpdateStudentByRaApiStudentsStudentRaPatch>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof updateStudentByRaApiStudentsStudentRaPatch>>,
@@ -926,7 +927,7 @@ export const activateStudentBulkByRaApiStudentsBulkActivatePatch = (
   
 
 
-export const getActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>, TError,{data: BodyType<number[]>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>, TError,{data: BodyType<number[]>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -947,12 +948,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type ActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationResult = NonNullable<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>>
     export type ActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationBody = BodyType<number[]>
-    export type ActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationError = ErrorType<HTTPValidationError>
+    export type ActivateStudentBulkByRaApiStudentsBulkActivatePatchMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Activate Student Bulk By Ra
  */
-export const useActivateStudentBulkByRaApiStudentsBulkActivatePatch = <TError = ErrorType<HTTPValidationError>,
+export const useActivateStudentBulkByRaApiStudentsBulkActivatePatch = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>, TError,{data: BodyType<number[]>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof activateStudentBulkByRaApiStudentsBulkActivatePatch>>,
@@ -984,7 +985,7 @@ export const deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch = (
   
 
 
-export const getDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>, TError,{data: BodyType<number[]>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>, TError,{data: BodyType<number[]>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -1005,12 +1006,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type DeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationResult = NonNullable<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>>
     export type DeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationBody = BodyType<number[]>
-    export type DeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationError = ErrorType<HTTPValidationError>
+    export type DeactivateStudentBulkByRaApiStudentsBulkDeactivatePatchMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Deactivate Student Bulk By Ra
  */
-export const useDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatch = <TError = ErrorType<HTTPValidationError>,
+export const useDeactivateStudentBulkByRaApiStudentsBulkDeactivatePatch = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>, TError,{data: BodyType<number[]>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof deactivateStudentBulkByRaApiStudentsBulkDeactivatePatch>>,
@@ -1046,7 +1047,7 @@ formUrlEncoded.append('recognize_token', bodyRecognizeApiFacialRecognitionRecogn
   
 
 
-export const getRecognizeApiFacialRecognitionRecognizePostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getRecognizeApiFacialRecognitionRecognizePostMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recognizeApiFacialRecognitionRecognizePost>>, TError,{data: BodyType<BodyRecognizeApiFacialRecognitionRecognizePost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof recognizeApiFacialRecognitionRecognizePost>>, TError,{data: BodyType<BodyRecognizeApiFacialRecognitionRecognizePost>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -1067,12 +1068,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type RecognizeApiFacialRecognitionRecognizePostMutationResult = NonNullable<Awaited<ReturnType<typeof recognizeApiFacialRecognitionRecognizePost>>>
     export type RecognizeApiFacialRecognitionRecognizePostMutationBody = BodyType<BodyRecognizeApiFacialRecognitionRecognizePost>
-    export type RecognizeApiFacialRecognitionRecognizePostMutationError = ErrorType<HTTPValidationError>
+    export type RecognizeApiFacialRecognitionRecognizePostMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Recognize
  */
-export const useRecognizeApiFacialRecognitionRecognizePost = <TError = ErrorType<HTTPValidationError>,
+export const useRecognizeApiFacialRecognitionRecognizePost = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof recognizeApiFacialRecognitionRecognizePost>>, TError,{data: BodyType<BodyRecognizeApiFacialRecognitionRecognizePost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof recognizeApiFacialRecognitionRecognizePost>>,
@@ -1107,7 +1108,7 @@ export const getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryKey = ()
     }
 
     
-export const getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryOptions = <TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetAttendancesDatesApiAttendancesAttendanceDatesGetQueryOptions = <TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<HTTPExceptionSchema>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -1126,10 +1127,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetAttendancesDatesApiAttendancesAttendanceDatesGetQueryResult = NonNullable<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>>
-export type GetAttendancesDatesApiAttendancesAttendanceDatesGetQueryError = ErrorType<unknown>
+export type GetAttendancesDatesApiAttendancesAttendanceDatesGetQueryError = ErrorType<HTTPExceptionSchema>
 
 
-export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<HTTPExceptionSchema>>(
   options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>,
@@ -1139,7 +1140,7 @@ export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = A
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<HTTPExceptionSchema>>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>,
@@ -1149,7 +1150,7 @@ export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = A
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<HTTPExceptionSchema>>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -1157,7 +1158,7 @@ export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = A
  * @summary Get Attendances Dates
  */
 
-export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<unknown>>(
+export function useGetAttendancesDatesApiAttendancesAttendanceDatesGet<TData = Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError = ErrorType<HTTPExceptionSchema>>(
   options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getAttendancesDatesApiAttendancesAttendanceDatesGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
@@ -1195,7 +1196,7 @@ formUrlEncoded.append('jwt', bodyCreateAttendanceApiAttendancesPost.jwt)
   
 
 
-export const getCreateAttendanceApiAttendancesPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getCreateAttendanceApiAttendancesPostMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>, TError,{data: BodyType<BodyCreateAttendanceApiAttendancesPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>, TError,{data: BodyType<BodyCreateAttendanceApiAttendancesPost>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -1216,12 +1217,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type CreateAttendanceApiAttendancesPostMutationResult = NonNullable<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>>
     export type CreateAttendanceApiAttendancesPostMutationBody = BodyType<BodyCreateAttendanceApiAttendancesPost>
-    export type CreateAttendanceApiAttendancesPostMutationError = ErrorType<HTTPValidationError>
+    export type CreateAttendanceApiAttendancesPostMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Create Attendance
  */
-export const useCreateAttendanceApiAttendancesPost = <TError = ErrorType<HTTPValidationError>,
+export const useCreateAttendanceApiAttendancesPost = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>, TError,{data: BodyType<BodyCreateAttendanceApiAttendancesPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof createAttendanceApiAttendancesPost>>,
@@ -1256,7 +1257,7 @@ formUrlEncoded.append('date', bodyCreateAttendanceCsvByDateApiAttendancesCsvPost
   
 
 
-export const getCreateAttendanceCsvByDateApiAttendancesCsvPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getCreateAttendanceCsvByDateApiAttendancesCsvPostMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -1277,12 +1278,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationResult = NonNullable<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>>
     export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationBody = BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>
-    export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationError = ErrorType<HTTPValidationError>
+    export type CreateAttendanceCsvByDateApiAttendancesCsvPostMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Create Attendance Csv By Date
  */
-export const useCreateAttendanceCsvByDateApiAttendancesCsvPost = <TError = ErrorType<HTTPValidationError>,
+export const useCreateAttendanceCsvByDateApiAttendancesCsvPost = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>, TError,{data: BodyType<BodyCreateAttendanceCsvByDateApiAttendancesCsvPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof createAttendanceCsvByDateApiAttendancesCsvPost>>,
@@ -1317,7 +1318,7 @@ export const getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryKey = (st
     }
 
     
-export const getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryOptions = <TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
+export const getGetStudentImageApiStaticStudentsImagesStudentRaGetQueryOptions = <TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 ) => {
 
 const {query: queryOptions, request: requestOptions} = options ?? {};
@@ -1336,10 +1337,10 @@ const {query: queryOptions, request: requestOptions} = options ?? {};
 }
 
 export type GetStudentImageApiStaticStudentsImagesStudentRaGetQueryResult = NonNullable<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>>
-export type GetStudentImageApiStaticStudentsImagesStudentRaGetQueryError = ErrorType<HTTPValidationError>
+export type GetStudentImageApiStaticStudentsImagesStudentRaGetQueryError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
 
-export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(
  studentRa: number, options: { query:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>> & Pick<
         DefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>,
@@ -1349,7 +1350,7 @@ export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Aw
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  DefinedUseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(
  studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>> & Pick<
         UndefinedInitialDataOptions<
           Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>,
@@ -1359,7 +1360,7 @@ export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Aw
       >, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
-export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(
  studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> }
@@ -1367,7 +1368,7 @@ export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Aw
  * @summary Get Student Image
  */
 
-export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPValidationError>>(
+export function useGetStudentImageApiStaticStudentsImagesStudentRaGet<TData = Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>>(
  studentRa: number, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getStudentImageApiStaticStudentsImagesStudentRaGet>>, TError, TData>>, request?: SecondParameter<typeof customInstance>}
 
   ):  UseQueryResult<TData, TError> & { queryKey: DataTag<QueryKey, TData> } {
@@ -1493,7 +1494,7 @@ formUrlEncoded.append('rollcall_token', bodyStartRollcallApiRollcallStartPost.ro
   
 
 
-export const getStartRollcallApiRollcallStartPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getStartRollcallApiRollcallStartPostMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>, TError,{data: BodyType<BodyStartRollcallApiRollcallStartPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>, TError,{data: BodyType<BodyStartRollcallApiRollcallStartPost>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -1514,12 +1515,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type StartRollcallApiRollcallStartPostMutationResult = NonNullable<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>>
     export type StartRollcallApiRollcallStartPostMutationBody = BodyType<BodyStartRollcallApiRollcallStartPost>
-    export type StartRollcallApiRollcallStartPostMutationError = ErrorType<HTTPValidationError>
+    export type StartRollcallApiRollcallStartPostMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Start Rollcall
  */
-export const useStartRollcallApiRollcallStartPost = <TError = ErrorType<HTTPValidationError>,
+export const useStartRollcallApiRollcallStartPost = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>, TError,{data: BodyType<BodyStartRollcallApiRollcallStartPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof startRollcallApiRollcallStartPost>>,
@@ -1554,7 +1555,7 @@ formUrlEncoded.append('rollcall_token', bodyStopRollcallApiRollcallStopPost.roll
   
 
 
-export const getStopRollcallApiRollcallStopPostMutationOptions = <TError = ErrorType<HTTPValidationError>,
+export const getStopRollcallApiRollcallStopPostMutationOptions = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>, TError,{data: BodyType<BodyStopRollcallApiRollcallStopPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationOptions<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>, TError,{data: BodyType<BodyStopRollcallApiRollcallStopPost>}, TContext> => {
 const {mutation: mutationOptions, request: requestOptions} = options ?? {};
@@ -1575,12 +1576,12 @@ const {mutation: mutationOptions, request: requestOptions} = options ?? {};
 
     export type StopRollcallApiRollcallStopPostMutationResult = NonNullable<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>>
     export type StopRollcallApiRollcallStopPostMutationBody = BodyType<BodyStopRollcallApiRollcallStopPost>
-    export type StopRollcallApiRollcallStopPostMutationError = ErrorType<HTTPValidationError>
+    export type StopRollcallApiRollcallStopPostMutationError = ErrorType<HTTPExceptionSchema | HTTPValidationError>
 
     /**
  * @summary Stop Rollcall
  */
-export const useStopRollcallApiRollcallStopPost = <TError = ErrorType<HTTPValidationError>,
+export const useStopRollcallApiRollcallStopPost = <TError = ErrorType<HTTPExceptionSchema | HTTPValidationError>,
     TContext = unknown>(options?: { mutation?:UseMutationOptions<Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>, TError,{data: BodyType<BodyStopRollcallApiRollcallStopPost>}, TContext>, request?: SecondParameter<typeof customInstance>}
 ): UseMutationResult<
         Awaited<ReturnType<typeof stopRollcallApiRollcallStopPost>>,

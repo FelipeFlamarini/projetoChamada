@@ -45,6 +45,7 @@ export * from './errorModelDetail';
 export * from './errorModelDetailAnyOf';
 export * from './getStudentsApiStudentsGetParams';
 export * from './getStudentsApiStudentsGetParams';
+export * from './hTTPExceptionSchema';
 export * from './hTTPValidationError';
 export * from './oAuth2AuthorizeResponse';
 export * from './oAuth2AuthorizeResponse';
