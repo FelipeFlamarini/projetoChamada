@@ -140,6 +140,8 @@ const FaceDetection = ({ recognizeToken }: IFaceDetection) => {
                   await sleep(3000);
                   setDialogOpen(false);
                   setStage("idle");
+                } else {
+                  throw new Error("Não reconhecido");
                 }
               } catch (error) {
                 console.log(error);
