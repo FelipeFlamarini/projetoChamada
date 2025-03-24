@@ -281,5 +281,7 @@ Na rota `/home`, você acessa um menu central com quatro botões principais:
 
 - Exibe a lista de estudantes cadastrados no sistema.
 - Permite importar um arquivo CSV para adicionar novos estudantes. Há um [arquivo CSV](fastapi-app/tests/generate_dataset/students.csv) no repositório que utiliza o padrão esperado pelo sistema. Utilize-o para testes ou para seguir o padrão esperado.
+- Editar dados do estudante
+- Excluir estudante
 
 ---
