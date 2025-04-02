@@ -25,7 +25,7 @@ __SECRET__ = os.getenv("USER_TOKEN_SECRET_KEY")
 __GOOGLE_CLIENT_ID__ = os.getenv("OAUTH_GOOGLE_CLIENT_ID")
 __GOOGLE_CLIENT_SECRET__ = os.getenv("OAUTH_GOOGLE_CLIENT_SECRET")
 __URL_REDIRECT_AFTER_LOGIN__ = os.getenv("OAUTH_URL_REDIRECT_AFTER_LOGIN")
-
+__COOKIE_SECURE__ = os.getenv("COOKIE_SECURE", "false").lower() in ("true", "1", "yes")
 
 google_oauth_client = GoogleOAuth2(__GOOGLE_CLIENT_ID__, __GOOGLE_CLIENT_SECRET__)
 
@@ -49,7 +49,9 @@ async def get_user_manager(user_db: BeanieUserDatabase = Depends(get_user_db)):
     yield UserManager(user_db)
 
 
-cookie_transport = AutoRedirectCookieTransport(cookie_max_age=60 * 60 * 24)
+cookie_transport = AutoRedirectCookieTransport(
+    cookie_max_age=60 * 60 * 24, cookie_secure=__COOKIE_SECURE__
+)
 
 
 def get_database_strategy(

@@ -112,6 +112,7 @@ export function Estudantes({ dataE, columnsStudents }: EstudantesProps) {
             descricao: "O estudante foi adicionado a lista de chamada",
           });
           form.reset();
+          setFormError(null)
         },
         onError: (error) => {
           console.error("Erro ao cadastrar estudante", error);

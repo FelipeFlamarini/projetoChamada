@@ -16,14 +16,5 @@ const createStudent = zod.object({
   image_base64: zod.string().regex(base64ImageRegex, "Não é uma imagem valida"),
 });
 
-const editStudent = zod.object({
-  name: zod.string().optional(),
-  ra: zod.coerce
-    .number()
-    .int({ message: "RA deve ser um número inteiro" })
-    .positive("RA deve ser um número positivo")
-    .optional(),
-  image_base64: zod.string().optional(),
-});
-
+const editStudent = createStudent.partial();
 export { createStudent, editStudent };

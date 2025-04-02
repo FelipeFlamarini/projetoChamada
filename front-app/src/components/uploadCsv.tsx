@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Download, Upload, X } from "lucide-react";
+import { v4 as uuidv4 } from 'uuid';
 
 import { Button } from "@/components/ui/button";
 import {
@@ -68,7 +69,7 @@ export function FileUploadDialog() {
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const newFiles = Array.from(event.target.files).map((file) => ({
-        id: crypto.randomUUID(),
+        id: uuidv4(),
         file: file,
       }));
       setFiles((prev) => [...prev, ...newFiles]);
