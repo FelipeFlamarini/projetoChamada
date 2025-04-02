@@ -16,6 +16,5 @@ const createStudent = zod.object({
   image_base64: zod.string().regex(base64ImageRegex, "Não é uma imagem valida"),
 });
 
-const editStudent = createStudent
-
+const editStudent = createStudent.partial();
 export { createStudent, editStudent };
