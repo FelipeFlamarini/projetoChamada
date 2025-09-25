@@ -70,13 +70,13 @@ app.include_router(
         google_oauth_client,
         auth_backend,
         __OAUTH_GOOGLE_STATE_SECRET__,
-        is_verified_by_default=True,
+        is_verified_by_default=False,
     ),
     prefix="/api/auth/google",
     tags=["auth"],
 )
 app.include_router(
-    fastapi_users.get_auth_router(auth_backend),
+    fastapi_users.get_auth_router(auth_backend, requires_verification=True),
     prefix="/api/auth",
     tags=["auth"],
 )
